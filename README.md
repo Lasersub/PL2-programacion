@@ -15,4 +15,4 @@ IGNORAR LOS ARCHIVOS .form
 
 1. Menu-bar superior --> TEAM
 2. Git --> Clone...
-3. Pegar esta URL: https://github.com/Lasersub/PL2-programacion
+3. Pegar esta URL: https://github.com/Lasersub/PL2-programacion.git
