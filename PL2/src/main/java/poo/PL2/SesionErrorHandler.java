@@ -14,6 +14,7 @@ public class SesionErrorHandler {
         
         // Crear una cuenta
         USUARIO_EXISTENTE,
+        USUARIO_NO_VALIDO,
         CONTRASENA_NO_VALIDA,
         CONTRASENA_MAL_REESCRITA,
         
@@ -39,6 +40,9 @@ public class SesionErrorHandler {
             // Crear una cuenta
             case USUARIO_EXISTENTE:
                 mostrarVentana("El usuario escrito ya existe.");
+                break;
+            case USUARIO_NO_VALIDO:
+                mostrarVentana("El usuario escrito no es válido.");
                 break;
             case CONTRASENA_NO_VALIDA:
                 mostrarVentana("La contraseña utilizada no es válida.");
