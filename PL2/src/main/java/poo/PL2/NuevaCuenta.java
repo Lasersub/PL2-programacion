@@ -137,16 +137,28 @@ public class NuevaCuenta extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (jTextField2.getText().equals(jTextField3.getText())){
+        if (jTextField1.getText().equals("")) { // USUARIO VACÍO
+            jTextField1.setText(""); 
+            jTextField2.setText("");    // Vacío la información introducida
+            jTextField3.setText("");
+            SesionErrorHandler.mostrarError(ErrorTipo.USUARIO_VACIO);
+        } 
+        else if (jTextField1.getText().contains(" ")) { // USUARIO NO VÁLIDO
+            jTextField1.setText("");
+            jTextField2.setText("");    // Vacío la información introducida
+            jTextField3.setText("");
+            SesionErrorHandler.mostrarError(ErrorTipo.USUARIO_NO_VALIDO);
+        } 
+        else if (jTextField2.getText().equals(jTextField3.getText())) { // TODO CORRECTO
             PortalCliente portalCliente = new PortalCliente();
             portalCliente.setVisible(true);
-            this.dispose(); // close current menu
-        } else {
-            jTextField2.setText("");
+            this.dispose(); // cerrar este menú
+        } 
+        else { // CONTRASEÑA MAL REESCRITA
+            jTextField2.setText("");    // Vacío la información introducida en la contraseña
             jTextField3.setText("");
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_MAL_REESCRITA);
-            
-        }
+    }
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
