@@ -180,7 +180,9 @@ public class NuevaCuenta extends javax.swing.JFrame {
             jTextField3.setText("");
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_VACIA);
         }
-        else if (jTextField2.getText().contains(" ")) { // CONTRASEÑA NO VÁLIDA
+        else if (jTextField2.getText().contains(" ") // CONTRASEÑA NO VÁLIDA
+                || jTextField2.getText().length() < 4 
+                || jTextField2.getText().length() > 12)  { 
             jTextField2.setText("");    // Vacío la información introducida
             jTextField3.setText("");
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_NO_VALIDA);  
