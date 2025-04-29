@@ -1,5 +1,5 @@
 
-package poo.PL2;
+package poo.PL2.Clases;
 
 import java.io.Serializable;
 
@@ -29,5 +29,4 @@ public class Administrador extends Usuario implements Serializable {
         // implementar
     }
 
-   
 }

@@ -1,5 +1,5 @@
 
-package poo.PL2;
+package poo.PL2.Clases;
 
 
 public class MainCode {

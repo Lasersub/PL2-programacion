@@ -1,4 +1,4 @@
-package poo.PL2;
+package poo.PL2.Clases;
 
 import java.awt.Font;
 import javax.swing.*;

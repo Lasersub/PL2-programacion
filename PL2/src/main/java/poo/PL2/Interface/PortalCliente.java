@@ -1,5 +1,5 @@
 
-package poo.PL2;
+package poo.PL2.Interface;
 
 import javax.swing.*;
 import java.awt.event.*;

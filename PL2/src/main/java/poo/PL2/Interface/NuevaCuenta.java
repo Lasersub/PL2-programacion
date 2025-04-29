@@ -2,9 +2,11 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
-package poo.PL2;
+package poo.PL2.Interface;
 
-import poo.PL2.SesionErrorHandler.ErrorTipo;
+import poo.PL2.Clases.SesionErrorHandler;
+import poo.PL2.Interface.PortalCliente;
+import poo.PL2.Clases.SesionErrorHandler.ErrorTipo;
 
 
 public class NuevaCuenta extends javax.swing.JFrame {
