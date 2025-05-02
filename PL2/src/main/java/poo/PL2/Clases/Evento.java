@@ -10,19 +10,29 @@ public class Evento {
     private String tipo;
     private String direccion;
     private LocalDate fecha;
+    private String ciudad;
+
+   
 
     
-    public Evento(String titulo, String tipo, String direccion, LocalDate fecha, double precioEntrada) {
+    public Evento(String titulo, String tipo, String direccion, LocalDate fecha, double precioEntrada, String ciudad) {
         this.titulo = titulo;
         this.tipo = tipo;
         this.direccion = direccion;                 //FALTA IMAGEN Y CALIFICACIÓN
         this.fecha = fecha;
         this.precioEntrada = precioEntrada;
+        this.ciudad = ciudad;
     }
     
     
     
-    
+     public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
     
     public String getTitulo() {
         return titulo;
