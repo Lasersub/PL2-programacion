@@ -1,6 +1,6 @@
 
 package poo.PL2.Clases;
-/*
+
 import java.util.ArrayList;
 import java.util.*;
 
@@ -21,10 +21,6 @@ public class Cliente extends Usuario {
         this.tarjetaCredito = tarjetaCredito;
         this.vip = vip;
     }
-    
-    
-    
-    
     
     public String getNombre() {
         return nombre;
@@ -66,20 +62,39 @@ public class Cliente extends Usuario {
         this.vip = vip;
     }
     
-    public ArrayList<Evento> filterEvent(String titulo, String tipo, String ciudad, int precioMin, int precioMax , ArrayList<Evento> eventos){
-        List<Object> filtros = new ArrayList<>();
-        filtros.add(titulo);
-        filtros.add(tipo);
-        filtros.add(ciudad);
-        filtros.add(precioMin);
-        
-        if ()
-        
+    public ArrayList<Evento> filterEvent(String titulo, String tipo, String ciudad, int precioMin, int precioMax, ArrayList<Evento> eventos) {
     
+    ArrayList<Evento> eventosFiltrados = new ArrayList<>();
+    
+    for (Evento evento : eventos) {
+        boolean cumpleFiltros = true;
+        
+        
+        if (titulo != null && !evento.getTitulo().equalsIgnoreCase(titulo)) {
+            cumpleFiltros = false;
+        }
+        if (tipo != null && !evento.getTipo().equalsIgnoreCase(tipo)) {
+            cumpleFiltros = false;
+        }
+        if (ciudad != null && !evento.getCiudad().equalsIgnoreCase(ciudad)) {
+            cumpleFiltros = false;
+        }
+        if (evento.getPrecioEntrada() < precioMin || evento.getPrecioEntrada() > precioMax) {
+            cumpleFiltros = false;
+        }
+        
+        if (cumpleFiltros) {
+            eventosFiltrados.add(evento);
+        }
     }
     
+    return eventosFiltrados;
+}
+      
     
-    // Filtros precio
+    
+    
+    /* CODIGO INNECESARIO BASURA, SE PUEDE RECICLAR PARA HACER FUNCIONES DE ORDENAMIENTO POR PARAMTEROS, ASI COMO COSA EXTRA
         
     public static List<Evento> eventosDesdePrecio(ArrayList<Evento> eventos, double precioMinimo) {
         List<Evento> resultado = new ArrayList<>();
@@ -95,12 +110,9 @@ public class Cliente extends Usuario {
         }
 
     
-    public static List<Evento> eventosEnRangoPrecio(ArrayList<Evento> eventos, double precioMin, double precioMax) {
+    public static ArrayList<Evento> eventosEnRangoPrecio(ArrayList<Evento> eventos, double precioMin, double precioMax) {
         
-        //if ((precioMin == null ) && (precioMax == null)){
-            
-        
-        List<Evento> resultado = new ArrayList<>();
+        ArrayList<Evento> resultado = new ArrayList<>();
         Collections.sort(eventos, Comparator.comparingDouble(Evento::getPrecioEntrada)); 
 
         int inicio = encontrarPrimerEventoPrecio(eventos, precioMin);
@@ -137,7 +149,7 @@ public class Cliente extends Usuario {
     
     // Filtros ciudad
     
-    public static List<Evento> eventosEnCiudad(ArrayList<Evento> eventos, String ciudad){
+    public static ArrayList<Evento> eventosEnCiudad(ArrayList<Evento> eventos, String ciudad){
         
         ArrayList<Evento> resultado = new ArrayList<>();
         Collections.sort(eventos, Comparator.comparing(Evento::getCiudad));
@@ -198,16 +210,16 @@ public class Cliente extends Usuario {
         return indice;
     }
     
-    public static List<Evento> eventosConTitulo(ArrayList<Evento> eventos, String ciudad){
+    public static ArrayList<Evento> eventosConTitulo(ArrayList<Evento> eventos, String titulo){
         
         ArrayList<Evento> resultado = new ArrayList<>();
         Collections.sort(eventos, Comparator.comparing(Evento::getTitulo));
         
-        int inicio = encontrarPrimerEventoTitulo(eventos, ciudad);
+        int inicio = encontrarPrimerEventoTitulo(eventos, titulo);
         if (inicio == -1) return resultado; 
 
         for (int i = inicio; i < eventos.size(); i++) {
-            if(eventos.get(i).getCiudad().equalsIgnoreCase(ciudad)){
+            if(eventos.get(i).getTitulo().equalsIgnoreCase(titulo)){
                 resultado.add(eventos.get(i));  
             }
             else{
@@ -221,7 +233,7 @@ public class Cliente extends Usuario {
     
     private static int encontrarPrimerEventoTipo(ArrayList<Evento> eventos, String tipo) {
         
-        // se da por hecho lista ordenada por ciudad
+        // se da por hecho lista ordenada por tipo
         
         int izquierda = 0;
         int derecha = eventos.size() - 1;
@@ -239,7 +251,7 @@ public class Cliente extends Usuario {
         return indice;
     }
     
-    public static List<Evento> eventosDeTipo(ArrayList<Evento> eventos, String tipo){
+    public static ArrayList<Evento> eventosDeTipo(ArrayList<Evento> eventos, String tipo){
         
         ArrayList<Evento> resultado = new ArrayList<>();
         Collections.sort(eventos, Comparator.comparing(Evento::getTipo));
@@ -248,7 +260,7 @@ public class Cliente extends Usuario {
         if (inicio == -1) return resultado; 
 
         for (int i = inicio; i < eventos.size(); i++) {
-            if(eventos.get(i).getCiudad().equalsIgnoreCase(tipo)){
+            if(eventos.get(i).getTipo().equalsIgnoreCase(tipo)){
                 resultado.add(eventos.get(i));  
             }
             else{
@@ -256,13 +268,7 @@ public class Cliente extends Usuario {
             }
         }
         return resultado;  
-    }
-    
-    
-    
-        
-        
-        
-        
-}
-    */
+    }   
+*/
+}  
+
