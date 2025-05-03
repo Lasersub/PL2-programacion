@@ -63,32 +63,31 @@ public class Cliente extends Usuario {
     }
     
     public ArrayList<Evento> filterEvent(String titulo, String tipo, String ciudad, int precioMin, int precioMax, ArrayList<Evento> eventos) {
-    
-    ArrayList<Evento> eventosFiltrados = new ArrayList<>();
-    
-    for (Evento evento : eventos) {
-        boolean cumpleFiltros = true;
-        
-        
-        if (titulo != null && !evento.getTitulo().equalsIgnoreCase(titulo)) {
-            cumpleFiltros = false;
+        ArrayList<Evento> eventosFiltrados = new ArrayList<>();
+
+        for (Evento evento : eventos) {
+            boolean cumpleFiltros = true;
+
+
+            if (titulo != null && !evento.getTitulo().equalsIgnoreCase(titulo)) {
+                cumpleFiltros = false;
+            }
+            if (tipo != null && !evento.getTipo().equalsIgnoreCase(tipo)) {
+                cumpleFiltros = false;
+            }
+            if (ciudad != null && !evento.getCiudad().equalsIgnoreCase(ciudad)) {
+                cumpleFiltros = false;
+            }
+            if (evento.getPrecioEntrada() < precioMin || evento.getPrecioEntrada() > precioMax) {
+                cumpleFiltros = false;
+            }
+
+            if (cumpleFiltros) {
+                eventosFiltrados.add(evento);
+            }
         }
-        if (tipo != null && !evento.getTipo().equalsIgnoreCase(tipo)) {
-            cumpleFiltros = false;
-        }
-        if (ciudad != null && !evento.getCiudad().equalsIgnoreCase(ciudad)) {
-            cumpleFiltros = false;
-        }
-        if (evento.getPrecioEntrada() < precioMin || evento.getPrecioEntrada() > precioMax) {
-            cumpleFiltros = false;
-        }
-        
-        if (cumpleFiltros) {
-            eventosFiltrados.add(evento);
-        }
-    }
-    
-    return eventosFiltrados;
+
+        return eventosFiltrados;
 }
       
     
@@ -96,7 +95,7 @@ public class Cliente extends Usuario {
     
     /* CODIGO INNECESARIO BASURA, SE PUEDE RECICLAR PARA HACER FUNCIONES DE ORDENAMIENTO POR PARAMTEROS, ASI COMO COSA EXTRA
         
-    public static List<Evento> eventosDesdePrecio(ArrayList<Evento> eventos, double precioMinimo) {
+        public static List<Evento> eventosDesdePrecio(ArrayList<Evento> eventos, double precioMinimo) {
         List<Evento> resultado = new ArrayList<>();
         Collections.sort(eventos, Comparator.comparingDouble(Evento::getPrecioEntrada)); 
 
@@ -107,7 +106,7 @@ public class Cliente extends Usuario {
             resultado.add(eventos.get(i));
         }
         return resultado;
-        }
+    }
 
     
     public static ArrayList<Evento> eventosEnRangoPrecio(ArrayList<Evento> eventos, double precioMin, double precioMax) {
@@ -146,7 +145,7 @@ public class Cliente extends Usuario {
         }
         return indice;
     }
-    
+
     // Filtros ciudad
     
     public static ArrayList<Evento> eventosEnCiudad(ArrayList<Evento> eventos, String ciudad){
