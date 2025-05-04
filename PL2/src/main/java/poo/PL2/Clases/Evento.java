@@ -2,9 +2,10 @@
 package poo.PL2.Clases;
 
 import java.time.LocalDate;
+import java.io.Serializable;
 
 
-public class Evento {
+public class Evento implements Serializable {
     
     private String titulo;
     private String tipo;
