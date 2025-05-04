@@ -2,8 +2,6 @@
 package poo.PL2.Clases;
 
 import java.util.ArrayList;
-import java.util.*;
-
 
 public class Cliente extends Usuario {
     
