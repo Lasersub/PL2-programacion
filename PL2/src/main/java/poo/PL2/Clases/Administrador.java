@@ -1,9 +1,8 @@
 
 package poo.PL2.Clases;
 
-import java.io.Serializable;
 
-public class Administrador extends Usuario implements Serializable {
+public class Administrador extends Usuario {
 
     private static final String ADMIN_EMAIL = "admin@javaevents.com";
     private static final String ADMIN_PASSWORD = "admin";
