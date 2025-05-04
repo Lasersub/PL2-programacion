@@ -1,8 +1,8 @@
 
 package poo.PL2.Clases;
+import java.io.Serializable;
 
-
-public class Usuario {
+public class Usuario implements Serializable{
     
     private String correo;
     private String contrasena;
