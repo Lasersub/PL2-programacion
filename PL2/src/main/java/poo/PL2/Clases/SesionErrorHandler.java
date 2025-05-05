@@ -17,6 +17,7 @@ public class SesionErrorHandler {
         USUARIO_NO_VALIDO,
         CONTRASENA_NO_VALIDA,
         CONTRASENA_MAL_REESCRITA,
+        CAMPO_OBLIGATORIO_VACIO,
         
         // Iniciar sesión
         USUARIO_NO_EXISTE,
@@ -49,6 +50,9 @@ public class SesionErrorHandler {
                 break;
             case CONTRASENA_MAL_REESCRITA:
                 mostrarVentana("La contraseña ha sido mal reescrita.");
+                break;
+            case CAMPO_OBLIGATORIO_VACIO:
+                mostrarVentana("Campo obligatorio vacío");
                 break;
                 
             // Iniciar sesión
