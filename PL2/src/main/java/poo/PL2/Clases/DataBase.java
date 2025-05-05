@@ -37,6 +37,14 @@ public class DataBase implements Serializable {
         return clientes.get(correo);
     }
 
+    public Map<String, Cliente> getClientes() {
+        return clientes;
+    }
+
+    public void setClientes(Map<String, Cliente> clientes) {
+        this.clientes = clientes;
+    }
+
     public boolean existeCliente(String correo) {
         return clientes.containsKey(correo);
     }
