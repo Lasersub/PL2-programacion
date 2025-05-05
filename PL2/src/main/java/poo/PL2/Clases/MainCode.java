@@ -19,17 +19,13 @@ public class MainCode {
         miBaseDeDatos.addEvento(evento1);
         miBaseDeDatos.addReserva(reserva1);
         
- 
-        try {
-            DataBase.guardar(miBaseDeDatos,"C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
-        } catch (IOException e) {
-            e.printStackTrace(); // o loguea el error o muestra un mensaje
-        }
         
         try {
             miBaseDeDatos = DataBase.cargar("C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
         } catch (IOException e) {
             e.printStackTrace(); // o loguea el error o muestra un mensaje
         }
+        
+        System.out.println(miBaseDeDatos.getCliente("matajudios@gmail.com").getNombre());
     }   
 }
