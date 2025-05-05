@@ -9,7 +9,7 @@ public class Cliente extends Usuario {
     private String telefono;
     private String direccion;
     private String tarjetaCredito;
-    private boolean vip;
+    private boolean vip = false;
 
     public Cliente(String nombre, String telefono, String direccion, String tarjetaCredito, boolean vip, String correo, String contrasena) {
         super(correo, contrasena);
