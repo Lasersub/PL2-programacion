@@ -64,7 +64,7 @@ public class NuevaCuenta extends javax.swing.JFrame {
         jLabel3.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("CREAR");
+        jButton1.setText("SIGUIENTE");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -190,8 +190,8 @@ public class NuevaCuenta extends javax.swing.JFrame {
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_NO_VALIDA);  
         }
         else if (jTextField2.getText().equals(jTextField3.getText())) { // TODO CORRECTO
-            PortalCliente portalCliente = new PortalCliente(); // Ir a portal cliente
-            portalCliente.setVisible(true);
+            NuevaCuentaDatos nuevaCuentaDatos = new NuevaCuentaDatos(); // Ir a nueva cuenta datos
+            nuevaCuentaDatos.setVisible(true);
             this.dispose(); // cerrar este menú
         } 
         else { // CONTRASEÑA MAL REESCRITA
