@@ -1,10 +1,9 @@
 
 package poo.PL2.Clases;
 
+import java.io.Serializable;
 
-
-public class Direccion {
-    
+public class Direccion implements Serializable{
     
     private String calle;
     private String numero;
