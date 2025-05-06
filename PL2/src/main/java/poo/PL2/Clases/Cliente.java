@@ -7,11 +7,11 @@ public class Cliente extends Usuario {
     
     private String nombre;
     private String telefono;
-    private String direccion;
-    private String tarjetaCredito;
+    private Direccion direccion;
+    private TarjetaCredito tarjetaCredito;
     private boolean vip = false;
 
-    public Cliente(String nombre, String telefono, String direccion, String tarjetaCredito, boolean vip, String correo, String contrasena) {
+    public Cliente(String nombre, String telefono, Direccion direccion, TarjetaCredito tarjetaCredito, boolean vip, String correo, String contrasena) {
         super(correo, contrasena);
         this.nombre = nombre;
         this.telefono = telefono;
@@ -36,19 +36,19 @@ public class Cliente extends Usuario {
         this.telefono = telefono;
     }
 
-    public String getDireccion() {
+    public Direccion getDireccion() {
         return direccion;
     }
 
-    public void setDireccion(String direccion) {
+    public void setDireccion(Direccion direccion) {
         this.direccion = direccion;
     }
 
-    public String getTarjetaCredito() {
+    public TarjetaCredito getTarjetaCredito() {
         return tarjetaCredito;
     }
 
-    public void setTarjetaCredito(String tarjetaCredito) {
+    public void setTarjetaCredito(TarjetaCredito tarjetaCredito) {
         this.tarjetaCredito = tarjetaCredito;
     }
 
