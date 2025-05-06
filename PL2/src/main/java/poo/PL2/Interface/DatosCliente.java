@@ -215,8 +215,8 @@ public class DatosCliente extends javax.swing.JFrame {
         // Actualizar el cliente actual
         cliente.setNombre(nuevoNombre);
         cliente.setTelefono(nuevoTelefono);
-        cliente.setDireccion(nuevaDireccion);
-        cliente.setTarjetaCredito(nuevaTarjeta);
+        //cliente.setDireccion(nuevaDireccion);
+        //cliente.setTarjetaCredito(nuevaTarjeta);
 
         // Actualizar el cliente en la base de datos
         DataBase db = Sesion.getBaseDeDatos();
@@ -251,13 +251,13 @@ public class DatosCliente extends javax.swing.JFrame {
 
     private void jTextFieldDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldDireccionActionPerformed
         // TODO add your handling code here:
-        jTextFieldDireccion.setText(cliente.getDireccion());
+        //jTextFieldDireccion.setText(cliente.getDireccion());
         jTextFieldDireccion.setEditable(true);
     }//GEN-LAST:event_jTextFieldDireccionActionPerformed
 
     private void jTextFieldTarjetaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTarjetaActionPerformed
         // TODO add your handling code here:
-        jTextFieldTarjeta.setText(cliente.getTarjetaCredito());
+        //jTextFieldTarjeta.setText(cliente.getTarjetaCredito());
         jTextFieldTarjeta.setEditable(true);
         
     }//GEN-LAST:event_jTextFieldTarjetaActionPerformed
