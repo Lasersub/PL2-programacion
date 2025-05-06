@@ -1,7 +1,6 @@
 
 package poo.PL2.Clases;
 
-import java.awt.List;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -15,7 +14,6 @@ import java.util.Map;
 
 public class DataBase implements Serializable {
 
-    private static final long serialVersionUID = 1L;
 
     // Almacenes
     private Map<String, Cliente> clientes; // clave = email
