@@ -1,10 +1,11 @@
 
 package poo.PL2.Clases;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 
-public class TarjetaCredito {
+public class TarjetaCredito implements Serializable {
     
     
     private String titular;
