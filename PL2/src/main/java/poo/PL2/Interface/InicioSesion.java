@@ -140,7 +140,7 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new PortalCliente()); // Acceder
+       // COMENTADO DE MOMENTO  Navegacion.cambiarVentana(this, new PortalCliente()); // Acceder
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
