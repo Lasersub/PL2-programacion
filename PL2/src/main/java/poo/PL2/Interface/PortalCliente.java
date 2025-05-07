@@ -115,7 +115,7 @@ public class PortalCliente extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        DatosCliente misDatos = new DatosCliente(); // Ir a portal cliente
+        ModificarDatos misDatos = new ModificarDatos(); // Ir a portal cliente
         misDatos.setVisible(true);
         this.dispose(); // cerrar este menú
     }//GEN-LAST:event_jButton3ActionPerformed
