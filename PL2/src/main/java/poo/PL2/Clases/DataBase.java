@@ -13,20 +13,25 @@ import java.util.Map;
 
 
 public class DataBase implements Serializable {
-
+    
+    private static DataBase dataBase = new DataBase();
 
     // Almacenes
     private Map<String, Cliente> clientes; // clave = email
     private ArrayList<Evento> eventos;
     private ArrayList<Reserva> reservas;
-
-    public DataBase() {
-        clientes = new HashMap<>();
-        eventos = new ArrayList<>();
-        reservas = new ArrayList<>();
-    }
-
     
+    
+    private DataBase() {
+        this.clientes = new HashMap<>();
+        this.eventos = new ArrayList<>();
+        this.reservas = new ArrayList<>();
+    }
+    
+    public static DataBase getInstance() {
+        return dataBase; 
+    }
+  
     public void addCliente(Cliente cliente) {
         clientes.put(cliente.getCorreo(), cliente);
     }
@@ -66,15 +71,15 @@ public class DataBase implements Serializable {
     }
 
     
-    public static void guardar(DataBase db, String archivo) throws IOException {
+    public static void guardar(String archivo) throws IOException {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(archivo))) {
-            oos.writeObject(db);
+            oos.writeObject(dataBase);
         }
     }
 
-    public static DataBase cargar(String archivo) throws IOException, ClassNotFoundException {
+    public static void cargar(String archivo) throws IOException, ClassNotFoundException {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
-            return (DataBase) ois.readObject();
+            dataBase = (DataBase) ois.readObject();
         }
     }
 }
