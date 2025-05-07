@@ -4,6 +4,7 @@
  */
 package poo.PL2.Interface;
 
+import poo.PL2.Clases.Navegacion;
 import poo.PL2.Interface.MainMenu;
 import poo.PL2.Interface.PortalCliente;
 
@@ -134,16 +135,12 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        MainMenu mainMenu = new MainMenu(); // Volver a pestaña anterior
-        mainMenu.setVisible(true);
-        this.dispose(); // cerrar este menú
+        Navegacion.cambiarVentana(this, new NuevaCuenta()); // Volver
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        PortalCliente portalCliente = new PortalCliente(); // Ir a portal cliente
-        portalCliente.setVisible(true);
-        this.dispose(); // cerrar este menú
+        Navegacion.cambiarVentana(this, new NuevaCuenta()); // Acceder
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
