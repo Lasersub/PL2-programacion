@@ -225,7 +225,7 @@ public class ModificarDatos extends javax.swing.JFrame {
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new PortalCliente()); // Método de pago
+        Navegacion.cambiarVentana(this, new ModificarMetodoDePago()); // Método de pago
     }//GEN-LAST:event_jButton4ActionPerformed
 
 
