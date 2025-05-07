@@ -8,8 +8,8 @@ public class AuthService {
     
     private DataBase dataBase;
 
-    public AuthService(DataBase dataBase) {
-        this.dataBase = dataBase;
+    public AuthService() {
+        this.dataBase = DataBase.getInstance();
     }
 
     // Registro: Verifica correo único y añade cliente
@@ -27,8 +27,7 @@ public class AuthService {
         }
 
         // Guardar cliente
-        clientes.put(cliente.getCorreo(), cliente);
-        DataBase.guardar(dataBase,"C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
+        dataBase.getClientes().put(cliente.getCorreo(), cliente);
         return true;
     }
 
