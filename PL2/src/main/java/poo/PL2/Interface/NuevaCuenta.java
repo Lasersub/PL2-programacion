@@ -4,6 +4,7 @@
  */
 package poo.PL2.Interface;
 
+import poo.PL2.Clases.Navegacion;
 import poo.PL2.Clases.SesionErrorHandler;
 import poo.PL2.Interface.PortalCliente;
 import poo.PL2.Clases.SesionErrorHandler.ErrorTipo;
@@ -190,9 +191,7 @@ public class NuevaCuenta extends javax.swing.JFrame {
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_NO_VALIDA);  
         }
         else if (jTextField2.getText().equals(jTextField3.getText())) { // TODO CORRECTO
-            NuevaCuentaDatos nuevaCuentaDatos = new NuevaCuentaDatos(); // Ir a nueva cuenta datos
-            nuevaCuentaDatos.setVisible(true);
-            this.dispose(); // cerrar este menú
+            Navegacion.cambiarVentana(this, new NuevaCuentaDatos()); // Siguiente
             
         } 
         else { // CONTRASEÑA MAL REESCRITA
@@ -207,10 +206,7 @@ public class NuevaCuenta extends javax.swing.JFrame {
     }//GEN-LAST:event_jTextField3ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-        MainMenu mainMenu = new MainMenu();  // Volver a pestaña anterior
-        mainMenu.setVisible(true);
-        this.dispose(); // cerrar este menú
+        Navegacion.cambiarVentana(this, new MainMenu()); // Volver
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
