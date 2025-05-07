@@ -201,7 +201,7 @@ public class ModificarDatos extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
+        // COMENTADO DE MOMENTO Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
     }//GEN-LAST:event_jButton3ActionPerformed
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
@@ -211,7 +211,7 @@ public class ModificarDatos extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new PortalCliente()); // Guardar cambios
+        // COMENTADO DE MOMENTO Navegacion.cambiarVentana(this, new PortalCliente()); // Guardar cambios
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jFormattedTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextField1ActionPerformed
