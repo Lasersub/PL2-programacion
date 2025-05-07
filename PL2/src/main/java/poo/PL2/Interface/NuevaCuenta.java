@@ -193,6 +193,7 @@ public class NuevaCuenta extends javax.swing.JFrame {
             NuevaCuentaDatos nuevaCuentaDatos = new NuevaCuentaDatos(); // Ir a nueva cuenta datos
             nuevaCuentaDatos.setVisible(true);
             this.dispose(); // cerrar este menú
+            
         } 
         else { // CONTRASEÑA MAL REESCRITA
             jTextField2.setText("");    // Vacío la información introducida en la contraseña
