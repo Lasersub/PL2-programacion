@@ -2,7 +2,7 @@
 package poo.PL2.Clases;
 
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.YearMonth;
 
 
 public class TarjetaCredito implements Serializable {
@@ -10,9 +10,9 @@ public class TarjetaCredito implements Serializable {
     
     private String titular;
     private String digitos;  
-    private LocalDate fechaCaducidad;
+    private YearMonth fechaCaducidad;
 
-    public TarjetaCredito(String titular, String digitos, LocalDate fechaCaducidad) {
+    public TarjetaCredito(String titular, String digitos, YearMonth fechaCaducidad) {
         this.titular = titular;
         this.digitos = digitos;
         this.fechaCaducidad = fechaCaducidad;
@@ -20,11 +20,11 @@ public class TarjetaCredito implements Serializable {
     
     
     
-    public LocalDate getFechaCaducidad() {
+    public YearMonth getFechaCaducidad() {
         return fechaCaducidad;
     }
 
-    public void setFechaCaducidad(LocalDate fechaCaducidad) {
+    public void setFechaCaducidad(YearMonth fechaCaducidad) {
         this.fechaCaducidad = fechaCaducidad;
     }
 
