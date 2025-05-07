@@ -1,26 +1,54 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package poo.PL2.Interface;
 
+import java.io.IOException;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.RegistroTemporal;
 import poo.PL2.Clases.SesionErrorHandler;
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
+import poo.PL2.Clases.AuthService;
+import poo.PL2.Clases.Cliente;
 
 /**
  *
  * @author oscar
  */
 public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
-
+    
+        private final RegistroTemporal registroTemp;
+        
     /**
      * Creates new form NuevaCuentaTarjetaCredito
      */
-    public NuevaCuentaTarjetaCredito() {
+    public NuevaCuentaTarjetaCredito(RegistroTemporal registroTemp) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana 
+        this.registroTemp = registroTemp;
+        precargarDatos();
     }
-
+    
+    private void precargarDatos() {
+        if (registroTemp.getTarjetaCredito() != null) {
+            if (registroTemp.getTarjetaCredito().getTitular() != null) {
+                jTextField1.setText(registroTemp.getTarjetaCredito().getTitular());
+            }
+            if (registroTemp.getTarjetaCredito().getDigitos() != null) {
+                jFormattedTextField2.setText(registroTemp.getTarjetaCredito().getDigitos());
+            }
+            if (registroTemp.getTarjetaCredito().getFechaCaducidad() != null) {
+                jFormattedTextField1.setText(registroTemp.getTarjetaCredito()
+                    .getFechaCaducidad().format(DATE_FORMATTER));
+            }
+        }
+    }
+    
+    private static final DateTimeFormatter DATE_FORMATTER = 
+        DateTimeFormatter.ofPattern("MM/yy");
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -164,7 +192,7 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new NuevaCuentaDireccion()); // Volver
+        Navegacion.cambiarVentana(this, new NuevaCuentaDireccion(registroTemp)); // Volver
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
@@ -174,7 +202,47 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
         (jFormattedTextField1.getText().equals(""))) {
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO);
     } else {
-        Navegacion.cambiarVentana(this, new PortalCliente()); // Crear
+        
+        registroTemp.getTarjetaCredito().setTitular(jTextField1.getText());
+        registroTemp.getTarjetaCredito().setDigitos(jFormattedTextField2.getText());
+        
+        //Guardar la fecha de caducidad
+        try {
+            YearMonth fechaCaducidad = YearMonth.parse(
+            jFormattedTextField1.getText(),
+            DateTimeFormatter.ofPattern("MM/yy")
+            );
+            registroTemp.getTarjetaCredito().setFechaCaducidad(fechaCaducidad);
+        } catch (DateTimeParseException e) {
+            // Manejar error
+        }
+        
+        try {
+            // 1. Crear el cliente con todos los datos
+            Cliente nuevoCliente = registroTemp.crearCliente();
+
+            // 2. Registrar el cliente en el sistema
+            AuthService authService = new AuthService();
+            boolean registroExitoso = authService.registrarCliente(nuevoCliente);
+
+            if (registroExitoso) {
+                // 3. Mostrar éxito y abrir portal
+                JOptionPane.showMessageDialog(this, "¡Registro completado con éxito!");
+                PortalCliente portal = new PortalCliente(nuevoCliente);
+                portal.setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this, "Error al registrar el cliente", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (IOException e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar los datos: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            e.printStackTrace();
+        }
+        
+        
+ 
     }
         
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -183,40 +251,6 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextField2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(NuevaCuentaTarjetaCredito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(NuevaCuentaTarjetaCredito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(NuevaCuentaTarjetaCredito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(NuevaCuentaTarjetaCredito.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new NuevaCuentaTarjetaCredito().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
