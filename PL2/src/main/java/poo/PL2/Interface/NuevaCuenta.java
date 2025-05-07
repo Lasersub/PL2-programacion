@@ -5,20 +5,33 @@
 package poo.PL2.Interface;
 
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.RegistroTemporal;
 import poo.PL2.Clases.SesionErrorHandler;
-import poo.PL2.Interface.PortalCliente;
 import poo.PL2.Clases.SesionErrorHandler.ErrorTipo;
 
 
 public class NuevaCuenta extends javax.swing.JFrame {
-
+    
+    private RegistroTemporal registroTemp;
+    
     /**
      * Creates new form NuevaCuenta
      */
     public NuevaCuenta() {
+        this(new RegistroTemporal()); // Llama al constructor principal
+    }
+    
+    public NuevaCuenta(RegistroTemporal registroTemp) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana
+        this.registroTemp = registroTemp;
+        
+        // Si estamos volviendo atrás, podemos mostrar los datos existentes
+        if (registroTemp.getCorreo() != null) {
+            jTextField1.setText(registroTemp.getCorreo());
+        }
     }
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -166,41 +179,58 @@ public class NuevaCuenta extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        if (jTextField1.getText().equals("")) { // USUARIO VACÍO
-            jTextField1.setText(""); 
-            jTextField2.setText("");    // Vacío la información introducida
-            jTextField3.setText("");
+        String correo = jTextField1.getText().trim();
+        String contrasena = jTextField2.getText();
+        String confirmacion = jTextField3.getText();
+
+        // Validación del correo
+        if (correo.isEmpty()) {
+            limpiarCampos();
             SesionErrorHandler.mostrarError(ErrorTipo.USUARIO_VACIO);
+            return;
         } 
-        else if (jTextField1.getText().contains(" ")) { // USUARIO NO VÁLIDO
-            jTextField1.setText("");
-            jTextField2.setText("");    // Vacío la información introducida
-            jTextField3.setText("");
+        
+        if (correo.contains(" ")) {
+            limpiarCampos();
             SesionErrorHandler.mostrarError(ErrorTipo.USUARIO_NO_VALIDO);
-        } 
-        else if (jTextField2.getText().equals("")) { // CONTRASEÑA VACÍA
-            jTextField2.setText("");    // Vacío la información introducida
+            return;
+        }
+
+        // Validación de la contraseña
+        if (contrasena.isEmpty()) {
+            jTextField2.setText("");
             jTextField3.setText("");
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_VACIA);
+            return;
         }
-        else if (jTextField2.getText().contains(" ") // CONTRASEÑA NO VÁLIDA
-                || jTextField2.getText().length() < 4 
-                || jTextField2.getText().length() > 12)  { 
-            jTextField2.setText("");    // Vacío la información introducida
+        
+        if (contrasena.contains(" ") || contrasena.length() < 4 || contrasena.length() > 12) {
+            jTextField2.setText("");
             jTextField3.setText("");
-            SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_NO_VALIDA);  
+            SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_NO_VALIDA);
+            return;
         }
-        else if (jTextField2.getText().equals(jTextField3.getText())) { // TODO CORRECTO
-            Navegacion.cambiarVentana(this, new NuevaCuentaDatos()); // Siguiente
-            
-        } 
-        else { // CONTRASEÑA MAL REESCRITA
-            jTextField2.setText("");    // Vacío la información introducida en la contraseña
+        
+        if (!contrasena.equals(confirmacion)) {
+            jTextField2.setText("");
             jTextField3.setText("");
             SesionErrorHandler.mostrarError(ErrorTipo.CONTRASENA_MAL_REESCRITA);
-    }
-    }//GEN-LAST:event_jButton1ActionPerformed
+            return;
+        }
 
+        // Todo correcto, guardamos los datos y avanzamos
+        registroTemp.setCorreo(correo);
+        registroTemp.setContrasena(contrasena);
+        
+        Navegacion.cambiarVentana(this, new NuevaCuentaDatos(registroTemp));
+    }//GEN-LAST:event_jButton1ActionPerformed
+    
+    private void limpiarCampos() {
+        jTextField1.setText("");
+        jTextField2.setText("");
+        jTextField3.setText("");
+    }
+    
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
