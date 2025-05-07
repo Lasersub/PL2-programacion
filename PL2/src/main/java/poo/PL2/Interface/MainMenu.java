@@ -1,7 +1,8 @@
 
 package poo.PL2.Interface;
 
-import poo.PL2.Interface.NuevaCuenta;
+import poo.PL2.Clases.Navegacion;
+
 
 /**
  *
@@ -57,14 +58,11 @@ public class MainMenu extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(82, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap(83, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1)
                     .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(83, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -83,16 +81,12 @@ public class MainMenu extends javax.swing.JFrame {
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        InicioSesion iniciarSesion = new InicioSesion();
-        iniciarSesion.setVisible(true);
-        this.dispose(); // close current menu
+        Navegacion.cambiarVentana(this, new InicioSesion()); // Iniciar Sesión
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-        NuevaCuenta crearCuenta = new NuevaCuenta();
-        crearCuenta.setVisible(true);
-        this.dispose(); // close current menu
+       Navegacion.cambiarVentana(this, new NuevaCuenta()); // Crear Cuenta
     }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
