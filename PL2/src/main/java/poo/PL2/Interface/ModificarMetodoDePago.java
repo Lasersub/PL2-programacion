@@ -17,6 +17,7 @@ public class ModificarMetodoDePago extends javax.swing.JFrame {
      */
     public ModificarMetodoDePago() {
         initComponents();
+        this.setLocationRelativeTo(null); // Centra la ventana 
     }
 
     /**
