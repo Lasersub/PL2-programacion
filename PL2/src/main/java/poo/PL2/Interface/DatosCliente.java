@@ -221,19 +221,7 @@ public class DatosCliente extends javax.swing.JFrame {
         // Actualizar el cliente en la base de datos
         DataBase db = Sesion.getBaseDeDatos();
         db.addCliente(cliente); // Sobrescribe por clave (correo)
-        
- // Guardar en archivo
-    try {
-        DataBase.guardar(db, "basededatos.dat");
-        JOptionPane.showMessageDialog(this, "Datos actualizados y guardados correctamente.");
-        PortalCliente portalCliente = new PortalCliente(); // Ir a portal cliente
-        portalCliente.setVisible(true);
-        this.dispose(); // cerrar este menú
-    } catch (IOException e) {
-        JOptionPane.showMessageDialog(this, "Error al guardar los datos.", "Error", JOptionPane.ERROR_MESSAGE);
-        e.printStackTrace();
-    }
-        
+         
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
