@@ -8,8 +8,10 @@ public class SesionErrorHandler {
     // DECLARACIÓN DE LOS ERRORES
     public enum ErrorTipo {
         // Generales
+        CORREO_VACIO,
         USUARIO_VACIO,
         CONTRASENA_VACIA,
+        CORREO_NO_VALIDO,
         
         
         // Crear una cuenta
@@ -20,8 +22,7 @@ public class SesionErrorHandler {
         CAMPO_OBLIGATORIO_VACIO,
         
         // Iniciar sesión
-        USUARIO_NO_EXISTE,
-        CONTRASENA_INCORRECTA
+        CREDENCIALES_NO_VALIDAS;
     
     
     }
@@ -31,13 +32,16 @@ public class SesionErrorHandler {
     public static void mostrarError(ErrorTipo tipo) {
         switch(tipo) {
             // General
+            case CORREO_VACIO:
+                mostrarVentana("El campo de correo está vacío");
             case USUARIO_VACIO:
                 mostrarVentana("El campo de usuario está vacío.");
                 break;
             case CONTRASENA_VACIA:
                 mostrarVentana("El campo de contraseña está vacío.");
                 break;
-            
+            case CORREO_NO_VALIDO:
+                mostrarVentana("El correo no posee una estructura valida");
             // Crear una cuenta
             case USUARIO_EXISTENTE:
                 mostrarVentana("El usuario escrito ya existe.");
@@ -56,17 +60,14 @@ public class SesionErrorHandler {
                 break;
                 
             // Iniciar sesión
-            case USUARIO_NO_EXISTE:
-                mostrarVentana("El usuario no existe.");
-                break;
-            case CONTRASENA_INCORRECTA:
-                mostrarVentana("La contraseña es incorrecta.");
+            case CREDENCIALES_NO_VALIDAS:
+                mostrarVentana("Las credenciales no son validas.");
                 break;
         }
     }
 
     
-    private static void mostrarVentana(String mensaje) {
+    public static void mostrarVentana(String mensaje) {
         // VOID ENCARGADO DE CREAR LA VENTANA
         JFrame ventana = new JFrame("Error de Inicio de Sesión");
         JLabel label = new JLabel(mensaje, SwingConstants.CENTER);
