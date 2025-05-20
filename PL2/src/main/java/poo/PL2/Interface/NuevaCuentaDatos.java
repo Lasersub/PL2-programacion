@@ -19,6 +19,7 @@ public class NuevaCuentaDatos extends javax.swing.JFrame {
      */
     public NuevaCuentaDatos(RegistroTemporal registroTemp) {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.registroTemp = registroTemp;
         this.setLocationRelativeTo(null); // Centra la ventana 
 
