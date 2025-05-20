@@ -48,10 +48,12 @@ public class DataBase implements Serializable {
         this.clientes = clientes;
     }
 
-    public boolean existeCliente(String correo) {
-        return clientes.containsKey(correo);
+    public Cliente buscarClientePorCorreo(String correo) {
+        if (correo == null || correo.trim().isEmpty()) {
+            throw new IllegalArgumentException("El correo no puede estar vacío.");
+        }
+        return clientes.get(correo.toLowerCase()); // Ignora mayúsculas/minúsculas
     }
-
     
     public void addEvento(Evento evento) {
         eventos.add(evento);
