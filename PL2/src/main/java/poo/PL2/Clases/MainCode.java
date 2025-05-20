@@ -53,14 +53,25 @@ public class MainCode {
         
         System.out.println(dataBase.getCliente("matajudios@gmail.com").getNombre());
         System.out.println(dataBase.getCliente("genocida@gmail.com").getNombre());
+        System.out.println(dataBase.getCliente("nigger@gmail.com").getNombre());
         
         
-        //GUARDA LA BASE DE DATOS
-        try {
-            DataBase.guardar("C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
-            System.out.println("Base de datos guardada correctamente.");
-        } catch (IOException e) {
-            System.err.println("Error guardando la base de datos: " + e.getMessage());
-        }
-    }   
+         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            try {
+                DataBase.guardar("C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
+                System.out.println("Base de datos guardada al cerrar la aplicación.");
+            } catch (IOException ex) {
+                System.err.println("Error guardando la base de datos: " + ex.getMessage());
+            }
+        }));
+
+        // Iniciar la interfaz (sin WindowListener en MainMenu)
+        java.awt.EventQueue.invokeLater(() -> {
+            MainMenu mainMenu = new MainMenu();
+            mainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); // ¡Importante!
+            mainMenu.setVisible(true);
+        });
+    }
 }
+    
+
