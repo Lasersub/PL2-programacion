@@ -15,6 +15,7 @@ public class PortalCliente extends javax.swing.JFrame {
      */
     public PortalCliente(Cliente cliente) {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // Centra la ventana
         this.cliente = cliente;
     }
