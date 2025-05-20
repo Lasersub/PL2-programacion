@@ -21,24 +21,25 @@ public class AuthService {
             return false;  // Correo ya registrado
         }
 
-        // Validación adicional (ej: contraseña segura)
-        if (!ValidadorUtilidades.esContrasenaSegura(cliente.getContrasena())) {
-            throw new IllegalArgumentException("La contraseña debe tener 8+ caracteres, un número y una letra mayúscula");
-        }
-
         // Guardar cliente
         dataBase.getClientes().put(cliente.getCorreo(), cliente);
         return true;
     }
 
-    // Login: Busca cliente por correo y contraseña
-    public Cliente iniciarSesion(String correo, String contrasena) {
-        Cliente cliente = dataBase.getClientes().get(correo);  // O(1)
+    // Login: Busca usuario( tanto cliente como admin ) por correo y contraseña
+    public Usuario iniciarSesion(String correo, String contrasena) {
+        // 1. Verificar si es el admin
+        if (Administrador.esAdmin(correo, contrasena)) {
+            return new Administrador(); // Devuelve instancia de Administrador
+        }
+
+        // 2. Buscar cliente normal
+        Cliente cliente = dataBase.buscarClientePorCorreo(correo);
         if (cliente != null && cliente.getContrasena().equals(contrasena)) {
             return cliente;
         }
-        return null;
-    }
 
+        return null; // Credenciales inválidas
+    }
     
 }
