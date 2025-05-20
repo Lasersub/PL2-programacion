@@ -21,8 +21,6 @@ public class Usuario implements Serializable{
         this.correo = correo;
     }
 
-
-
     public String getContrasena() {
         return contrasena;
     }
