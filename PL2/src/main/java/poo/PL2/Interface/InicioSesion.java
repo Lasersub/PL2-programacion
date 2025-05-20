@@ -1,10 +1,13 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package poo.PL2.Interface;
 
+import poo.PL2.Clases.Administrador;
+import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.AuthService;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.SesionErrorHandler;
+import poo.PL2.Clases.Usuario;
+import poo.PL2.Clases.ValidadorUtilidades;
 import poo.PL2.Interface.MainMenu;
 import poo.PL2.Interface.PortalCliente;
 
@@ -140,43 +143,42 @@ public class InicioSesion extends javax.swing.JFrame {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
-       // COMENTADO DE MOMENTO  Navegacion.cambiarVentana(this, new PortalCliente()); // Acceder
+       String correo = jTextField1.getText();
+       String contrasena = jTextField2.getText();
+      
+       if (correo.isEmpty()) {
+        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CORREO_VACIO);
+        return;
+       }
+       
+       if (contrasena.isEmpty()){
+        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CONTRASENA_VACIA);
+        return;   
+       }
+       
+       if (!ValidadorUtilidades.esEmailValido(correo)){
+        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CORREO_NO_VALIDO);
+       }
+       
+       AuthService authService = new AuthService();  
+       Usuario usuario = authService.iniciarSesion(correo,contrasena);
+       
+       if (usuario == null){
+        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CREDENCIALES_NO_VALIDAS);
+        return;    
+       }
+       
+       /*
+       if (usuario instanceof Administrador) {
+        Navegacion.cambiarVentana(this, new PortalAdministrador()); // Ventana para admin
+       } else {
+        Navegacion.cambiarVentana(this, new PortalCliente((Cliente) usuario)); // Ventana para cliente
+       }
+        */
+       
+       Navegacion.cambiarVentana(this, new PortalCliente((Cliente) usuario)); // Ventana para cliente
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(InicioSesion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new InicioSesion().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
