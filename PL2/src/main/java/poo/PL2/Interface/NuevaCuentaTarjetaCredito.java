@@ -12,6 +12,7 @@ import java.time.format.DateTimeParseException;
 import javax.swing.JOptionPane;
 import poo.PL2.Clases.AuthService;
 import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.TarjetaCredito;
 
 /**
  *
@@ -26,6 +27,7 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
      */
     public NuevaCuentaTarjetaCredito(RegistroTemporal registroTemp) {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // Centra la ventana 
         this.registroTemp = registroTemp;
         precargarDatos();
@@ -102,7 +104,7 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
         });
 
         jButton1.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton1.setText("SIGUIENTE");
+        jButton1.setText("CREAR CUENTA");
         jButton1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton1ActionPerformed(evt);
@@ -202,21 +204,23 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
         (jFormattedTextField1.getText().equals(""))) {
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO);
     } else {
-        
-        registroTemp.getTarjetaCredito().setTitular(jTextField1.getText());
-        registroTemp.getTarjetaCredito().setDigitos(jFormattedTextField2.getText());
-        
+            
+        TarjetaCredito tarjetaCredito = new TarjetaCredito(jTextField1.getText(),
+                                            jFormattedTextField2.getText(),
+                                            null);
+            
         //Guardar la fecha de caducidad
         try {
             YearMonth fechaCaducidad = YearMonth.parse(
             jFormattedTextField1.getText(),
-            DateTimeFormatter.ofPattern("MM/yy")
-            );
-            registroTemp.getTarjetaCredito().setFechaCaducidad(fechaCaducidad);
+            DateTimeFormatter.ofPattern("MM/yy"));
+            tarjetaCredito.setFechaCaducidad(fechaCaducidad);
         } catch (DateTimeParseException e) {
-            // Manejar error
+            System.out.println("Se ha producido un error"); //hacer un pop up que no le deje
         }
-        
+            
+        registroTemp.setTarjetaCredito(tarjetaCredito);
+         
         try {
             // 1. Crear el cliente con todos los datos
             Cliente nuevoCliente = registroTemp.crearCliente();
