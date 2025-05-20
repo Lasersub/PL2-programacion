@@ -10,7 +10,7 @@ public class Cliente extends Usuario {
     private Direccion direccion;
     private TarjetaCredito tarjetaCredito;
     private boolean vip = false;
-
+    
     public Cliente(String nombre, String telefono, Direccion direccion, TarjetaCredito tarjetaCredito, boolean vip, String correo, String contrasena) {
         super(correo, contrasena);
         this.nombre = nombre;
