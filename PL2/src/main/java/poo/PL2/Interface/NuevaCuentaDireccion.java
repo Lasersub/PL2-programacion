@@ -1,7 +1,7 @@
 
 package poo.PL2.Interface;
 
-import java.util.Set;
+import poo.PL2.Clases.Direccion;
 import poo.PL2.Clases.Navegacion;
 import poo.PL2.Clases.RegistroTemporal;
 import poo.PL2.Clases.SesionErrorHandler;
@@ -13,12 +13,14 @@ import poo.PL2.Clases.SesionErrorHandler;
 public class NuevaCuentaDireccion extends javax.swing.JFrame {
     
     private final RegistroTemporal registroTemp;
-
+    
+    
     /**
      * Creates new form DatosClienteCorreo
      */
     public NuevaCuentaDireccion(RegistroTemporal registroTemp) {
         initComponents();
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // Centra la ventana 
         this.registroTemp = registroTemp;
         
@@ -28,7 +30,7 @@ public class NuevaCuentaDireccion extends javax.swing.JFrame {
             jFormattedTextField1.setText(registroTemp.getDireccion().getNumero());
             jTextField1.setText(registroTemp.getDireccion().getCiudad());
             jFormattedTextField2.setText(registroTemp.getDireccion().getCodigoPostal());
-    }
+        }
     }
 
     /**
@@ -215,12 +217,13 @@ public class NuevaCuentaDireccion extends javax.swing.JFrame {
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO);
         
     } else {
-        registroTemp.getDireccion().setCalle(jTextField2.getText());
-        registroTemp.getDireccion().setNumero(jFormattedTextField1.getText());
-        registroTemp.getDireccion().setCiudad(jTextField1.getText());
-        registroTemp.getDireccion().setCodigoPostal(jFormattedTextField2.getText());
-            
-            
+        Direccion direccion =  new Direccion(jTextField2.getText(),
+                                            jFormattedTextField1.getText(),
+                                            jTextField1.getText(),
+                                            jFormattedTextField2.getText());
+        
+        registroTemp.setDireccion(direccion);
+        
         Navegacion.cambiarVentana(this, new NuevaCuentaTarjetaCredito(registroTemp)); // Siguiente
     }
         
