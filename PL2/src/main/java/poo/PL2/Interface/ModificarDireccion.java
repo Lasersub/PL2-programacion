@@ -4,6 +4,7 @@
  */
 package poo.PL2.Interface;
 
+import javax.swing.JOptionPane;
 import poo.PL2.Clases.Navegacion;
 
 /**
@@ -198,6 +199,7 @@ public class ModificarDireccion extends javax.swing.JFrame {
 
     private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
         jTextFieldCalle.setEditable(false);
         jTextFieldCiudad.setEditable(false);
         jFormattedTextFieldNumero.setEditable(false);
