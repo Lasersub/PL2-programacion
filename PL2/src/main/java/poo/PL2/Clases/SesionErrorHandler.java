@@ -34,6 +34,7 @@ public class SesionErrorHandler {
             // General
             case CORREO_VACIO:
                 mostrarVentana("El campo de correo está vacío");
+                break;
             case USUARIO_VACIO:
                 mostrarVentana("El campo de usuario está vacío.");
                 break;
@@ -42,6 +43,8 @@ public class SesionErrorHandler {
                 break;
             case CORREO_NO_VALIDO:
                 mostrarVentana("El correo no posee una estructura valida");
+                break;
+            
             // Crear una cuenta
             case USUARIO_EXISTENTE:
                 mostrarVentana("El usuario escrito ya existe.");
