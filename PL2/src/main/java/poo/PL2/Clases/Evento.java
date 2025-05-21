@@ -1,40 +1,82 @@
 
 package poo.PL2.Clases;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.io.Serializable;
+import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 
 public class Evento implements Serializable {
     
     private String titulo;
     private String tipo;
-    private String direccion;
-    private LocalDate fecha;
-    private String ciudad;
-
-   
-
+    private ArrayList<LocalDateTime> fechas;
+    private Direccion direccion;
+    private double calificacion;
+    private double precio;
+    private String rutaPortada;
+    private ArrayList<Resena> resenas;
     
-    public Evento(String titulo, String tipo, String direccion, LocalDate fecha, double precioEntrada, String ciudad) {
+    // la ruta tiene que tener la estructura: "/poo/PL2/Clases/imagenes/nombreImagen.jpg" 
+    public Evento(String titulo, String tipo, ArrayList<LocalDateTime> fechas, Direccion direccion, double calificacion, 
+                        double precio, String rutaPortada, ArrayList<Resena> resenas) {
         this.titulo = titulo;
         this.tipo = tipo;
-        this.direccion = direccion;                 //FALTA IMAGEN Y CALIFICACIÓN
-        this.fecha = fecha;
-        this.precioEntrada = precioEntrada;
-        this.ciudad = ciudad;
+        this.fechas = fechas;
+        this.direccion = direccion;
+        this.calificacion = calificacion;
+        this.precio = precio;
+        this.rutaPortada = rutaPortada;
+        this.resenas = resenas;
+    }
+    
+    public Evento(String titulo, String tipo, ArrayList<LocalDateTime> fechas, Direccion direccion,
+                        double precio, String rutaPortada) {
+        this.titulo = titulo;
+        this.tipo = tipo;
+        this.fechas = fechas;
+        this.direccion = direccion;
+        this.calificacion = 0.0;
+        this.precio = precio;
+        this.rutaPortada = rutaPortada;
+        this.resenas = new ArrayList<Resena>();
     }
     
     
-    
-     public String getCiudad() {
-        return ciudad;
+    public ArrayList<Resena> getResenas() {
+        return resenas;
     }
 
-    public void setCiudad(String ciudad) {
-        this.ciudad = ciudad;
+    public void setResenas(ArrayList<Resena> resenas) {
+        this.resenas = resenas;
     }
-    
+   
+    public double getCalificacion() {
+        return calificacion;
+    }
+
+    public void setCalificacion(double calificacion) {
+        this.calificacion = calificacion;
+    }
+  
+    public double getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(double precio) {
+        this.precio = precio;
+    }
+
+
+    public Direccion getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(Direccion direccion) {
+        this.direccion = direccion;
+    }
+ 
     public String getTitulo() {
         return titulo;
     }
@@ -51,30 +93,18 @@ public class Evento implements Serializable {
         this.tipo = tipo;
     }
 
-    public String getDireccion() {
-        return direccion;
+    public ArrayList<LocalDateTime> getFechas() {
+        return fechas;
     }
 
-    public void setDireccion(String direccion) {
-        this.direccion = direccion;
+    public void setFechas(ArrayList<LocalDateTime> fechas) {
+        this.fechas = fechas;
     }
 
-    public LocalDate getFecha() {
-        return fecha;
+     public ImageIcon getPortada() {
+        if (rutaPortada == null || rutaPortada.isEmpty()) {
+            return null;
+        }
+        return new ImageIcon(rutaPortada); // Carga desde ruta del sistema de archivos
     }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-        private double precioEntrada;
-
-    public double getPrecioEntrada() {
-        return precioEntrada;
-    }
-
-    public void setPrecioEntrada(double precioEntrada) {
-        this.precioEntrada = precioEntrada;
-    }
-    
 }
