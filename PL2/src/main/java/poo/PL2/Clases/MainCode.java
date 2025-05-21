@@ -20,17 +20,12 @@ public class MainCode {
         } catch (IOException e) {
             // Si falla (primera ejecución o archivo no existe), crea una nueva
             System.out.println("Creando nueva base de datos...");
-            DataBase.getInstance();
         }
-        
-        
-        java.awt.EventQueue.invokeLater(() -> {
-        new MainMenu().setVisible(true);
-        });
-        
+             
         
         DataBase dataBase = DataBase.getInstance();
         
+        /*
         Evento evento1 = new Evento("Pachanga","Deportivo","Chopera",LocalDate.now().plusDays(3),3.5,"Guadalajara");
         Direccion direccion1 = new Direccion("Calle txapote","12","Guadalajara","19005");
         TarjetaCredito tarjeta1 = new TarjetaCredito("Hitler","1234 5678 1234 5678",YearMonth.of(2024, 10));
@@ -53,7 +48,8 @@ public class MainCode {
         
         System.out.println(dataBase.getCliente("matajudios@gmail.com").getNombre());
         System.out.println(dataBase.getCliente("genocida@gmail.com").getNombre());
-        System.out.println(dataBase.getCliente("nigger@gmail.com").getNombre());
+        */
+        
         
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
