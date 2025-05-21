@@ -55,8 +55,15 @@ public class DataBase implements Serializable {
         return clientes.get(correo.toLowerCase()); // Ignora mayúsculas/minúsculas
     }
     
-    public void addEvento(Evento evento) {
+    public void guardarEvento(Evento evento) {
+        if (existeEvento(evento.getTitulo())) {
+            throw new IllegalStateException("El evento ya existe");
+        }
         eventos.add(evento);
+    }
+
+    private boolean existeEvento(String titulo) {
+        return eventos.stream().anyMatch(e -> e.getTitulo().equalsIgnoreCase(titulo));
     }
 
     public ArrayList<Evento> getEventos() {
