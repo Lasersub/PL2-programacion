@@ -4,6 +4,7 @@ package poo.PL2.Interface;
 import javax.swing.*;
 import java.awt.event.*;
 import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.Navegacion;
 
 
 public class PortalCliente extends javax.swing.JFrame {
@@ -29,33 +30,48 @@ public class PortalCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
+        jButtonBuscarEvento = new javax.swing.JButton();
+        jButtonMisEventos = new javax.swing.JButton();
+        jButtonMisDatos = new javax.swing.JButton();
+        jLabel1 = new javax.swing.JLabel();
+        jButtonCerrarSesion = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("BUSCAR EVENTO");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonBuscarEvento.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonBuscarEvento.setText("BUSCAR EVENTO");
+        jButtonBuscarEvento.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonBuscarEventoActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton2.setText("MIS EVENTOS");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonMisEventos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonMisEventos.setText("MIS EVENTOS");
+        jButtonMisEventos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonMisEventosActionPerformed(evt);
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton3.setText("MIS DATOS");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonMisDatos.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonMisDatos.setText("MIS DATOS");
+        jButtonMisDatos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonMisDatosActionPerformed(evt);
+            }
+        });
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("MI PORTAL");
+
+        jButtonCerrarSesion.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jButtonCerrarSesion.setForeground(new java.awt.Color(153, 0, 51));
+        jButtonCerrarSesion.setText("CERRAR SESIÓN");
+        jButtonCerrarSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCerrarSesionActionPerformed(evt);
             }
         });
 
@@ -66,34 +82,38 @@ public class PortalCliente extends javax.swing.JFrame {
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(144, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jButtonBuscarEvento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonMisEventos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonMisDatos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButtonCerrarSesion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(145, Short.MAX_VALUE))
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(66, Short.MAX_VALUE)
-                .addComponent(jButton1)
-                .addGap(18, 75, Short.MAX_VALUE)
-                .addComponent(jButton2)
-                .addGap(18, 75, Short.MAX_VALUE)
-                .addComponent(jButton3)
-                .addContainerGap(68, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE)
+                .addComponent(jLabel1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addComponent(jButtonBuscarEvento)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(jButtonMisEventos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addComponent(jButtonMisDatos)
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(jButtonCerrarSesion)
+                .addContainerGap(28, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonBuscarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEventoActionPerformed
         // TODO add your handling code here:
-        BuscarEvento buscarEvento = new BuscarEvento();  // Ir a buscar evento
-        buscarEvento.setVisible(true);
-        this.dispose(); // cerrar este menú
-    }//GEN-LAST:event_jButton1ActionPerformed
+        Navegacion.cambiarVentana(this, new BuscarEvento()); // Buscar Evento
+    }//GEN-LAST:event_jButtonBuscarEventoActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonMisEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMisEventosActionPerformed
         // TODO add your handling code here:
         // Crear el popup menu
         JPopupMenu popupMenu = new JPopupMenu();
@@ -116,20 +136,26 @@ public class PortalCliente extends javax.swing.JFrame {
         popupMenu.add(itemAtendidos);
         
         // Mostrar el popup en la posición del botón
-        popupMenu.show(jButton2, 3, jButton2.getHeight());
-    }//GEN-LAST:event_jButton2ActionPerformed
+        popupMenu.show(jButtonMisEventos, 3, jButtonMisEventos.getHeight());
+    }//GEN-LAST:event_jButtonMisEventosActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButtonMisDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMisDatosActionPerformed
         // TODO add your handling code here:
-        ModificarDatos misDatos = new ModificarDatos(); // Ir a portal cliente
-        misDatos.setVisible(true);
-        this.dispose(); // cerrar este menú
-    }//GEN-LAST:event_jButton3ActionPerformed
+        Navegacion.cambiarVentana(this, new ModificarDatos()); // Mis Datos
+    }//GEN-LAST:event_jButtonMisDatosActionPerformed
+
+    private void jButtonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarSesionActionPerformed
+        // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Sesión cerrada con éxito");
+        Navegacion.cambiarVentana(this, new MainMenu()); // Cerrar Sesión
+    }//GEN-LAST:event_jButtonCerrarSesionActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButtonBuscarEvento;
+    private javax.swing.JButton jButtonCerrarSesion;
+    private javax.swing.JButton jButtonMisDatos;
+    private javax.swing.JButton jButtonMisEventos;
+    private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
