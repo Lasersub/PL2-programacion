@@ -4,6 +4,7 @@
  */
 package poo.PL2.Interface;
 
+import javax.swing.JOptionPane;
 import poo.PL2.Clases.Navegacion;
 
 /**
@@ -168,6 +169,7 @@ public class ModificarMetodoDePago extends javax.swing.JFrame {
 
     private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
         jTextFieldTitular.setEditable(false);
         jFormattedTextFieldDigitos.setEditable(false);
         jFormattedTextFieldFechaCaducidad.setEditable(false);
