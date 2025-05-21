@@ -59,7 +59,7 @@ public class Cliente extends Usuario {
     public void setVip(boolean vip) {
         this.vip = vip;
     }
-    
+    /*
     public ArrayList<Evento> filterEvent(String titulo, String tipo, String ciudad, int precioMin, int precioMax, ArrayList<Evento> eventos) {
         ArrayList<Evento> eventosFiltrados = new ArrayList<>();
 
@@ -88,7 +88,7 @@ public class Cliente extends Usuario {
         return eventosFiltrados;
 }
       
-    
+    */
     
     
     /* CODIGO INNECESARIO BASURA, SE PUEDE RECICLAR PARA HACER FUNCIONES DE ORDENAMIENTO POR PARAMTEROS, ASI COMO COSA EXTRA
