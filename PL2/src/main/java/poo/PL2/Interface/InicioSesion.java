@@ -148,32 +148,32 @@ public class InicioSesion extends javax.swing.JFrame {
       
        if (correo.isEmpty()) {
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CORREO_VACIO);
-        return;
        }
        
-       if (contrasena.isEmpty()){
-        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CONTRASENA_VACIA);
-        return;   
+       else if (contrasena.isEmpty()){
+        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CONTRASENA_VACIA);  
        }
        
-       if (!ValidadorUtilidades.esEmailValido(correo)){
+       else if (!ValidadorUtilidades.esEmailValido(correo)){
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CORREO_NO_VALIDO);
        }
        
-       AuthService authService = new AuthService();  
-       Usuario usuario = authService.iniciarSesion(correo,contrasena);
-       
-       if (usuario == null){
-        SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CREDENCIALES_NO_VALIDAS);
-        return;    
-       }
-       
-       if (usuario instanceof Administrador) {
-        Navegacion.cambiarVentana(this, new PortalAdministrador()); // Ventana para admin
-       } else {
-        Navegacion.cambiarVentana(this, new PortalCliente((Cliente) usuario)); // Ventana para cliente
-       }
+       else {
+        AuthService authService = new AuthService();  
+        Usuario usuario = authService.iniciarSesion(correo,contrasena);
 
+        if (usuario == null){
+         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CREDENCIALES_NO_VALIDAS);
+         return;    
+        }
+
+        if (usuario instanceof Administrador) {
+         Navegacion.cambiarVentana(this, new PortalAdministrador()); // Ventana para admin
+        } else {
+         Navegacion.cambiarVentana(this, new PortalCliente((Cliente) usuario)); // Ventana para cliente
+        }
+       
+     }
     }//GEN-LAST:event_jButtonAccederActionPerformed
 
 
