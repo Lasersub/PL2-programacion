@@ -1,6 +1,7 @@
 
 package poo.PL2.Interface;
 
+import javax.swing.JOptionPane;
 import poo.PL2.Clases.Navegacion;
 
 public class ModificarDatos extends javax.swing.JFrame {
@@ -26,12 +27,12 @@ public class ModificarDatos extends javax.swing.JFrame {
         jTextFieldCorreo = new javax.swing.JTextField();
         jCheckBoxVip = new javax.swing.JCheckBox();
         jTextFieldContrasena = new javax.swing.JTextField();
-        jButton3 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
+        jButtonVolver = new javax.swing.JButton();
+        jButtonGuardarCambios = new javax.swing.JButton();
         jFormatedTextFieldTelefono = new javax.swing.JFormattedTextField();
-        jButton1 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jButtonDireccion = new javax.swing.JButton();
+        jButtonMetodoPago = new javax.swing.JButton();
+        jButtonModificar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -77,19 +78,19 @@ public class ModificarDatos extends javax.swing.JFrame {
             }
         });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton3.setText("VOLVER");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
+        jButtonVolver.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonVolver.setText("VOLVER");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
+                jButtonVolverActionPerformed(evt);
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton2.setText("GUARDAR CAMBIOS");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        jButtonGuardarCambios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonGuardarCambios.setText("GUARDAR CAMBIOS");
+        jButtonGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                jButtonGuardarCambiosActionPerformed(evt);
             }
         });
 
@@ -100,27 +101,27 @@ public class ModificarDatos extends javax.swing.JFrame {
             }
         });
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton1.setText("DIRECCIÓN");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        jButtonDireccion.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonDireccion.setText("DIRECCIÓN");
+        jButtonDireccion.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                jButtonDireccionActionPerformed(evt);
             }
         });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
-        jButton4.setText("MÉTODO DE PAGO");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
+        jButtonMetodoPago.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jButtonMetodoPago.setText("MÉTODO DE PAGO");
+        jButtonMetodoPago.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
+                jButtonMetodoPagoActionPerformed(evt);
             }
         });
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jButton5.setText("MODIFICAR");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
+        jButtonModificar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonModificar.setText("MODIFICAR");
+        jButtonModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
+                jButtonModificarActionPerformed(evt);
             }
         });
 
@@ -132,9 +133,9 @@ public class ModificarDatos extends javax.swing.JFrame {
                 .addContainerGap(37, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
+                        .addComponent(jButtonDireccion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 198, Short.MAX_VALUE)
-                        .addComponent(jButton4))
+                        .addComponent(jButtonMetodoPago))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -142,7 +143,7 @@ public class ModificarDatos extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 81, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jButton3))
+                            .addComponent(jButtonVolver))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
@@ -154,9 +155,9 @@ public class ModificarDatos extends javax.swing.JFrame {
                                     .addComponent(jFormatedTextFieldTelefono))
                                 .addGap(26, 26, 26))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButton5)
+                                .addComponent(jButtonModificar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 40, Short.MAX_VALUE)
-                                .addComponent(jButton2)))))
+                                .addComponent(jButtonGuardarCambios)))))
                 .addContainerGap(35, Short.MAX_VALUE))
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
@@ -167,8 +168,8 @@ public class ModificarDatos extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton4))
+                    .addComponent(jButtonDireccion)
+                    .addComponent(jButtonMetodoPago))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -191,9 +192,9 @@ public class ModificarDatos extends javax.swing.JFrame {
                     .addComponent(jTextFieldContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton3)
-                    .addComponent(jButton2)
-                    .addComponent(jButton5))
+                    .addComponent(jButtonVolver)
+                    .addComponent(jButtonGuardarCambios)
+                    .addComponent(jButtonModificar))
                 .addContainerGap(38, Short.MAX_VALUE))
         );
 
@@ -215,44 +216,45 @@ public class ModificarDatos extends javax.swing.JFrame {
         
     }//GEN-LAST:event_jTextFieldContrasenaActionPerformed
 
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
         // COMENTADO DE MOMENTO Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
-    }//GEN-LAST:event_jButton3ActionPerformed
+    }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
         // TODO add your handling code here:
 
     }//GEN-LAST:event_jTextFieldNombreActionPerformed
 
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+    private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
+        JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
         jTextFieldNombre.setEditable(false);
         jFormatedTextFieldTelefono.setEditable(false);
         jTextFieldContrasena.setEditable(false);
         // COMENTADO DE MOMENTO Navegacion.cambiarVentana(this, new PortalCliente()); // Guardar cambios
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_jButtonGuardarCambiosActionPerformed
 
     private void jFormatedTextFieldTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormatedTextFieldTelefonoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormatedTextFieldTelefonoActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void jButtonDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDireccionActionPerformed
         // TODO add your handling code here:
         Navegacion.cambiarVentana(this, new ModificarDireccion()); // Correo
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_jButtonDireccionActionPerformed
 
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
+    private void jButtonMetodoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMetodoPagoActionPerformed
         // TODO add your handling code here:
         Navegacion.cambiarVentana(this, new ModificarMetodoDePago()); // Método de pago
-    }//GEN-LAST:event_jButton4ActionPerformed
+    }//GEN-LAST:event_jButtonMetodoPagoActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+    private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         // TODO add your handling code here:
         jTextFieldNombre.setEditable(true);
         jFormatedTextFieldTelefono.setEditable(true);
         jTextFieldContrasena.setEditable(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    }//GEN-LAST:event_jButtonModificarActionPerformed
 
 
     public static void main(String args[]) {
@@ -289,11 +291,11 @@ public class ModificarDatos extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JButton jButtonDireccion;
+    private javax.swing.JButton jButtonGuardarCambios;
+    private javax.swing.JButton jButtonMetodoPago;
+    private javax.swing.JButton jButtonModificar;
+    private javax.swing.JButton jButtonVolver;
     private javax.swing.JCheckBox jCheckBoxVip;
     private javax.swing.JFormattedTextField jFormatedTextFieldTelefono;
     private javax.swing.JLabel jLabel1;
