@@ -5,6 +5,7 @@
 package poo.PL2.Interface;
 
 import javax.swing.JOptionPane;
+import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.Navegacion;
 
 /**
@@ -13,12 +14,12 @@ import poo.PL2.Clases.Navegacion;
  */
 public class ModificarMetodoDePago extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ModificarMetodoPago
-     */
-    public ModificarMetodoDePago() {
+    private final Cliente cliente;
+    
+    public ModificarMetodoDePago(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana 
+        this.cliente = cliente;
     }
 
     /**
@@ -196,44 +197,10 @@ public class ModificarMetodoDePago extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ModificarDatos()); // Volver
+        Navegacion.cambiarVentana(this, new ModificarDatos(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModificarMetodoDePago().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonGuardarCambios;
