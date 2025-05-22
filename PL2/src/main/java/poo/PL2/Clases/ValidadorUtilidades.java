@@ -1,6 +1,11 @@
 
 package poo.PL2.Clases;
 
+import java.time.YearMonth;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import javax.swing.JOptionPane;
+
 
 public class ValidadorUtilidades {
     
@@ -27,6 +32,25 @@ public class ValidadorUtilidades {
     }
     
     public static boolean esNumeroConLetra(String numero) {
-        return numero != null && numero.matches("^\\d+[A-Za-z]$");
+        return numero != null && numero.matches("^(\\d{1,3}|\\d{1,2}[A-Za-z])$");
+    }
+    
+    public static YearMonth parseFechaCaducidad(String fechaStr) {
+        try {
+            return YearMonth.parse(fechaStr, DateTimeFormatter.ofPattern("MM/yy"));
+        } catch (DateTimeParseException e) {
+            System.out.println("No se ha podido realizar la conversion efectivamente");
+            return null;
+        }
+    }
+    
+    /**
+     * Convierte YearMonth a String en formato MM/yy
+     * @param fecha YearMonth a formatear
+     * @return String en formato "MM/yy" o null si la fecha es null
+     */
+    public static String formatFechaCaducidad(YearMonth fecha) {
+        if (fecha == null) return null;
+        return fecha.format(DateTimeFormatter.ofPattern("MM/yy"));
     }
 }
