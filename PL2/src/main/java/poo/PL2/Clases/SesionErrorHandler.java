@@ -18,8 +18,13 @@ public class SesionErrorHandler {
         USUARIO_EXISTENTE,
         USUARIO_NO_VALIDO,
         CONTRASENA_NO_VALIDA,
+        CONTRASENA_NO_SEGURA,
         CONTRASENA_MAL_REESCRITA,
         CAMPO_OBLIGATORIO_VACIO,
+        TELEFONO_NO_VALIDO,
+        TELEFONO_VACIO,
+        CODIGO_POSTAL_NO_VALIDO,
+        NUMERO_NO_VALIDO,
         
         // Iniciar sesión
         CREDENCIALES_NO_VALIDAS;
@@ -61,6 +66,19 @@ public class SesionErrorHandler {
             case CAMPO_OBLIGATORIO_VACIO:
                 mostrarVentana("Campo obligatorio vacío");
                 break;
+            case TELEFONO_NO_VALIDO:
+                mostrarVentana("El telefono introducido no es válido");
+                break;
+            case TELEFONO_VACIO:
+                mostrarVentana("El campo telefono está vacío");
+                break;
+            case CONTRASENA_NO_SEGURA:
+                mostrarVentana("La contraseña introducida no es segura");
+                break;
+            case CODIGO_POSTAL_NO_VALIDO:
+                mostrarVentana("El código postal introducido no es válido");
+            case NUMERO_NO_VALIDO:
+                mostrarVentana("El campo numero introducido no es válido");
                 
             // Iniciar sesión
             case CREDENCIALES_NO_VALIDAS:
