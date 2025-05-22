@@ -155,8 +155,6 @@ public class NuevaCuenta extends javax.swing.JFrame {
         jTextFieldCorreo.setToolTipText("Correo ejemplo: javaevents@gmail.com"); 
         jPasswordFieldContrasena.setToolTipText("Entre 8 y 12 caracteres, al menos una mayúscula y un número"); 
         
-        UIManager.put("ToolTip.background", new Color(240, 240, 240));  // Fondo gris claro
-        UIManager.put("ToolTip.foreground", Color.BLUE);  // Texto azul
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
     }
     
