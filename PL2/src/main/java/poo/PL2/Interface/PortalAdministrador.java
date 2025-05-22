@@ -134,7 +134,7 @@ public class PortalAdministrador extends javax.swing.JFrame {
         
         // Añadir acciones a las opciones
         itemReservados.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Mostrando creación de eventos ...");
+            Navegacion.cambiarVentana(this, new CrearEvento()); // Crear Evento
         });
 
         itemAtendidos.addActionListener(e -> {
