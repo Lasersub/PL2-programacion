@@ -36,11 +36,11 @@ public class InicioSesion extends javax.swing.JFrame {
 
         jLabel1 = new javax.swing.JLabel();
         jTextFieldCorreo = new javax.swing.JTextField();
-        jTextFieldContrasena = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
         jButtonVolver = new javax.swing.JButton();
         jButtonAcceder = new javax.swing.JButton();
+        jPasswordFieldContrasena = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -52,12 +52,6 @@ public class InicioSesion extends javax.swing.JFrame {
         jTextFieldCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCorreoActionPerformed(evt);
-            }
-        });
-
-        jTextFieldContrasena.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldContrasenaActionPerformed(evt);
             }
         });
 
@@ -94,15 +88,15 @@ public class InicioSesion extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(86, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jTextFieldContrasena, javax.swing.GroupLayout.DEFAULT_SIZE, 294, Short.MAX_VALUE)
                     .addComponent(jTextFieldCorreo)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel2, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jButtonVolver)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonAcceder)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 85, Short.MAX_VALUE)
+                        .addComponent(jButtonAcceder))
+                    .addComponent(jPasswordFieldContrasena))
                 .addContainerGap(85, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -116,8 +110,8 @@ public class InicioSesion extends javax.swing.JFrame {
                 .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
-                .addComponent(jTextFieldContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jPasswordFieldContrasena, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 33, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonVolver)
@@ -132,10 +126,6 @@ public class InicioSesion extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCorreoActionPerformed
 
-    private void jTextFieldContrasenaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldContrasenaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldContrasenaActionPerformed
-
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
         Navegacion.cambiarVentana(this, new MainMenu()); // Volver
@@ -144,7 +134,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private void jButtonAccederActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAccederActionPerformed
         // TODO add your handling code here:
        String correo = jTextFieldCorreo.getText();
-       String contrasena = jTextFieldContrasena.getText();
+       String contrasena = jPasswordFieldContrasena.getText();
       
        if (correo.isEmpty()) {
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CORREO_VACIO);
@@ -162,7 +152,7 @@ public class InicioSesion extends javax.swing.JFrame {
         AuthService authService = new AuthService();  
         Usuario usuario = authService.iniciarSesion(correo,contrasena);
 
-        if (usuario == null){
+         if (usuario == null){
          SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CREDENCIALES_NO_VALIDAS);
          return;    
         }
@@ -183,7 +173,7 @@ public class InicioSesion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
-    private javax.swing.JTextField jTextFieldContrasena;
+    private javax.swing.JPasswordField jPasswordFieldContrasena;
     private javax.swing.JTextField jTextFieldCorreo;
     // End of variables declaration//GEN-END:variables
 }
