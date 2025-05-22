@@ -25,6 +25,8 @@ public class SesionErrorHandler {
         TELEFONO_VACIO,
         CODIGO_POSTAL_NO_VALIDO,
         NUMERO_NO_VALIDO,
+        DIGITOS_NO_VALIDOS,
+        FECHA_CADUCIDAD_NO_VALIDA,
         
         // Iniciar sesión
         CREDENCIALES_NO_VALIDAS;
@@ -81,7 +83,11 @@ public class SesionErrorHandler {
             case NUMERO_NO_VALIDO:
                 mostrarVentana("El campo numero introducido no es válido");
                 break;
-                
+            case DIGITOS_NO_VALIDOS:
+                mostrarVentana("Los digitos introducidos no son válidos");
+                break; 
+            case FECHA_CADUCIDAD_NO_VALIDA:
+                mostrarVentana("La fecha de caducidad introducida no es válida");
             // Iniciar sesión
             case CREDENCIALES_NO_VALIDAS:
                 mostrarVentana("Las credenciales no son validas.");
