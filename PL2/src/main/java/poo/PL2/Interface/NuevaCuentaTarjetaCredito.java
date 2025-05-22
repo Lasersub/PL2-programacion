@@ -6,7 +6,6 @@ import java.io.IOException;
 import poo.PL2.Clases.Navegacion;
 import poo.PL2.Clases.RegistroTemporal;
 import poo.PL2.Clases.SesionErrorHandler;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -15,6 +14,7 @@ import javax.swing.UIManager;
 import poo.PL2.Clases.AuthService;
 import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.TarjetaCredito;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 /**
  *
@@ -219,15 +219,8 @@ public class NuevaCuentaTarjetaCredito extends javax.swing.JFrame {
                                             null);
             
         //Guardar la fecha de caducidad
-        try {
-            YearMonth fechaCaducidad = YearMonth.parse(
-            jFormattedTextFieldFechaCaducidad.getText(),
-            DateTimeFormatter.ofPattern("MM/yy"));
-            tarjetaCredito.setFechaCaducidad(fechaCaducidad);
-        } catch (DateTimeParseException e) {
-            System.out.println("Se ha producido un error"); //hacer un pop up que no le deje
-        }
-            
+        tarjetaCredito.setFechaCaducidad(ValidadorUtilidades.parseFechaCaducidad(jFormattedTextFieldFechaCaducidad.getText()));
+        
         registroTemp.setTarjetaCredito(tarjetaCredito);
          
         try {
