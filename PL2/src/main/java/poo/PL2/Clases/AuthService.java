@@ -42,4 +42,17 @@ public class AuthService {
         return null; // Credenciales inválidas
     }
     
+    public void actualizarCliente(String correoOriginal, Cliente nuevosDatos) {
+        // Validación crítica 1: El cliente debe existir
+        if (!dataBase.existeCliente(correoOriginal)) {
+            throw new IllegalStateException("[ERROR] Cliente no registrado. Posible ataque o bug.");
+        }
+
+        // Validación crítica 2: El correo no fue modificado (inmutable)
+        if (!correoOriginal.equals(nuevosDatos.getCorreo())) {
+            throw new SecurityException("[ERROR] Intento ilegal de cambiar correo.");
+        }
+
+        dataBase.actualizarCliente(nuevosDatos);
+    }
 }
