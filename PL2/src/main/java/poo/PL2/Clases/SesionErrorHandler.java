@@ -77,8 +77,10 @@ public class SesionErrorHandler {
                 break;
             case CODIGO_POSTAL_NO_VALIDO:
                 mostrarVentana("El código postal introducido no es válido");
+                break;
             case NUMERO_NO_VALIDO:
                 mostrarVentana("El campo numero introducido no es válido");
+                break;
                 
             // Iniciar sesión
             case CREDENCIALES_NO_VALIDAS:
