@@ -5,20 +5,37 @@
 package poo.PL2.Interface;
 
 import javax.swing.JOptionPane;
+import poo.PL2.Clases.AuthService;
+import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.Direccion;
 import poo.PL2.Clases.Navegacion;
-
+import poo.PL2.Clases.SesionErrorHandler;
+import poo.PL2.Clases.ValidadorUtilidades;
 /**
  *
  * @author oscar
  */
 public class ModificarDireccion extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ModificarCorreo
-     */
-    public ModificarDireccion() {
+    private final Cliente cliente;
+    
+    public ModificarDireccion(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.cliente = cliente;
+        cargarDatosCliente();
+        bloquearCampos();    
+    }
+    
+    private void cargarDatosCliente() {
+        
+        Direccion direccion = cliente.getDireccion();
+        
+        jTextFieldCalle.setText(direccion.getCalle());
+        jFormattedTextFieldNumero.setValue(direccion.getNumero());
+        jTextFieldCiudad.setText(direccion.getCiudad());
+        jFormattedTextFieldCodigoPostal.setText(direccion.getCodigoPostal());
     }
 
     /**
@@ -199,19 +216,44 @@ public class ModificarDireccion extends javax.swing.JFrame {
 
     private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
-        jTextFieldCalle.setEditable(false);
-        jTextFieldCiudad.setEditable(false);
-        jFormattedTextFieldNumero.setEditable(false);
-        jFormattedTextFieldCodigoPostal.setEditable(false);
+        String calleNueva = jTextFieldCalle.getText();
+        String numeroNuevo = jFormattedTextFieldNumero.getText();
+        String ciudadNueva = jTextFieldCiudad.getText();
+        String codigoPostalNuevo = jFormattedTextFieldCodigoPostal.getText();
+        
+        if (calleNueva.isBlank() || numeroNuevo.isBlank() || ciudadNueva.isBlank() || codigoPostalNuevo.isBlank()){
+           SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO); 
+           return;
+        }
+        if (!ValidadorUtilidades.esCodigoPostalValido(codigoPostalNuevo)){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CODIGO_POSTAL_NO_VALIDO);
+            return;
+        }
+        if (!ValidadorUtilidades.esNumeroConLetra(numeroNuevo)){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.NUMERO_NO_VALIDO);
+            return;
+        }
+        try {
+            AuthService authService = new AuthService();
+            Direccion direccionNueva = new Direccion(calleNueva, numeroNuevo, ciudadNueva, codigoPostalNuevo);
+            
+            Cliente clienteNuevo = new Cliente(cliente.getNombre(), cliente.getTelefono(), direccionNueva, cliente.getTarjetaCredito(),
+                                            cliente.isVip(), cliente.getCorreo(), cliente.getContrasena());
+            
+            authService.actualizarCliente(cliente.getCorreo(), clienteNuevo);
+            
+            this.cliente.setDireccion(direccionNueva);
+            
+            JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
+            bloquearCampos();
+            } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonGuardarCambiosActionPerformed
 
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         // TODO add your handling code here:
-        jTextFieldCalle.setEditable(true);
-        jTextFieldCiudad.setEditable(true);
-        jFormattedTextFieldNumero.setEditable(true);
-        jFormattedTextFieldCodigoPostal.setEditable(true);
+        habilitarCampos();
     }//GEN-LAST:event_jButtonModificarActionPerformed
 
     private void jFormattedTextFieldCodigoPostalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCodigoPostalActionPerformed
@@ -220,43 +262,21 @@ public class ModificarDireccion extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ModificarDatos()); // Volver
+        Navegacion.cambiarVentana(this, new ModificarDatos(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarDireccion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarDireccion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarDireccion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarDireccion.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModificarDireccion().setVisible(true);
-            }
-        });
+    private void bloquearCampos(){
+        jTextFieldCalle.setEditable(false);
+        jFormattedTextFieldNumero.setEditable(false);
+        jTextFieldCiudad.setEditable(false);
+        jFormattedTextFieldCodigoPostal.setEditable(false);
+    }
+    
+    private void habilitarCampos(){
+        jTextFieldCalle.setEditable(true);
+        jFormattedTextFieldNumero.setEditable(true);
+        jTextFieldCiudad.setEditable(true); 
+        jFormattedTextFieldCodigoPostal.setEditable(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
