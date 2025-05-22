@@ -17,4 +17,16 @@ public class ValidadorUtilidades {
         return texto != null && !texto.trim().isEmpty();
     }
     
+    /**
+     * Valida que un código postal español tenga exactamente 5 dígitos.
+     * @param codigoPostal String a validar
+     * @return true si es válido, false si no cumple el formato
+     */
+    public static boolean esCodigoPostalValido(String codigoPostal) {
+        return codigoPostal != null && codigoPostal.matches("^\\d{5}$");
+    }
+    
+    public static boolean esNumeroConLetra(String numero) {
+        return numero != null && numero.matches("^\\d+[A-Za-z]$");
+    }
 }
