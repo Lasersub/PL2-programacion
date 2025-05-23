@@ -138,7 +138,7 @@ public class PortalAdministrador extends javax.swing.JFrame {
         });
 
         itemAtendidos.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Mostrando modificación de eventos ...");
+            Navegacion.cambiarVentana(this, new ModificarEvento()); // Modificar Evento
         });
         
         // Agregar ítems al menú
