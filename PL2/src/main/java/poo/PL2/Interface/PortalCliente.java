@@ -141,7 +141,7 @@ public class PortalCliente extends javax.swing.JFrame {
 
     private void jButtonMisDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMisDatosActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ModificarDatos()); // Mis Datos
+        Navegacion.cambiarVentana(this, new ModificarDatos(cliente)); // Mis Datos
     }//GEN-LAST:event_jButtonMisDatosActionPerformed
 
     private void jButtonCerrarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCerrarSesionActionPerformed

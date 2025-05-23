@@ -4,8 +4,15 @@
  */
 package poo.PL2.Interface;
 
+import java.time.YearMonth;
 import javax.swing.JOptionPane;
+import poo.PL2.Clases.AuthService;
+import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.SesionErrorHandler;
+import poo.PL2.Clases.TarjetaCredito;
+import poo.PL2.Clases.UsuarioValidador;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 /**
  *
@@ -13,12 +20,24 @@ import poo.PL2.Clases.Navegacion;
  */
 public class ModificarMetodoDePago extends javax.swing.JFrame {
 
-    /**
-     * Creates new form ModificarMetodoPago
-     */
-    public ModificarMetodoDePago() {
+    private final Cliente cliente;
+    
+    public ModificarMetodoDePago(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.cliente = cliente;
+        cargarDatosCliente();
+        bloquearCampos();  
+    }
+    
+    private void cargarDatosCliente() {
+        
+        TarjetaCredito tarjetaCredito = cliente.getTarjetaCredito();
+        
+        jTextFieldTitular.setText(tarjetaCredito.getTitular());
+        jFormattedTextFieldDigitos.setText(tarjetaCredito.getDigitos());
+        jFormattedTextFieldFechaCaducidad.setText(ValidadorUtilidades.formatFechaCaducidad(tarjetaCredito.getFechaCaducidad()));     
     }
 
     /**
@@ -169,17 +188,45 @@ public class ModificarMetodoDePago extends javax.swing.JFrame {
 
     private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
-        jTextFieldTitular.setEditable(false);
-        jFormattedTextFieldDigitos.setEditable(false);
-        jFormattedTextFieldFechaCaducidad.setEditable(false);
+        String titularNuevo = jTextFieldTitular.getText();
+        String digitosNuevos = jFormattedTextFieldDigitos.getText();
+        String fechaCaducidadNueva = jFormattedTextFieldFechaCaducidad.getText();
+        
+        if (titularNuevo.isBlank() || digitosNuevos.isBlank() || fechaCaducidadNueva.isBlank()){
+           SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO); 
+           return;
+        }
+        if (!UsuarioValidador.EsTarjetaValida(digitosNuevos)){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.DIGITOS_NO_VALIDOS);
+            return;
+        }
+        if (!UsuarioValidador.EsFechaCaducidadValida(fechaCaducidadNueva)){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.FECHA_CADUCIDAD_NO_VALIDA);
+        }
+        try {
+            
+            YearMonth fechaCaducidadNuevaF = ValidadorUtilidades.parseFechaCaducidad(fechaCaducidadNueva);
+            
+            AuthService authService = new AuthService();
+            TarjetaCredito tarjetaCreditoNueva = new TarjetaCredito(titularNuevo, digitosNuevos, fechaCaducidadNuevaF);
+            
+            Cliente clienteNuevo = new Cliente(cliente.getNombre(), cliente.getTelefono(), cliente.getDireccion(), tarjetaCreditoNueva,
+                                            cliente.isVip(), cliente.getCorreo(), cliente.getContrasena());
+            
+            authService.actualizarCliente(cliente.getCorreo(), clienteNuevo);
+            
+            this.cliente.setTarjetaCredito(tarjetaCreditoNueva);
+            
+            JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
+            bloquearCampos();
+            } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonGuardarCambiosActionPerformed
 
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         // TODO add your handling code here:
-        jTextFieldTitular.setEditable(true);
-        jFormattedTextFieldDigitos.setEditable(true);
-        jFormattedTextFieldFechaCaducidad.setEditable(true);
+        habilitarCampos();
     }//GEN-LAST:event_jButtonModificarActionPerformed
 
     private void jTextFieldTitularActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTitularActionPerformed
@@ -196,43 +243,19 @@ public class ModificarMetodoDePago extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ModificarDatos()); // Volver
+        Navegacion.cambiarVentana(this, new ModificarDatos(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ModificarMetodoDePago.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ModificarMetodoDePago().setVisible(true);
-            }
-        });
+    private void bloquearCampos(){
+        jTextFieldTitular.setEditable(false);
+        jFormattedTextFieldDigitos.setEditable(false);
+        jFormattedTextFieldFechaCaducidad.setEditable(false);
+    }
+    
+    private void habilitarCampos(){
+        jTextFieldTitular.setEditable(true);
+        jFormattedTextFieldDigitos.setEditable(true);
+        jFormattedTextFieldFechaCaducidad.setEditable(true);
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

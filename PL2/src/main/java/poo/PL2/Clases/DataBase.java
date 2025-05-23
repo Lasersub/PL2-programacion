@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 
 public class DataBase implements Serializable {
@@ -47,12 +48,24 @@ public class DataBase implements Serializable {
     public void setClientes(Map<String, Cliente> clientes) {
         this.clientes = clientes;
     }
-
+    
     public Cliente buscarClientePorCorreo(String correo) {
         if (correo == null || correo.trim().isEmpty()) {
             throw new IllegalArgumentException("El correo no puede estar vacío.");
         }
         return clientes.get(correo.toLowerCase()); // Ignora mayúsculas/minúsculas
+    }
+    
+    public void actualizarCliente(Cliente clienteActualizado) {
+        String correo = clienteActualizado.getCorreo();
+        if (!clientes.containsKey(correo)) {
+            throw new IllegalArgumentException("Cliente no encontrado con correo: " + correo);
+        }
+        clientes.replace(correo, clienteActualizado); // Reemplaza el objeto completo
+    }
+    
+    public boolean existeCliente(String correo) {
+        return clientes.containsKey(correo);
     }
     
     public void guardarEvento(Evento evento) {
@@ -61,7 +74,7 @@ public class DataBase implements Serializable {
         }
         eventos.add(evento);
     }
-
+    
     private boolean existeEvento(String titulo) {
         return eventos.stream().anyMatch(e -> e.getTitulo().equalsIgnoreCase(titulo));
     }

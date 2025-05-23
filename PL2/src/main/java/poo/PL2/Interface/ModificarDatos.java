@@ -2,14 +2,32 @@
 package poo.PL2.Interface;
 
 import javax.swing.JOptionPane;
+import poo.PL2.Clases.AuthService;
+import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.SesionErrorHandler;
+import poo.PL2.Clases.UsuarioValidador;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 public class ModificarDatos extends javax.swing.JFrame {
 
+    private final Cliente cliente;
     
-    public ModificarDatos() {
+    public ModificarDatos(Cliente cliente) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana 
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        this.cliente = cliente;
+        bloquearCampos();
+        cargarDatosCliente();
+    }
+    
+    private void cargarDatosCliente() {
+        jTextFieldNombre.setText(cliente.getNombre());
+        jFormatedTextFieldTelefono.setValue(cliente.getTelefono());
+        jTextFieldCorreo.setText(cliente.getCorreo());
+        jTextFieldContrasena.setText(cliente.getContrasena());
+        jCheckBoxVip.setSelected(cliente.isVip());
     }
 
  
@@ -78,7 +96,7 @@ public class ModificarDatos extends javax.swing.JFrame {
             }
         });
 
-        jButtonVolver.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonVolver.setText("VOLVER");
         jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -86,7 +104,7 @@ public class ModificarDatos extends javax.swing.JFrame {
             }
         });
 
-        jButtonGuardarCambios.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonGuardarCambios.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonGuardarCambios.setText("GUARDAR CAMBIOS");
         jButtonGuardarCambios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -117,7 +135,7 @@ public class ModificarDatos extends javax.swing.JFrame {
             }
         });
 
-        jButtonModificar.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
+        jButtonModificar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonModificar.setText("MODIFICAR");
         jButtonModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -218,7 +236,7 @@ public class ModificarDatos extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        // COMENTADO DE MOMENTO Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
+        Navegacion.cambiarVentana(this, new PortalCliente(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
@@ -228,11 +246,47 @@ public class ModificarDatos extends javax.swing.JFrame {
 
     private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
-        jTextFieldNombre.setEditable(false);
-        jFormatedTextFieldTelefono.setEditable(false);
-        jTextFieldContrasena.setEditable(false);
-        // COMENTADO DE MOMENTO Navegacion.cambiarVentana(this, new PortalCliente()); // Guardar cambios
+        
+        String nombreNuevo = jTextFieldNombre.getText();
+        String telefonoNuevo = jFormatedTextFieldTelefono.getText();
+        String contrasenaNueva = jTextFieldContrasena.getText();
+        
+        if (telefonoNuevo.isBlank()){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.TELEFONO_VACIO); 
+            return;
+        }
+        else if (contrasenaNueva.isBlank()){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CONTRASENA_VACIA); 
+            return;
+        }
+        else if (nombreNuevo.isBlank()){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO); 
+            return;
+        }
+        else if (!UsuarioValidador.EsTelefonoValido(telefonoNuevo)){
+           SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.TELEFONO_NO_VALIDO); 
+           return;
+        }
+        else if (!ValidadorUtilidades.esContrasenaSegura(contrasenaNueva)){
+           SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CONTRASENA_NO_VALIDA); 
+           return;
+        }
+        try{
+            AuthService authService = new AuthService(); 
+            Cliente clienteNuevo = new Cliente(nombreNuevo, telefonoNuevo, cliente.getDireccion(), cliente.getTarjetaCredito(),
+                                            cliente.isVip(), cliente.getCorreo(), contrasenaNueva);
+            
+            authService.actualizarCliente(cliente.getCorreo(), clienteNuevo);
+            
+            this.cliente.setNombre(nombreNuevo);
+            this.cliente.setTelefono(telefonoNuevo);
+            this.cliente.setContrasena(contrasenaNueva);
+        
+            JOptionPane.showMessageDialog(this, "Datos guardados correctamente");
+            bloquearCampos();
+            }catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_jButtonGuardarCambiosActionPerformed
 
     private void jFormatedTextFieldTelefonoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormatedTextFieldTelefonoActionPerformed
@@ -241,22 +295,33 @@ public class ModificarDatos extends javax.swing.JFrame {
 
     private void jButtonDireccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonDireccionActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ModificarDireccion()); // Correo
+        Navegacion.cambiarVentana(this, new ModificarDireccion(cliente)); // Correo
     }//GEN-LAST:event_jButtonDireccionActionPerformed
 
     private void jButtonMetodoPagoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMetodoPagoActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ModificarMetodoDePago()); // Método de pago
+        Navegacion.cambiarVentana(this, new ModificarMetodoDePago(cliente)); // Método de pago
     }//GEN-LAST:event_jButtonMetodoPagoActionPerformed
 
     private void jButtonModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarActionPerformed
         // TODO add your handling code here:
+        habilitarCampos();
+    }//GEN-LAST:event_jButtonModificarActionPerformed
+    
+    
+    private void bloquearCampos(){
+        jTextFieldNombre.setEditable(false);
+        jFormatedTextFieldTelefono.setEditable(false);
+        jTextFieldContrasena.setEditable(false);
+        jCheckBoxVip.setEnabled(false);
+    }
+    
+    private void habilitarCampos(){
         jTextFieldNombre.setEditable(true);
         jFormatedTextFieldTelefono.setEditable(true);
         jTextFieldContrasena.setEditable(true);
-    }//GEN-LAST:event_jButtonModificarActionPerformed
-
-
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonDireccion;
     private javax.swing.JButton jButtonGuardarCambios;

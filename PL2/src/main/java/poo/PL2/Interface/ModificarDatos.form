@@ -181,7 +181,7 @@
     <Component class="javax.swing.JButton" name="jButtonVolver">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="0"/>
+          <Font name="Segoe UI" size="14" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="VOLVER"/>
       </Properties>
@@ -192,7 +192,7 @@
     <Component class="javax.swing.JButton" name="jButtonGuardarCambios">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="0"/>
+          <Font name="Segoe UI" size="14" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="GUARDAR CAMBIOS"/>
       </Properties>
@@ -233,7 +233,7 @@
     <Component class="javax.swing.JButton" name="jButtonModificar">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Segoe UI" size="14" style="0"/>
+          <Font name="Segoe UI" size="14" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" value="MODIFICAR"/>
       </Properties>
