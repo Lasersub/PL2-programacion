@@ -24,7 +24,7 @@ public class CrearEventoImagen extends javax.swing.JFrame {
         configurarArrastrarSoltar();  // Configurar Drag & Drop
         this.setLocationRelativeTo(null); // Centra la ventana
         
-        btnGuardar.setEnabled(false); // Solo se activa cuando hay imagen
+        jButtonCrear.setEnabled(false); // Solo se activa cuando hay imagen
         
     }
 
@@ -64,11 +64,11 @@ public class CrearEventoImagen extends javax.swing.JFrame {
             imagen = ImageIO.read(archivo);
             // Mostrar imagen principal (redimensionada)
             ImageIcon iconoPrincipal = new ImageIcon(imagen.getScaledInstance(
-                labelImagen.getWidth(), -1, Image.SCALE_SMOOTH));
-            labelImagen.setIcon(iconoPrincipal);
-            labelImagen.setText("");
+                jLabelImagen.getWidth(), -1, Image.SCALE_SMOOTH));
+            jLabelImagen.setIcon(iconoPrincipal);
+            jLabelImagen.setText("");
 
-            btnGuardar.setEnabled(true); // Activar botón de guardado
+            jButtonCrear.setEnabled(true); // Activar botón de guardado
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -76,7 +76,7 @@ public class CrearEventoImagen extends javax.swing.JFrame {
 
     // --- Método 4: Configurar Drag & Drop ---
     private void configurarArrastrarSoltar() {
-        DropTarget dropTarget = new DropTarget(labelImagen, new DropTargetAdapter() {
+        DropTarget dropTarget = new DropTarget(jLabelImagen, new DropTargetAdapter() {
             @Override
             public void drop(DropTargetDropEvent dtde) {
                 try {
@@ -97,29 +97,31 @@ public class CrearEventoImagen extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        labelImagen = new javax.swing.JLabel();
-        btnSeleccionar = new javax.swing.JButton();
-        btnGuardar = new javax.swing.JButton();
+        jLabelImagen = new javax.swing.JLabel();
+        jButtonSeleccionar = new javax.swing.JButton();
+        jButtonCrear = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        btnVolver = new javax.swing.JButton();
+        jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        labelImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        labelImagen.setText("Arrastra una imagen aquí o haz clic en 'Seleccionar");
-        labelImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLabelImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelImagen.setText("Arrastra una imagen aquí o haz clic en 'Seleccionar");
+        jLabelImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        btnSeleccionar.setText("SELECCIONAR");
-        btnSeleccionar.addActionListener(new java.awt.event.ActionListener() {
+        jButtonSeleccionar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonSeleccionar.setText("SELECCIONAR");
+        jButtonSeleccionar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnSeleccionarActionPerformed(evt);
+                jButtonSeleccionarActionPerformed(evt);
             }
         });
 
-        btnGuardar.setText("GUARDAR");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+        jButtonCrear.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonCrear.setText("CREAR");
+        jButtonCrear.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
+                jButtonCrearActionPerformed(evt);
             }
         });
 
@@ -127,10 +129,11 @@ public class CrearEventoImagen extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("NUEVO EVENTO");
 
-        btnVolver.setText("VOLVER");
-        btnVolver.addActionListener(new java.awt.event.ActionListener() {
+        jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonVolver.setText("VOLVER");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnVolverActionPerformed(evt);
+                jButtonVolverActionPerformed(evt);
             }
         });
 
@@ -140,51 +143,58 @@ public class CrearEventoImagen extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(82, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(btnSeleccionar)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(btnVolver)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(btnGuardar))
-                        .addComponent(labelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 303, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(82, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonSeleccionar))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addContainerGap(90, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabelImagen, javax.swing.GroupLayout.DEFAULT_SIZE, 283, Short.MAX_VALUE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jButtonVolver)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButtonCrear)))))
+                .addContainerGap(92, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(42, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(btnSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(labelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addComponent(jButtonSeleccionar, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 262, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 27, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnVolver))
-                .addContainerGap())
+                    .addComponent(jButtonCrear)
+                    .addComponent(jButtonVolver))
+                .addContainerGap(20, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSeleccionarActionPerformed
+    private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
         // TODO add your handling code here:
         seleccionarFoto();    
-    }//GEN-LAST:event_btnSeleccionarActionPerformed
+    }//GEN-LAST:event_jButtonSeleccionarActionPerformed
 
-    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+    private void jButtonCrearActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCrearActionPerformed
         // TODO add your handling code here:
         guardarFoto();
-        // Navegacion.cambiarVentana(this, new CrearEventoResumen()); // Guardar
-    }//GEN-LAST:event_btnGuardarActionPerformed
+        
+        // AQUÍ VA TODA LA LÓGICA PARA GUARDAR LOS DATOS
+        
+        JOptionPane.showMessageDialog(this, "¡Evento creado con éxito!");
+        Navegacion.cambiarVentana(this, new PortalAdministrador()); // Crear
+    }//GEN-LAST:event_jButtonCrearActionPerformed
 
-    private void btnVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVolverActionPerformed
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new CrearEvento()); // Crear Evento
-    }//GEN-LAST:event_btnVolverActionPerformed
+        Navegacion.cambiarVentana(this, new CrearEvento()); // Volver
+    }//GEN-LAST:event_jButtonVolverActionPerformed
 
     /**
      * @param args the command line arguments
@@ -222,11 +232,11 @@ public class CrearEventoImagen extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnSeleccionar;
-    private javax.swing.JButton btnVolver;
+    private javax.swing.JButton jButtonCrear;
+    private javax.swing.JButton jButtonSeleccionar;
+    private javax.swing.JButton jButtonVolver;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel labelImagen;
+    private javax.swing.JLabel jLabelImagen;
     // End of variables declaration//GEN-END:variables
     private BufferedImage imagen;    // Almacena la imagen cargada
 }
