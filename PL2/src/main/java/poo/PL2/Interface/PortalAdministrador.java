@@ -130,20 +130,15 @@ public class PortalAdministrador extends javax.swing.JFrame {
         
         // Crear las opciones
         JMenuItem itemReservados = new JMenuItem("CREAR NUEVO EVENTO");
-        JMenuItem itemAtendidos = new JMenuItem("MODIFICAR EVENTO EXISTENTE");
         
         // Añadir acciones a las opciones
         itemReservados.addActionListener(e -> {
             Navegacion.cambiarVentana(this, new CrearEvento()); // Crear Evento
         });
 
-        itemAtendidos.addActionListener(e -> {
-            Navegacion.cambiarVentana(this, new BuscarEvento()); // Modificar Evento
-        });
         
         // Agregar ítems al menú
         popupMenu.add(itemReservados);
-        popupMenu.add(itemAtendidos);
         
         // Mostrar el popup en la posición del botón
         popupMenu.show(jButtonGestionEventos, 2, jButtonGestionEventos.getHeight());
