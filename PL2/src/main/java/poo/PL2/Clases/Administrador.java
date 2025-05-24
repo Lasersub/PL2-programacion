@@ -15,7 +15,7 @@ public class Administrador extends Usuario {
         super(ADMIN_EMAIL, ADMIN_PASSWORD);
         this.dataBase = DataBase.getInstance();
     }
-
+    
     public static boolean esAdmin(String correo, String contrasena) {
         return ADMIN_EMAIL.equals(correo) && ADMIN_PASSWORD.equals(contrasena);
     }
@@ -25,8 +25,6 @@ public class Administrador extends Usuario {
         
     public void registrarEvento(String titulo, String tipo, ArrayList<LocalDateTime> fechas, String calle, String numero, String ciudad, String codigoPostal, 
                         double precio, String rutaPortada){
-        
-        ArrayList<Evento> eventos = dataBase.getEventos();
         
         Direccion direccion = new Direccion(calle,numero,ciudad,codigoPostal);
         Evento evento = new Evento(titulo, tipo, fechas, direccion, precio, rutaPortada);
