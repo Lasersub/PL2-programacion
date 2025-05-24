@@ -138,7 +138,7 @@ public class PortalAdministrador extends javax.swing.JFrame {
         });
 
         itemAtendidos.addActionListener(e -> {
-            Navegacion.cambiarVentana(this, new ModificarEvento()); // Modificar Evento
+            Navegacion.cambiarVentana(this, new BuscarEvento()); // Modificar Evento
         });
         
         // Agregar ítems al menú
@@ -151,14 +151,17 @@ public class PortalAdministrador extends javax.swing.JFrame {
 
     private void jButtonConsultaEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultaEventosActionPerformed
         // TODO add your handling code here:
+        Navegacion.cambiarVentana(this, new BuscarEvento()); // Consultar Eventos
     }//GEN-LAST:event_jButtonConsultaEventosActionPerformed
 
     private void jButtonConsultaUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultaUsuariosActionPerformed
         // TODO add your handling code here:
+        Navegacion.cambiarVentana(this, new ConsultarUsuario()); // Consultar Usuarios
     }//GEN-LAST:event_jButtonConsultaUsuariosActionPerformed
 
     private void jButtonConsultaReservasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultaReservasActionPerformed
         // TODO add your handling code here:
+        Navegacion.cambiarVentana(this, new ConsultarReserva()); // Consultar Reservas
     }//GEN-LAST:event_jButtonConsultaReservasActionPerformed
 
     private void jButtonSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSalirActionPerformed
