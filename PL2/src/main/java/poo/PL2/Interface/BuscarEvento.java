@@ -245,6 +245,7 @@ public class BuscarEvento extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
+        // Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     /**
