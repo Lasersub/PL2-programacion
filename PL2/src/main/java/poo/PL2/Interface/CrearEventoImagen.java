@@ -223,7 +223,7 @@ public class CrearEventoImagen extends javax.swing.JFrame {
         if (imagen == null) return null;
 
         // Ruta absoluta directa
-        final String RUTA_BASE = "C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\imagenes\\";
+        final String RUTA_BASE = "data/imagenesEventos/";
 
         try {
             // 1. Asegurar que existe el directorio
@@ -246,9 +246,9 @@ public class CrearEventoImagen extends javax.swing.JFrame {
             ImageIO.write(imagen, "png", archivoDestino);
 
             // 4. Retornar la ruta completa para referencia
-            return archivoDestino.getAbsolutePath();
+            return "data/imagenesEventos/" + nombreArchivo;
 
-        } catch (Exception e) {
+        } catch (IOException e) {
             JOptionPane.showMessageDialog(this, 
                 "Error al guardar la imagen: " + e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);

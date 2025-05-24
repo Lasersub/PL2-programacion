@@ -20,8 +20,8 @@ public class PortalCliente extends javax.swing.JFrame {
         this.setLocationRelativeTo(null); // Centra la ventana
         this.cliente = cliente;
         
-        jButtonCarrito.setIcon(new ImageIcon(getClass().getResource("/poo/PL2/Clases/imagenes/carrito.png"))); // Asigna el ícono
-        
+        jButtonCarrito.setIcon(new ImageIcon(getClass().getResource("/imagenes/carrito.png")));
+
         // Quitar el borde y fondo para que solo se vea el ícono
         jButtonCarrito.setBorderPainted(false);
         jButtonCarrito.setContentAreaFilled(false);

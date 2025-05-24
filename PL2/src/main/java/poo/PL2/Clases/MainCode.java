@@ -1,6 +1,7 @@
 
 package poo.PL2.Clases;
 
+import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -14,9 +15,16 @@ public class MainCode {
         
         //CARGA LA BASE DE DATOS
         
+        // Crear carpetas si no existen
+        new File("data/database").mkdirs();
+        new File("data/facturas").mkdirs();
+        new File("data/imagenesEventos").mkdirs();
+            
+        String dbPath = System.getProperty("user.dir") + "/data/database/MiBaseDeDatos.ser";
+        
         try {
             // Intenta cargar la base de datos existente
-            DataBase.cargar("C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
+            DataBase.cargar(dbPath);
         } catch (IOException e) {
             // Si falla (primera ejecución o archivo no existe), crea una nueva
             System.out.println("Creando nueva base de datos...");
@@ -25,7 +33,7 @@ public class MainCode {
         
         DataBase dataBase = DataBase.getInstance();
 
-        /*
+        
         //Evento evento1 = new Evento("Pachanga","Deportivo","Chopera",LocalDate.now().plusDays(3),3.5,"Guadalajara");
         Direccion direccion1 = new Direccion("Calle txapote","12","Guadalajara","19005");
         TarjetaCredito tarjeta1 = new TarjetaCredito("Hitler","1234 5678 1234 5678",YearMonth.of(2024, 10));
@@ -43,13 +51,13 @@ public class MainCode {
         
         dataBase.addCliente(cliente2);
         
-        */
+        
         
         
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {
-                DataBase.guardar("C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\DataBase\\MiBaseDeDatos.ser");
+                DataBase.guardar(dbPath);
                 System.out.println("Base de datos guardada al cerrar la aplicación.");
             } catch (IOException ex) {
                 System.err.println("Error guardando la base de datos: " + ex.getMessage());
