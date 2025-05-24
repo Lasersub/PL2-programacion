@@ -9,20 +9,28 @@ import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import poo.PL2.Clases.Administrador;
+import poo.PL2.Clases.DataBase;
+import poo.PL2.Clases.Evento;
+import poo.PL2.Clases.EventoTemporal;
 import poo.PL2.Clases.Navegacion;
 
 
 public class CrearEventoImagen extends javax.swing.JFrame {
 
- 
-    public CrearEventoImagen() {
+    EventoTemporal eventoTemporal = new EventoTemporal();
+    Administrador admin = new Administrador();
+    
+    public CrearEventoImagen(EventoTemporal eventoTemporal) {
         initComponents();
         configurarArrastrarSoltar();  // Configurar Drag & Drop
         this.setLocationRelativeTo(null); // Centra la ventana
+        this.eventoTemporal = eventoTemporal;
         
         jButtonCrear.setEnabled(false); // Solo se activa cuando hay imagen
         
@@ -185,50 +193,69 @@ public class CrearEventoImagen extends javax.swing.JFrame {
         guardarFoto();
         
         // AQUÍ VA TODA LA LÓGICA PARA GUARDAR LOS DATOS
+        String rutaImagen = obtenerRutaImagen();
         
+        eventoTemporal.setRutaPortada(rutaImagen);
+        
+        Evento eventoFinal = eventoTemporal.crearEvento();
+        admin.registrarEvento(
+            eventoFinal.getTitulo(),
+            eventoFinal.getTipo(),
+            eventoFinal.getFechas(),
+            eventoFinal.getDireccion().getCalle(),
+            eventoFinal.getDireccion().getNumero(),
+            eventoFinal.getDireccion().getCiudad(),
+            eventoFinal.getDireccion().getCodigoPostal(),
+            eventoFinal.getPrecio(),
+            eventoFinal.getRutaPortada()
+        );
+                
         JOptionPane.showMessageDialog(this, "¡Evento creado con éxito!");
         Navegacion.cambiarVentana(this, new PortalAdministrador()); // Crear
     }//GEN-LAST:event_jButtonCrearActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new CrearEvento()); // Volver
+        Navegacion.cambiarVentana(this, new CrearEvento(eventoTemporal)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
+    
+    private String obtenerRutaImagen() {
+        if (imagen == null) return null;
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
+        // Ruta absoluta directa
+        final String RUTA_BASE = "C:\\Users\\User\\Documents\\NetBeansProjects\\PL2-programacion\\PL2\\src\\main\\java\\poo\\PL2\\Clases\\imagenes\\";
+
         try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+            // 1. Asegurar que existe el directorio
+            File directorioImagenes = new File(RUTA_BASE);
+            if (!directorioImagenes.exists()) {
+                if (!directorioImagenes.mkdirs()) {
+                    throw new IOException("No se pudo crear el directorio de imágenes");
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CrearEventoImagen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CrearEventoImagen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CrearEventoImagen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CrearEventoImagen.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CrearEventoImagen().setVisible(true);
-            }
-        });
+            // 2. Generar nombre de archivo único y seguro
+            String nombreArchivo = "evento_" 
+                    + eventoTemporal.getTitulo().toLowerCase()
+                        .replaceAll("[^a-z0-9]", "_") // Elimina caracteres especiales
+                    + "_" + System.currentTimeMillis() 
+                    + ".png";
+
+            // 3. Guardar la imagen
+            File archivoDestino = new File(RUTA_BASE + nombreArchivo);
+            ImageIO.write(imagen, "png", archivoDestino);
+
+            // 4. Retornar la ruta completa para referencia
+            return archivoDestino.getAbsolutePath();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al guardar la imagen: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return null;
+        }
     }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonCrear;
