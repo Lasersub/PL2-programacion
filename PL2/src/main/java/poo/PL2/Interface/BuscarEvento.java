@@ -6,6 +6,7 @@ package poo.PL2.Interface;
 
 import java.awt.Font;
 import javax.swing.UIManager;
+import poo.PL2.Clases.Navegacion;
 
 /**
  *
@@ -211,6 +212,11 @@ public class BuscarEvento extends javax.swing.JFrame {
 
     private void jButtonBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarActionPerformed
         // TODO add your handling code here:
+        
+        // AÑADIR LÓGICA DEL BUSCADOR
+        
+        Navegacion.cambiarVentana(this, new SeleccionEvento()); // Doble click en evento
+        
     }//GEN-LAST:event_jButtonBuscarActionPerformed
 
     private void jTextFieldTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTituloActionPerformed
