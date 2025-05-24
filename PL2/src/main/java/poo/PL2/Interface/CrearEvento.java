@@ -8,6 +8,13 @@ package poo.PL2.Interface;
 import java.awt.Font;
 import javax.swing.DefaultListModel;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.SesionErrorHandler;
+import java.util.ArrayList;
+import poo.PL2.Clases.EventoTemporal;
+import poo.PL2.Clases.ValidadorUtilidades;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
+import poo.PL2.Clases.Direccion;
 
 /**
  *
@@ -18,6 +25,9 @@ public class CrearEvento extends javax.swing.JFrame {
     /**
      * Creates new form CrearEvento
      */
+    
+    private EventoTemporal eventoTemporal = new EventoTemporal();
+    
     public CrearEvento() {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana
@@ -27,6 +37,42 @@ public class CrearEvento extends javax.swing.JFrame {
         jListFechasEvento.setEnabled(false);
         jListFechasEvento.setFont(new Font("Arial", Font.BOLD, 12));
 
+    }
+    
+    public CrearEvento(EventoTemporal eventoTemporal) {
+        initComponents();
+        this.setLocationRelativeTo(null); // Centra la ventana
+        this.eventoTemporal = eventoTemporal;
+        cargarDatos();
+        
+        jListFechasEvento.setModel(model);
+        
+        jListFechasEvento.setEnabled(false);
+        jListFechasEvento.setFont(new Font("Arial", Font.BOLD, 12));
+
+    }
+    
+    public void cargarDatos(){
+        jTextFieldTitulo.setText(eventoTemporal.getTitulo());
+        jTextFieldCalle.setText(eventoTemporal.getDireccion().getCalle());
+        jTextFieldNumero.setText(eventoTemporal.getDireccion().getNumero());
+        jTextFieldCiudad.setText(eventoTemporal.getDireccion().getCiudad());
+        jFormattedTextFieldCodigoPostal.setText(eventoTemporal.getDireccion().getCodigoPostal());
+        jComboBoxTipoEvento.setSelectedItem(eventoTemporal.getTipo());
+        jFormattedTextFieldPrecioEntrada.setValue(eventoTemporal.getPrecio());
+        ArrayList<LocalDateTime> fechas = eventoTemporal.getFechas();
+        
+        model.clear(); // Limpiar lista previa
+    
+        if (eventoTemporal.getFechas() != null) {
+            for (LocalDateTime fecha : eventoTemporal.getFechas()) {
+                model.addElement(ValidadorUtilidades.localDateTimeToString(fecha));
+            }
+        }
+
+        // 5. Configurar la lista para que sea visible pero NO editable directamente
+        jListFechasEvento.setEnabled(false); // No se puede seleccionar/modificar manualmente
+        jListFechasEvento.setVisible(true);  // Siempre visible, incluso si está vacía
     }
     
     /**
@@ -138,6 +184,11 @@ public class CrearEvento extends javax.swing.JFrame {
         } catch (java.text.ParseException ex) {
             ex.printStackTrace();
         }
+        jFormattedTextFieldCodigoPostal.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jFormattedTextFieldCodigoPostalActionPerformed(evt);
+            }
+        });
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Fecha del evento");
@@ -296,7 +347,45 @@ public class CrearEvento extends javax.swing.JFrame {
 
     private void jButtonSiguienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSiguienteActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new CrearEventoImagen()); // Siguiente
+        
+        String titulo = jTextFieldTitulo.getText();
+        String calle = jTextFieldCalle.getText();
+        String numero = jTextFieldNumero.getText();
+        String ciudad = jTextFieldCiudad.getText();
+        String codigoPostal = jFormattedTextFieldCodigoPostal.getText();
+        String tipo = (String) jComboBoxTipoEvento.getSelectedItem();
+        String precioString = jFormattedTextFieldPrecioEntrada.getText();
+        ArrayList<LocalDateTime> fechas = obtenerFechasValidas();
+        
+        if (titulo.isBlank() || calle.isBlank() || numero.isBlank() || ciudad.isBlank() || codigoPostal.isBlank() || tipo.isBlank() 
+                || precioString.isBlank() || ((DefaultListModel<?>) jListFechasEvento.getModel()).getSize() == 0){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO); 
+            return;
+        }
+        
+        double precio = 0.0;
+        try {
+            precio = Double.parseDouble(precioString);
+        } catch (NumberFormatException e) {
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.NUMERO_NO_VALIDO);
+        }
+        
+        if (!ValidadorUtilidades.esCodigoPostalValido(codigoPostal)){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CODIGO_POSTAL_NO_VALIDO);
+            return;
+        }
+        if (!ValidadorUtilidades.esNumeroConLetra(numero)){
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.NUMERO_NO_VALIDO);
+            return;
+        }
+        
+        eventoTemporal.setTitulo(titulo);
+        eventoTemporal.setTipo(tipo);
+        eventoTemporal.setFechas(fechas);
+        eventoTemporal.setDireccion(new Direccion(calle, numero, ciudad, codigoPostal));
+        eventoTemporal.setPrecio(precio);
+           
+        Navegacion.cambiarVentana(this, new CrearEventoImagen(eventoTemporal)); // Siguiente
     }//GEN-LAST:event_jButtonSiguienteActionPerformed
 
     private void jTextFieldCalleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCalleActionPerformed
@@ -310,7 +399,7 @@ public class CrearEvento extends javax.swing.JFrame {
     private void jButtonAnadirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirActionPerformed
         // TODO add your handling code here:
         String fecha = jFormattedTextFieldFechaEvento.getText();
-        if (!fecha.isEmpty()) {
+        if (!fecha.isBlank()) {
             if (fecha.contains("  ")){
                 
             } else {
@@ -329,41 +418,29 @@ public class CrearEvento extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jButtonBorrarActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
+    private void jFormattedTextFieldCodigoPostalActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldCodigoPostalActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jFormattedTextFieldCodigoPostalActionPerformed
+
+    private ArrayList<LocalDateTime> obtenerFechasValidas() {
+        
+        DefaultListModel<String> model = (DefaultListModel<String>) jListFechasEvento.getModel();
+        ArrayList<LocalDateTime> fechas = new ArrayList<>();
+        
+
+        for (int i = 0; i < model.getSize(); i++) {
+            String fechaStr = model.getElementAt(i).trim(); // Elimina espacios al inicio/fin
+            if (!fechaStr.isBlank() && !fechaStr.contains("  ")) { // Valida espacios dobles
+                try {
+                    fechas.add(ValidadorUtilidades.stringToLocalDateTime(fechaStr));
+                } catch (DateTimeParseException e) {
+                    SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.FECHA_NO_VALIDA);
                 }
             }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(CrearEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(CrearEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(CrearEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(CrearEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new CrearEvento().setVisible(true);
-            }
-        });
+        
+        return fechas;
     }
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnadir;
     private javax.swing.JButton jButtonBorrar;
