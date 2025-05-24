@@ -40,11 +40,11 @@
                           <Component id="jFormattedTextFieldCodigoPostal" min="-2" pref="90" max="-2" attributes="0"/>
                           <Group type="103" alignment="0" groupAlignment="1" attributes="0">
                               <Component id="jButtonSiguiente" min="-2" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Group type="103" alignment="1" groupAlignment="0" max="-2" attributes="0">
                                   <Component id="jTextFieldCiudad" pref="260" max="32767" attributes="0"/>
-                                  <Component id="jFormattedTextFieldNumero" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
                                   <Component id="jTextFieldCalle" alignment="0" max="32767" attributes="0"/>
                               </Group>
+                              <Component id="jTextFieldNumero" alignment="0" min="-2" pref="90" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -69,9 +69,9 @@
               <EmptySpace pref="8" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jFormattedTextFieldNumero" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldNumero" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="8" max="32767" attributes="0"/>
+              <EmptySpace pref="10" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel4" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jTextFieldCiudad" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -81,7 +81,7 @@
                   <Component id="jLabel5" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jFormattedTextFieldCodigoPostal" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace pref="71" max="32767" attributes="0"/>
+              <EmptySpace pref="69" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonVolver" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="jButtonSiguiente" alignment="3" min="-2" max="-2" attributes="0"/>
@@ -143,16 +143,6 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldCalleActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldNumero">
-      <Properties>
-        <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
-          <Format format="##" subtype="-1" type="5"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jFormattedTextFieldNumeroActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JFormattedTextField" name="jFormattedTextFieldCodigoPostal">
       <Properties>
         <Property name="formatterFactory" type="javax.swing.JFormattedTextField$AbstractFormatterFactory" editor="org.netbeans.modules.form.editors.AbstractFormatterFactoryEditor" preCode="try {" postCode="} catch (java.text.ParseException ex) {&#xa;ex.printStackTrace();&#xa;}">
@@ -193,6 +183,8 @@
         <Property name="horizontalAlignment" type="int" value="0"/>
         <Property name="text" type="java.lang.String" value="DIRECCI&#xd3;N"/>
       </Properties>
+    </Component>
+    <Component class="javax.swing.JTextField" name="jTextFieldNumero">
     </Component>
   </SubComponents>
 </Form>
