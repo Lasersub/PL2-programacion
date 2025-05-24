@@ -1,10 +1,10 @@
 
 package poo.PL2.Clases;
 
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import javax.swing.JOptionPane;
 
 
 public class ValidadorUtilidades {
@@ -52,5 +52,31 @@ public class ValidadorUtilidades {
     public static String formatFechaCaducidad(YearMonth fecha) {
         if (fecha == null) return null;
         return fecha.format(DateTimeFormatter.ofPattern("MM/yy"));
+    }
+    
+    // Formato esperado: día/mes/año horas:minutos (ej: "31/12/2023 23:59")
+    private static final DateTimeFormatter FORMATTER = 
+        DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+    /**
+     * Convierte un String en formato "dd/MM/yyyy HH:mm" a LocalDateTime.
+     * @param fechaStr String con la fecha (ej: "31/12/2023 23:59")
+     * @return LocalDateTime correspondiente
+     * @throws IllegalArgumentException si el formato es inválido
+     */
+    public static LocalDateTime stringToLocalDateTime(String fechaStr) {
+        try {
+            return LocalDateTime.parse(fechaStr, FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException(
+                "Formato de fecha inválido. Debe ser dd/MM/yyyy HH:mm (ej: 31/12/2023 23:59)", 
+                e
+            );
+        }
+    }
+    
+    public static String localDateTimeToString(LocalDateTime fecha) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        return fecha.format(formatter);
     }
 }
