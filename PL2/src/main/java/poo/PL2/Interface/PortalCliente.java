@@ -172,7 +172,7 @@ public class PortalCliente extends javax.swing.JFrame {
 
     private void jButtonCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCarritoActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new MainMenu()); // Carrito
+        Navegacion.cambiarVentana(this, new CarritoCliente()); // Carrito
     }//GEN-LAST:event_jButtonCarritoActionPerformed
 
 
