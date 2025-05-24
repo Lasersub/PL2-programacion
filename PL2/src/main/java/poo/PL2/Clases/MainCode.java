@@ -2,7 +2,7 @@
 package poo.PL2.Clases;
 
 import java.io.IOException;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import poo.PL2.Interface.*;
 
@@ -22,10 +22,10 @@ public class MainCode {
             System.out.println("Creando nueva base de datos...");
         }
              
-        /*
+        
         DataBase dataBase = DataBase.getInstance();
-        
-        
+
+        /*
         //Evento evento1 = new Evento("Pachanga","Deportivo","Chopera",LocalDate.now().plusDays(3),3.5,"Guadalajara");
         Direccion direccion1 = new Direccion("Calle txapote","12","Guadalajara","19005");
         TarjetaCredito tarjeta1 = new TarjetaCredito("Hitler","1234 5678 1234 5678",YearMonth.of(2024, 10));
@@ -39,17 +39,12 @@ public class MainCode {
         //Reserva reserva2 = new Reserva(cliente2, evento2, evento2.getFecha(),2,7);
         
         dataBase.addCliente(cliente1);
-        //dataBase.addEvento(evento1);
-        //dataBase.addReserva(reserva1);
+        
         
         dataBase.addCliente(cliente2);
-        //dataBase.addEvento(evento2);
-        //dataBase.addReserva(reserva2);
-        
-        //System.out.println(dataBase.getCliente("matajudios@gmail.com").getNombre());
-        //System.out.println(dataBase.getCliente("genocida@gmail.com").getNombre());
         
         */
+        
         
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -68,6 +63,7 @@ public class MainCode {
             mainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); // ¡Importante!
             mainMenu.setVisible(true);
         });
+        
         
     }
 }
