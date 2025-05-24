@@ -19,6 +19,13 @@ public class PortalCliente extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // Centra la ventana
         this.cliente = cliente;
+        
+        jButtonCarrito.setIcon(new ImageIcon(getClass().getResource("/poo/PL2/Clases/imagenes/carrito.png"))); // Asigna el ícono
+        
+        // Quitar el borde y fondo para que solo se vea el ícono
+        jButtonCarrito.setBorderPainted(false);
+        jButtonCarrito.setContentAreaFilled(false);
+        jButtonCarrito.setFocusPainted(false);
     }
 
     /**
@@ -35,6 +42,7 @@ public class PortalCliente extends javax.swing.JFrame {
         jButtonMisDatos = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jButtonCerrarSesion = new javax.swing.JButton();
+        jButtonCarrito = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -75,6 +83,12 @@ public class PortalCliente extends javax.swing.JFrame {
             }
         });
 
+        jButtonCarrito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonCarritoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -88,21 +102,27 @@ public class PortalCliente extends javax.swing.JFrame {
                     .addComponent(jButtonCerrarSesion, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(145, Short.MAX_VALUE))
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 42, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButtonCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jButtonBuscarEvento)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jButtonMisEventos)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 84, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 82, Short.MAX_VALUE)
                 .addComponent(jButtonMisDatos)
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jButtonCerrarSesion)
-                .addContainerGap(28, Short.MAX_VALUE))
+                .addContainerGap(26, Short.MAX_VALUE))
         );
 
         pack();
@@ -150,9 +170,15 @@ public class PortalCliente extends javax.swing.JFrame {
         Navegacion.cambiarVentana(this, new MainMenu()); // Cerrar Sesión
     }//GEN-LAST:event_jButtonCerrarSesionActionPerformed
 
+    private void jButtonCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCarritoActionPerformed
+        // TODO add your handling code here:
+        Navegacion.cambiarVentana(this, new MainMenu()); // Carrito
+    }//GEN-LAST:event_jButtonCarritoActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonBuscarEvento;
+    private javax.swing.JButton jButtonCarrito;
     private javax.swing.JButton jButtonCerrarSesion;
     private javax.swing.JButton jButtonMisDatos;
     private javax.swing.JButton jButtonMisEventos;
