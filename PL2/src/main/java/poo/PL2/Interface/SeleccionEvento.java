@@ -23,6 +23,8 @@ public class SeleccionEvento extends javax.swing.JFrame {
         configurarComponentes();
         
         this.setLocationRelativeTo(null); // Centra la ventana 
+        
+        jListEventos.setEnabled(false);
     }
 
     /**
