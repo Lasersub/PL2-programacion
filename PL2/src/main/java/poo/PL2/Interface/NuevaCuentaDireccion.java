@@ -30,7 +30,7 @@ public class NuevaCuentaDireccion extends javax.swing.JFrame {
         // Precargar datos si ya existen
         if (registroTemp.getDireccion() != null) {
             jTextFieldCalle.setText(registroTemp.getDireccion().getCalle());
-            jFormattedTextFieldNumero.setText(registroTemp.getDireccion().getNumero());
+            jTextFieldNumero.setText(registroTemp.getDireccion().getNumero());
             jTextFieldCiudad.setText(registroTemp.getDireccion().getCiudad());
             jFormattedTextFieldCodigoPostal.setText(registroTemp.getDireccion().getCodigoPostal());
         }
@@ -206,13 +206,13 @@ public class NuevaCuentaDireccion extends javax.swing.JFrame {
         // TODO add your handling code here:
         if ((jTextFieldCiudad.getText().equals("")) || 
         (jTextFieldCalle.getText().equals("")) || 
-        (jFormattedTextFieldNumero.getText().equals("")) ||
+        (jTextFieldNumero.getText().equals("")) ||
         (jFormattedTextFieldCodigoPostal.getText().equals(""))) {
         SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO);
         
     } else {
         Direccion direccion =  new Direccion(jTextFieldCalle.getText(),
-                                            jFormattedTextFieldNumero.getText(),
+                                            jTextFieldNumero.getText(),
                                             jTextFieldCiudad.getText(),
                                             jFormattedTextFieldCodigoPostal.getText());
         
