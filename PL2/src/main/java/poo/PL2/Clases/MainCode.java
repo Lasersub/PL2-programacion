@@ -22,7 +22,7 @@ public class MainCode {
             System.out.println("Creando nueva base de datos...");
         }
              
-        /*
+        
         DataBase dataBase = DataBase.getInstance();
         
         
@@ -49,7 +49,6 @@ public class MainCode {
         //System.out.println(dataBase.getCliente("matajudios@gmail.com").getNombre());
         //System.out.println(dataBase.getCliente("genocida@gmail.com").getNombre());
         
-        */
         
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
