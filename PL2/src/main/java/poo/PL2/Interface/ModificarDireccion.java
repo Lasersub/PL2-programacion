@@ -33,7 +33,7 @@ public class ModificarDireccion extends javax.swing.JFrame {
         Direccion direccion = cliente.getDireccion();
         
         jTextFieldCalle.setText(direccion.getCalle());
-        jFormattedTextFieldNumero.setValue(direccion.getNumero());
+        jTextFieldNumero.setText(direccion.getNumero());
         jTextFieldCiudad.setText(direccion.getCiudad());
         jFormattedTextFieldCodigoPostal.setText(direccion.getCodigoPostal());
     }
@@ -55,11 +55,11 @@ public class ModificarDireccion extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jTextFieldCalle = new javax.swing.JTextField();
         jTextFieldCiudad = new javax.swing.JTextField();
-        jFormattedTextFieldNumero = new javax.swing.JFormattedTextField();
         jFormattedTextFieldCodigoPostal = new javax.swing.JFormattedTextField();
         jButtonGuardarCambios = new javax.swing.JButton();
         jButtonModificar = new javax.swing.JButton();
         jButtonVolver = new javax.swing.JButton();
+        jTextFieldNumero = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,13 +97,6 @@ public class ModificarDireccion extends javax.swing.JFrame {
             }
         });
 
-        jFormattedTextFieldNumero.setEditable(false);
-        try {
-            jFormattedTextFieldNumero.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##")));
-        } catch (java.text.ParseException ex) {
-            ex.printStackTrace();
-        }
-
         jFormattedTextFieldCodigoPostal.setEditable(false);
         try {
             jFormattedTextFieldCodigoPostal.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("#####")));
@@ -140,6 +133,8 @@ public class ModificarDireccion extends javax.swing.JFrame {
             }
         });
 
+        jTextFieldNumero.setEditable(false);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -155,12 +150,11 @@ public class ModificarDireccion extends javax.swing.JFrame {
                     .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 114, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonVolver))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jTextFieldCiudad)
-                            .addComponent(jFormattedTextFieldNumero, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldCalle, javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(0, 0, Short.MAX_VALUE)
@@ -169,7 +163,9 @@ public class ModificarDireccion extends javax.swing.JFrame {
                                 .addComponent(jButtonGuardarCambios)))
                         .addContainerGap(19, Short.MAX_VALUE))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
@@ -183,15 +179,15 @@ public class ModificarDireccion extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(jTextFieldCalle, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jFormattedTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                    .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
                     .addComponent(jTextFieldCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
                     .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -217,7 +213,7 @@ public class ModificarDireccion extends javax.swing.JFrame {
     private void jButtonGuardarCambiosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarCambiosActionPerformed
         // TODO add your handling code here:
         String calleNueva = jTextFieldCalle.getText();
-        String numeroNuevo = jFormattedTextFieldNumero.getText();
+        String numeroNuevo = jTextFieldNumero.getText();
         String ciudadNueva = jTextFieldCiudad.getText();
         String codigoPostalNuevo = jFormattedTextFieldCodigoPostal.getText();
         
@@ -267,14 +263,14 @@ public class ModificarDireccion extends javax.swing.JFrame {
 
     private void bloquearCampos(){
         jTextFieldCalle.setEditable(false);
-        jFormattedTextFieldNumero.setEditable(false);
+        jTextFieldNumero.setEditable(false);
         jTextFieldCiudad.setEditable(false);
         jFormattedTextFieldCodigoPostal.setEditable(false);
     }
     
     private void habilitarCampos(){
         jTextFieldCalle.setEditable(true);
-        jFormattedTextFieldNumero.setEditable(true);
+        jTextFieldNumero.setEditable(true);
         jTextFieldCiudad.setEditable(true); 
         jFormattedTextFieldCodigoPostal.setEditable(true);
     }
@@ -284,7 +280,6 @@ public class ModificarDireccion extends javax.swing.JFrame {
     private javax.swing.JButton jButtonModificar;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JFormattedTextField jFormattedTextFieldCodigoPostal;
-    private javax.swing.JFormattedTextField jFormattedTextFieldNumero;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -293,5 +288,6 @@ public class ModificarDireccion extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel6;
     private javax.swing.JTextField jTextFieldCalle;
     private javax.swing.JTextField jTextFieldCiudad;
+    private javax.swing.JTextField jTextFieldNumero;
     // End of variables declaration//GEN-END:variables
 }
