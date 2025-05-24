@@ -42,6 +42,14 @@ public class Evento implements Serializable {
         this.rutaPortada = rutaPortada;
         this.resenas = new ArrayList<Resena>();
     }
+
+    public String getRutaPortada() {
+        return rutaPortada;
+    }
+
+    public void setRutaPortada(String rutaPortada) {
+        this.rutaPortada = rutaPortada;
+    }
     
     
     public ArrayList<Resena> getResenas() {
