@@ -12,6 +12,8 @@ public class SesionErrorHandler {
         USUARIO_VACIO,
         CONTRASENA_VACIA,
         CORREO_NO_VALIDO,
+        PRECIO_NO_VALIDO,
+        FECHA_NO_VALIDA,
         
         
         // Crear una cuenta
@@ -51,7 +53,12 @@ public class SesionErrorHandler {
             case CORREO_NO_VALIDO:
                 mostrarVentana("El correo no posee una estructura valida");
                 break;
-            
+            case PRECIO_NO_VALIDO:
+                mostrarVentana("El numero introducido como precio no es valido");
+                break; 
+            case FECHA_NO_VALIDA:
+                mostrarVentana("La fecha introducida no es válida");
+                break;
             // Crear una cuenta
             case USUARIO_EXISTENTE:
                 mostrarVentana("El usuario escrito ya existe.");
@@ -88,6 +95,7 @@ public class SesionErrorHandler {
                 break; 
             case FECHA_CADUCIDAD_NO_VALIDA:
                 mostrarVentana("La fecha de caducidad introducida no es válida");
+                break;
             // Iniciar sesión
             case CREDENCIALES_NO_VALIDAS:
                 mostrarVentana("Las credenciales no son validas.");
