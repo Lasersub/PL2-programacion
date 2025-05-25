@@ -433,7 +433,7 @@ public class BuscarEventoAdmin extends javax.swing.JFrame {
 
         if (evento != null) {
             // Aquí abres tu ventana de detalle
-            new DatosEvento(evento).setVisible(true);
+            new DatosEventoAdmin(evento).setVisible(true);
         }
     }
     
