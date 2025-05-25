@@ -21,6 +21,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
+import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.DataBase;
 import poo.PL2.Clases.Evento;
 import poo.PL2.Clases.Navegacion;
@@ -31,8 +32,10 @@ public class BuscarEvento extends javax.swing.JFrame {
 
     private DefaultTableModel tableModel;
     private List<Evento> eventosMostrados;
+    private Cliente cliente;
     
-    public BuscarEvento() {
+    public BuscarEvento(Cliente cliente) {
+        this.cliente = cliente;
         initComponents();
         bloquearCampos();
         inicializarTabla();
@@ -438,7 +441,7 @@ public class BuscarEvento extends javax.swing.JFrame {
 
         if (evento != null) {
             // Aquí abres tu ventana de detalle
-            new DatosEvento(evento).setVisible(true);
+            new DatosEvento(evento, cliente).setVisible(true);
         }
     }
     
