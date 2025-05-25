@@ -1,6 +1,7 @@
 
 package poo.PL2.Clases;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -81,6 +82,23 @@ public class DataBase implements Serializable {
     public ArrayList<Evento> getEventos() {
         return eventos;
     }
+    
+        /**
+     * Busca un evento por su título (insensible a mayúsculas/minúsculas).
+     * @param titulo Título del evento a buscar
+     * @return Evento encontrado o null si no existe
+     * @throws IllegalArgumentException si el título es nulo o vacío
+     */
+    public Evento getEventoPorTitulo(String titulo) {
+        if (titulo == null || titulo.trim().isEmpty()) {
+            throw new IllegalArgumentException("El título no puede estar vacío.");
+        }
+
+        return eventos.stream()
+                .filter(e -> e.getTitulo().equalsIgnoreCase(titulo.trim()))
+                .findFirst()
+                .orElse(null);
+    }
 
     
     public void addReserva(Reserva reserva) {
@@ -102,5 +120,15 @@ public class DataBase implements Serializable {
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(archivo))) {
             dataBase = (DataBase) ois.readObject();
         }
+    }
+    
+    public static String convertirRutaAbsoluta(String rutaRelativa) {
+        if (rutaRelativa == null || rutaRelativa.isEmpty()) {
+            return null;
+        }
+        // Obtiene el directorio base del proyecto (donde se ejecuta el JAR)
+        String baseDir = System.getProperty("user.dir");
+        // Une con la ruta relativa (usando File.separator para compatibilidad)
+        return baseDir + File.separator + rutaRelativa.replace("/", File.separator);
     }
 }
