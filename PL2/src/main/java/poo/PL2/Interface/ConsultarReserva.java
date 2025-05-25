@@ -14,6 +14,8 @@ public class ConsultarReserva extends javax.swing.JFrame {
         configurarComponentes();
         
         this.setLocationRelativeTo(null); // Centra la ventana
+        
+        jListReservas.setEnabled(false);
     }
 
     /**

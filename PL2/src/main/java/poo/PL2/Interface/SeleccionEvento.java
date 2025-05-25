@@ -23,6 +23,8 @@ public class SeleccionEvento extends javax.swing.JFrame {
         configurarComponentes();
         
         this.setLocationRelativeTo(null); // Centra la ventana 
+        
+        jListEventos.setEnabled(false);
     }
 
     /**
@@ -107,16 +109,16 @@ public class SeleccionEvento extends javax.swing.JFrame {
         Navegacion.cambiarVentana(this, new BuscarEvento()); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    private void jListEventosMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEventosMouseDragged
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jListEventosMouseDragged
-
     private void jListEventosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEventosMouseClicked
         // TODO add your handling code here:
         if (evt.getClickCount() == 2) { // Doble clic
-        abrirEdicion();
+            abrirEdicion();
         }
     }//GEN-LAST:event_jListEventosMouseClicked
+
+    private void jListEventosMouseDragged(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jListEventosMouseDragged
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jListEventosMouseDragged
 
     // ESTO FUNCIONA ASÍ
     // En la lista salen todos los eventos mostrando solo el título

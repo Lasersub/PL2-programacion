@@ -18,6 +18,8 @@ public class ConsultarUsuario extends javax.swing.JFrame {
     public ConsultarUsuario() {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana
+        
+        jListUsuarios.setEnabled(false);
     }
 
     /**
