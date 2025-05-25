@@ -9,6 +9,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -331,15 +332,13 @@ public class BuscarEvento extends javax.swing.JFrame {
     }
     
     private void resetearFiltros() {
-        // Limpia campos
+        
         jTextFieldTitulo.setText("");
         jTextFieldCiudad.setText("");
-        jFormattedTextFieldFechaEvento.setText("00/00/0000 00:00");
-
-        // Comboboxes a valores por defecto
         jComboBoxTipoEvento.setSelectedIndex(0);
         jComboBoxRangoPrecioEntrada.setSelectedIndex(0);
         jComboBoxRangoPrecioEntrada1.setSelectedIndex(0);
+        jFormattedTextFieldFechaEvento.setText("00/00/0000 00:00");
 
         // Bloquea campos nuevamente
         bloquearCampos();
@@ -449,6 +448,9 @@ public class BuscarEvento extends javax.swing.JFrame {
                 ((JComboBox<?>) componente).setSelectedIndex(0); // Vuelve al primer item
             }
         }
+        if (componente == jFormattedTextFieldFechaEvento && !estaActivo) {
+            ((JFormattedTextField) componente).setText("00/00/0000 00:00");
+        }
 
         aplicarFiltros(); // Actualizar resultados
     }
@@ -556,7 +558,7 @@ public class BuscarEvento extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        // Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
+        //Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jComboBoxTipoEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoEventoActionPerformed
@@ -573,6 +575,8 @@ public class BuscarEvento extends javax.swing.JFrame {
 
     private void jButtonReiniciarFiltrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReiniciarFiltrosActionPerformed
         // TODO add your handling code here:
+        resetearFiltros();
+        JOptionPane.showMessageDialog(this, "Todos los filtros han sido restablecidos");
     }//GEN-LAST:event_jButtonReiniciarFiltrosActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
