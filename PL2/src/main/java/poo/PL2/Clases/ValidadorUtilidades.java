@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
 
 
 public class ValidadorUtilidades {
@@ -79,4 +80,14 @@ public class ValidadorUtilidades {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
         return fecha.format(formatter);
     }
+    
+    public static ArrayList<LocalDateTime> crearFechas(String... fechas) {
+            ArrayList<LocalDateTime> listaFechas = new ArrayList<>();
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+
+            for (String fecha : fechas) {
+                listaFechas.add(LocalDateTime.parse(fecha, formatter));
+            }
+            return listaFechas;
+        }
 }
