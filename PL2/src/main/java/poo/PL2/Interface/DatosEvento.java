@@ -6,6 +6,8 @@ import java.awt.Image;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
 import poo.PL2.Clases.Evento;
 
 
@@ -15,6 +17,7 @@ public class DatosEvento extends javax.swing.JFrame {
     Evento evento;
     public DatosEvento(Evento evento) {
         initComponents();
+        configurarComponentes();
         this.setLocationRelativeTo(null); // Centra la ventana 
         this.evento = evento;
         
@@ -276,9 +279,16 @@ public class DatosEvento extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void configurarComponentes() {
+        jButtonAnadirCarrito.setToolTipText("Click para añadir al carrito"); 
+        
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
+    }
+    
+    
     private void jButtonAnadirCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirCarritoActionPerformed
         // TODO add your handling code here:
-        
+        JOptionPane.showMessageDialog(this, "Evento añadido al carrito");
     }//GEN-LAST:event_jButtonAnadirCarritoActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
