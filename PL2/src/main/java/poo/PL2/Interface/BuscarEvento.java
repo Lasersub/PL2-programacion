@@ -2,16 +2,34 @@
 package poo.PL2.Interface;
 
 import java.awt.Font;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
+import poo.PL2.Clases.DataBase;
+import poo.PL2.Clases.Evento;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 
 public class BuscarEvento extends javax.swing.JFrame {
 
-
+    private DefaultTableModel tableModel;
+    private List<Evento> eventosMostrados;
+    
     public BuscarEvento() {
         initComponents();
         configurarComponentes();
+        inicializarTabla();
+        cargarTodosEventos();
+        agregarListeners();
+        configurarDobleClickTabla();
         
         this.setLocationRelativeTo(null); // Centra la ventana
        
@@ -262,12 +280,169 @@ public class BuscarEvento extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void configurarComponentes() {
         jTableEventos.setToolTipText("Haga doble click sobre un evento para más información"); 
         
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
     }
+    
+    private void inicializarTabla() {
+        TableModel tableModel = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Título", "Calificación", "Ciudad", "Precio", "Fecha", "Tipo"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que la tabla no sea editable
+            }
+        };
+        jTableEventos.setModel(tableModel);
+    }
+    
+    
+    
+    private void cargarTodosEventos() {
+        DataBase db = DataBase.getInstance();
+        eventosMostrados = new ArrayList<>(db.getEventos());
+        actualizarTabla();
+    }
+    
+    private void actualizarTabla() {
+        tableModel.setRowCount(0);
+        
+        for (Evento evento : eventosMostrados) {
+            // Obtener la próxima fecha (primera fecha del array)
+            String proximaFecha = evento.getFechas().isEmpty() ? "Sin fecha" : 
+                ValidadorUtilidades.localDateTimeToString(evento.getFechas().get(0));
+            
+            Object[] fila = {
+                evento.getTitulo(),
+                evento.getTipo(),
+                evento.getDireccion().getCiudad(),
+                String.format("%.2f€", evento.getPrecio()),
+                proximaFecha,
+                String.format("%.1f", evento.getCalificacion())
+            };
+            tableModel.addRow(fila);
+        }
+    }
+    
+    private void agregarListeners() {
+        // Listener para campos de texto
+        DocumentListener documentListener = new DocumentListener() {
+            @Override public void insertUpdate(DocumentEvent e) { aplicarFiltros(); }
+            @Override public void removeUpdate(DocumentEvent e) { aplicarFiltros(); }
+            @Override public void changedUpdate(DocumentEvent e) { aplicarFiltros(); }
+        };
+        
+        jTextFieldTitulo.getDocument().addDocumentListener(documentListener);
+        jTextFieldCiudad.getDocument().addDocumentListener(documentListener);
+        
+        // Listeners para combobox y checkboxes
+        jComboBoxTipoEvento.addActionListener(e -> aplicarFiltros());
+        jComboBoxRangoPrecioEntrada.addActionListener(e -> aplicarFiltros());
+        jComboBoxRangoPrecioEntrada1.addActionListener(e -> aplicarFiltros());
+        
+        jCheckBoxTitulo.addActionListener(e -> toggleFiltro(jTextFieldTitulo, jCheckBoxTitulo));
+        jCheckBoxCiudad.addActionListener(e -> toggleFiltro(jTextFieldCiudad, jCheckBoxCiudad));
+        jCheckBoxTipoEvento.addActionListener(e -> toggleFiltro(jComboBoxTipoEvento, jCheckBoxTipoEvento));
+        jCheckBoxPrecioEntrada.addActionListener(e -> toggleFiltro(jComboBoxRangoPrecioEntrada, jCheckBoxPrecioEntrada));
+        jCheckBox1.addActionListener(e -> toggleFiltro(jComboBoxRangoPrecioEntrada1, jCheckBox1));
+        jCheckBoxFechaEvento.addActionListener(e -> toggleFiltro(jFormattedTextFieldFechaEvento, jCheckBoxFechaEvento));
+    }
+    
+    private void configurarDobleClickTabla() {
+        jTableEventos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) { // Detecta doble click
+                    int filaSeleccionada = jTableEventos.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        abrirDetalleEvento(filaSeleccionada);
+                    }
+                }
+            }
+        });
+    }
+
+    private void abrirDetalleEvento(int fila) {
+        String tituloEvento = (String) tableModel.getValueAt(fila, 0);
+        Evento evento = DataBase.getInstance().getEventoPorTitulo(tituloEvento);
+
+        if (evento != null) {
+            // Aquí abres tu ventana de detalle
+            new DatosEvento(evento).setVisible(true);
+        }
+    }
+    
+    private void toggleFiltro(JComponent componente, JCheckBox checkBox) {
+        componente.setEnabled(checkBox.isSelected());
+        aplicarFiltros();
+    }
+    
+    private void aplicarFiltros() {
+        DataBase db = DataBase.getInstance();
+        eventosMostrados = new ArrayList<>(db.getEventos());
+        
+        // Filtro por título
+        if (jCheckBoxTitulo.isSelected() && !jTextFieldTitulo.getText().isEmpty()) {
+            String busqueda = jTextFieldTitulo.getText().toLowerCase();
+            eventosMostrados.removeIf(e -> !e.getTitulo().toLowerCase().contains(busqueda));
+        }
+        
+        // Filtro por ciudad
+        if (jCheckBoxCiudad.isSelected() && !jTextFieldCiudad.getText().isEmpty()) {
+            String busqueda = jTextFieldCiudad.getText().toLowerCase();
+            eventosMostrados.removeIf(e -> !e.getDireccion().getCiudad().toLowerCase().contains(busqueda));
+        }
+        
+        // Filtro por tipo de evento
+        if (jCheckBoxTipoEvento.isSelected()) {
+            String tipoSeleccionado = (String) jComboBoxTipoEvento.getSelectedItem();
+            eventosMostrados.removeIf(e -> !e.getTipo().equalsIgnoreCase(tipoSeleccionado));
+        }
+        
+        // Filtro por precio
+        if (jCheckBoxPrecioEntrada.isSelected()) {
+            String rangoPrecio = (String) jComboBoxRangoPrecioEntrada.getSelectedItem();
+            eventosMostrados.removeIf(e -> !cumpleRangoPrecio(e.getPrecio(), rangoPrecio));
+        }
+        
+        // Filtro por calificación
+        if (jCheckBox1.isSelected()) {
+            String calificacionMinima = (String) jComboBoxRangoPrecioEntrada1.getSelectedItem();
+            int minCalificacion = Integer.parseInt(calificacionMinima.replaceAll("[^0-9]", ""));
+            eventosMostrados.removeIf(e -> e.getCalificacion() < minCalificacion);
+        }
+        
+        // Filtro por fecha
+        if (jCheckBoxFechaEvento.isSelected()) {
+            String fechaTexto = jFormattedTextFieldFechaEvento.getText();
+            try {
+                LocalDateTime fechaFiltro = ValidadorUtilidades.stringToLocalDateTime(fechaTexto);
+                eventosMostrados.removeIf(e -> 
+                    e.getFechas().stream().noneMatch(fecha -> 
+                        fecha.isEqual(fechaFiltro) || fecha.isAfter(fechaFiltro)
+                    )
+                );
+            } catch (Exception e) {
+                // Si hay error en el formato, no filtrar
+            }
+        }
+        
+        actualizarTabla();
+    }
+    
+    private boolean cumpleRangoPrecio(double precio, String rango) {
+        if (rango.equals("0 - 10€")) return precio >= 0 && precio <= 10;
+        if (rango.equals("11 - 20€")) return precio >= 11 && precio <= 20;
+        if (rango.equals("21 - 30€")) return precio >= 21 && precio <= 30;
+        if (rango.equals("+ 30€")) return precio > 30;
+        return true;
+    }
+     
+    
     
     
     private void jCheckBoxTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxTituloActionPerformed
@@ -314,41 +489,6 @@ public class BuscarEvento extends javax.swing.JFrame {
     private void jComboBoxRangoPrecioEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxRangoPrecioEntrada1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxRangoPrecioEntrada1ActionPerformed
-
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(BuscarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(BuscarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(BuscarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(BuscarEvento.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new BuscarEvento().setVisible(true);
-            }
-        });
-    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonVolver;
