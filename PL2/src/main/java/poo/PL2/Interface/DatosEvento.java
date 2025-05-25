@@ -1,25 +1,36 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package poo.PL2.Interface;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import poo.PL2.Clases.Evento;
 
-/**
- *
- * @author oscar
- */
+
 public class DatosEvento extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EditorEvento
-     */
+    
     Evento evento;
     public DatosEvento(Evento evento) {
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana 
         this.evento = evento;
+        
+        JLabel iconLabel = new JLabel();
+        
+        ImageIcon icono = new ImageIcon(getClass().getResource("/imagenes/anadirCarrito.png"));
+
+        Image imagenEscalada = icono.getImage()
+        .getScaledInstance(30, 30, Image.SCALE_SMOOTH);
+        iconLabel.setIcon(new ImageIcon(imagenEscalada));
+
+        jButtonAnadirCarrito.add(iconLabel);
+        
+        // Quitar el borde y fondo para que solo se vea el ícono
+        jButtonAnadirCarrito.setBorderPainted(false);
+        jButtonAnadirCarrito.setContentAreaFilled(false);
+        jButtonAnadirCarrito.setFocusPainted(false);
+        
     }
 
     /**
@@ -32,6 +43,7 @@ public class DatosEvento extends javax.swing.JFrame {
     private void initComponents() {
 
         jLabel1 = new javax.swing.JLabel();
+        jButtonAnadirCarrito = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -39,26 +51,44 @@ public class DatosEvento extends javax.swing.JFrame {
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("DATOS DEL EVENTO");
 
+        jButtonAnadirCarrito.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAnadirCarritoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 465, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButtonAnadirCarrito)
+                .addGap(30, 30, 30))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(18, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addContainerGap(330, Short.MAX_VALUE))
+                .addGap(18, 18, Short.MAX_VALUE)
+                .addComponent(jButtonAnadirCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(272, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void jButtonAnadirCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirCarritoActionPerformed
+        // TODO add your handling code here:
+        
+    }//GEN-LAST:event_jButtonAnadirCarritoActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButtonAnadirCarrito;
     private javax.swing.JLabel jLabel1;
     // End of variables declaration//GEN-END:variables
 }
