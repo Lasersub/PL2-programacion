@@ -1,6 +1,7 @@
 
 package poo.PL2.Interface;
 
+import java.awt.Font;
 import java.awt.Image;
 import javax.swing.*;
 import java.awt.event.*;
@@ -17,6 +18,7 @@ public class PortalCliente extends javax.swing.JFrame {
      */
     public PortalCliente(Cliente cliente) {
         initComponents();
+        configurarComponentes();
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         this.setLocationRelativeTo(null); // Centra la ventana
         this.cliente = cliente;
@@ -138,6 +140,11 @@ public class PortalCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void configurarComponentes() {
+        jButtonCarrito.setToolTipText("Click para ir al carrito"); 
+        
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
+    }
     
     
     private void jButtonBuscarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEventoActionPerformed
@@ -156,7 +163,7 @@ public class PortalCliente extends javax.swing.JFrame {
         
         // Añadir acciones a las opciones
         itemReservados.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Mostrando eventos reservados...");
+            Navegacion.cambiarVentana(this, new ConsultarReserva());
         });
 
         itemAtendidos.addActionListener(e -> {
