@@ -32,9 +32,9 @@ public class PortalCliente extends javax.swing.JFrame {
         jButtonCarrito.add(iconLabel);
         
         // Quitar el borde y fondo para que solo se vea el ícono
-        //jButtonCarrito.setBorderPainted(false);
-        //jButtonCarrito.setContentAreaFilled(false);
-        //jButtonCarrito.setFocusPainted(false);
+        jButtonCarrito.setBorderPainted(false);
+        jButtonCarrito.setContentAreaFilled(false);
+        jButtonCarrito.setFocusPainted(false);
         
     }
 
