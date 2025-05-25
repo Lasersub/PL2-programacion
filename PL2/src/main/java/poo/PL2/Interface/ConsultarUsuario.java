@@ -4,22 +4,182 @@
  */
 package poo.PL2.Interface;
 
+import java.awt.Font;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
+import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.DataBase;
 import poo.PL2.Clases.Navegacion;
 
-/**
- *
- * @author oscar
- */
+
 public class ConsultarUsuario extends javax.swing.JFrame {
+    
+    private DefaultTableModel tableModel;
+    private List<Cliente> clientesMostrados;
 
     /**
      * Creates new form ConsultarUsuario
      */
     public ConsultarUsuario() {
         initComponents();
+        configurarVentana();
+        inicializarTabla();
+        cargarTodosClientes();
+        configurarComponentes();
+        agregarListeners();
+        configurarDobleClickTabla();
+    }
+    
+    private void configurarVentana() {
         this.setLocationRelativeTo(null); // Centra la ventana
+        bloquearCampos();
+    }
+    
+    private void configurarComponentes() {
+        jTableUsuarios.setToolTipText("Haga doble click sobre un cliente para más información");
+        jCheckBoxNombre.setToolTipText("Dejar vacío para ignorar este filtro");
+        jCheckBoxCorreo.setToolTipText("Dejar vacío para ignorar este filtro");
         
-        jTableUsuarios.setEnabled(false);
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));
+    }
+    
+    private void bloquearCampos() {
+        jTextFieldNombre.setEnabled(false);
+        jTextFieldCorreo.setEnabled(false);
+        jCheckBoxVip.setEnabled(false);
+        
+        jCheckBoxNombre.setSelected(false);
+        jCheckBoxCorreo.setSelected(false);
+        jCheckBoxVip.setSelected(false);
+    }
+    
+    private void resetearFiltros() {
+        jTextFieldNombre.setText("");
+        jTextFieldCorreo.setText("");
+        jCheckBoxVip.setSelected(false);
+        
+        bloquearCampos();
+        cargarTodosClientes();
+    }
+    
+    private void inicializarTabla() {
+        tableModel = (DefaultTableModel) jTableUsuarios.getModel();
+        tableModel.setRowCount(0);
+        tableModel.setColumnIdentifiers(new String[]{"Correo", "Nombre", "VIP"});
+        jTableUsuarios.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+    }
+    
+    private void cargarTodosClientes() {
+        DataBase db = DataBase.getInstance();
+        clientesMostrados = new ArrayList<>(db.getClientes().values());
+        actualizarTabla();
+    }
+    
+    private void actualizarTabla() {
+        tableModel.setRowCount(0);
+        
+        for (Cliente cliente : clientesMostrados) {
+            Object[] fila = {
+                cliente.getCorreo(),
+                cliente.getNombre(),
+                cliente.isVip() ? "Sí" : "No"
+            };
+            tableModel.addRow(fila);
+        }
+    }
+    
+    private void agregarListeners() {
+        // Listener para campos de texto
+        DocumentListener documentListener = new DocumentListener() {
+            @Override public void insertUpdate(DocumentEvent e) { aplicarFiltros(); }
+            @Override public void removeUpdate(DocumentEvent e) { aplicarFiltros(); }
+            @Override public void changedUpdate(DocumentEvent e) { aplicarFiltros(); }
+        };
+        
+        jTextFieldNombre.getDocument().addDocumentListener(documentListener);
+        jTextFieldCorreo.getDocument().addDocumentListener(documentListener);
+        
+        // Listeners para checkboxes
+        jCheckBoxNombre.addActionListener(e -> toggleFiltro(jTextFieldNombre, jCheckBoxNombre));
+        jCheckBoxCorreo.addActionListener(e -> toggleFiltro(jTextFieldCorreo, jCheckBoxCorreo));
+        jCheckBoxVip.addActionListener(e -> {
+            jCheckBoxVip.setEnabled(jCheckBoxVip.isSelected());
+            aplicarFiltros();
+        });
+    }
+    
+    private void configurarDobleClickTabla() {
+        jTableUsuarios.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int filaSeleccionada = jTableUsuarios.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        abrirDetalleCliente(filaSeleccionada);
+                    }
+                }
+            }
+        });
+    }
+    
+    private void abrirDetalleCliente(int fila) {
+        String correoCliente = (String) tableModel.getValueAt(fila, 0);
+        Cliente cliente = DataBase.getInstance().getCliente(correoCliente);
+
+        if (cliente != null) {
+            // Aquí abres tu ventana de detalle del cliente
+            // COMENTADO DE MOMENTO new MasDatosCliente(cliente).setVisible(true); 
+            // O si prefieres mantener esta ventana:
+            // this.dispose();
+        }
+    }
+    
+    private void toggleFiltro(javax.swing.JTextField componente, javax.swing.JCheckBox checkBox) {
+        boolean estaActivo = checkBox.isSelected();
+        componente.setEnabled(estaActivo);
+
+        if (!estaActivo) {
+            componente.setText("");
+        }
+        aplicarFiltros();
+    }
+    
+    private void aplicarFiltros() {
+        DataBase db = DataBase.getInstance();
+        clientesMostrados = new ArrayList<>(db.getClientes().values());
+        
+        // Filtro por nombre
+        if (jCheckBoxNombre.isSelected()) {
+            String busqueda = jTextFieldNombre.getText().trim().toLowerCase();
+            if (!busqueda.isEmpty()) {
+                clientesMostrados.removeIf(c -> 
+                    !c.getNombre().toLowerCase().contains(busqueda)
+                );
+            }
+        }
+        
+        // Filtro por correo
+        if (jCheckBoxCorreo.isSelected()) {
+            String busqueda = jTextFieldCorreo.getText().trim().toLowerCase();
+            if (!busqueda.isEmpty()) {
+                clientesMostrados.removeIf(c -> 
+                    !c.getCorreo().toLowerCase().contains(busqueda)
+                );
+            }
+        }
+        
+        // Filtro por VIP
+        if (jCheckBoxVip.isSelected()) {
+            clientesMostrados.removeIf(c -> !c.isVip());
+        }
+        
+        actualizarTabla();
     }
 
     /**
@@ -131,58 +291,61 @@ public class ConsultarUsuario extends javax.swing.JFrame {
 
         jButtonReiniciarFiltros.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonReiniciarFiltros.setText("REINICIAR FILTROS");
+        jButtonReiniciarFiltros.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonReiniciarFiltrosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 474, Short.MAX_VALUE)
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
-                            .addComponent(jTextFieldNombre))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jCheckBoxCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxVip, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addComponent(jButtonVolver)
+                        .addGap(204, 204, 204)
+                        .addComponent(jButtonReiniciarFiltros))
+                    .addComponent(jCheckBoxVip, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(jButtonVolver)
-                                .addGap(204, 204, 204)
-                                .addComponent(jButtonReiniciarFiltros))
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 452, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jCheckBoxNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBoxCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
+                            .addComponent(jTextFieldCorreo))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 514, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(18, 18, 18)
+                .addGap(11, 11, 11)
                 .addComponent(jLabel1)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxNombre)))
-                    .addComponent(jCheckBoxCorreo))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxCorreo)
+                    .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(9, 9, 9)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxNombre)
+                    .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jCheckBoxVip)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
+                .addGap(24, 24, 24)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonVolver)
                     .addComponent(jButtonReiniciarFiltros))
-                .addContainerGap(18, Short.MAX_VALUE))
+                .addContainerGap(10, Short.MAX_VALUE))
         );
 
         pack();
@@ -204,49 +367,21 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCorreoActionPerformed
 
-    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldNombreActionPerformed
-
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
         Navegacion.cambiarVentana(this, new PortalAdministrador()); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarUsuario.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
+    private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jTextFieldNombreActionPerformed
 
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ConsultarUsuario().setVisible(true);
-            }
-        });
-    }
+    private void jButtonReiniciarFiltrosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonReiniciarFiltrosActionPerformed
+        // TODO add your handling code here:
+        resetearFiltros();
+        JOptionPane.showMessageDialog(this, "Todos los filtros han sido restablecidos");
+    }//GEN-LAST:event_jButtonReiniciarFiltrosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonReiniciarFiltros;
