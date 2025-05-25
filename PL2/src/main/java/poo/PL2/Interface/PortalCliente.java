@@ -1,6 +1,7 @@
 
 package poo.PL2.Interface;
 
+import java.awt.Image;
 import javax.swing.*;
 import java.awt.event.*;
 import poo.PL2.Clases.Cliente;
@@ -20,12 +21,21 @@ public class PortalCliente extends javax.swing.JFrame {
         this.setLocationRelativeTo(null); // Centra la ventana
         this.cliente = cliente;
         
-        jButtonCarrito.setIcon(new ImageIcon(getClass().getResource("/imagenes/carrito.png")));
+        JLabel iconLabel = new JLabel();
+        
+        ImageIcon icono = new ImageIcon("/imagenes/carrito.png");
 
+        Image imagenEscalada = icono.getImage()
+        .getScaledInstance(jButtonCarrito.getWidth(), jButtonCarrito.getHeight(), Image.SCALE_SMOOTH);
+        iconLabel.setIcon(new ImageIcon(imagenEscalada));
+
+        jButtonCarrito.add(iconLabel);
+        
         // Quitar el borde y fondo para que solo se vea el ícono
-        jButtonCarrito.setBorderPainted(false);
-        jButtonCarrito.setContentAreaFilled(false);
-        jButtonCarrito.setFocusPainted(false);
+        //jButtonCarrito.setBorderPainted(false);
+        //jButtonCarrito.setContentAreaFilled(false);
+        //jButtonCarrito.setFocusPainted(false);
+        
     }
 
     /**
@@ -128,6 +138,8 @@ public class PortalCliente extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    
+    
     private void jButtonBuscarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEventoActionPerformed
         // TODO add your handling code here:
         Navegacion.cambiarVentana(this, new BuscarEvento()); // Buscar Evento
@@ -172,7 +184,7 @@ public class PortalCliente extends javax.swing.JFrame {
 
     private void jButtonCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCarritoActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new CarritoCliente()); // Carrito
+        Navegacion.cambiarVentana(this, new CarritoCliente(cliente)); // Carrito
     }//GEN-LAST:event_jButtonCarritoActionPerformed
 
 

@@ -4,9 +4,13 @@ package poo.PL2.Clases;
 import java.io.File;
 import java.io.IOException;
 import java.time.YearMonth;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 import poo.PL2.Interface.*;
 
 
@@ -100,7 +104,21 @@ public class MainCode {
         java.awt.EventQueue.invokeLater(() -> {
             MainMenu mainMenu = new MainMenu();
             mainMenu.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE); // ¡Importante!
+            
+            try {
+                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(MainCode.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (InstantiationException ex) {
+                Logger.getLogger(MainCode.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IllegalAccessException ex) {
+                Logger.getLogger(MainCode.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (UnsupportedLookAndFeelException ex) {
+                Logger.getLogger(MainCode.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
             mainMenu.setVisible(true);
+            
         });
         
         
