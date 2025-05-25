@@ -57,7 +57,8 @@ public class MainCode {
         
         // TEST: Verificar si hay eventos (solo para depuración)
         System.out.println("Eventos en la base: " + dataBase.getEventos().size());
-
+        
+        /*
         // Prueba de obtener evento (solo si existe)
         Evento evento = dataBase.getEventoPorTitulo("historia");
         if (evento != null) {
@@ -87,7 +88,7 @@ public class MainCode {
             System.out.println("El evento 'historia' no existe en la base de datos.");
         }
         
-        
+        */
         
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
