@@ -58,6 +58,7 @@ public class MainCode {
         dataBase.addCliente(cliente2);
         */
         
+        /*
         
         // 1. Concierto en Madrid (precio medio)
         dataBase.guardarEvento(new Evento(
@@ -159,7 +160,7 @@ public class MainCode {
             "data/imagenesEventos/arte.png"
         ));
         
-        
+        */
         
 
         // TEST: Verificar si hay eventos (solo para depuración)
