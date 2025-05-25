@@ -6,7 +6,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JTextField;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
@@ -25,9 +28,10 @@ public class BuscarEvento extends javax.swing.JFrame {
     
     public BuscarEvento() {
         initComponents();
-        configurarComponentes();
+        bloquearCampos();
         inicializarTabla();
         cargarTodosEventos();
+        configurarComponentes();
         agregarListeners();
         configurarDobleClickTabla();
         
@@ -283,21 +287,63 @@ public class BuscarEvento extends javax.swing.JFrame {
     
     private void configurarComponentes() {
         jTableEventos.setToolTipText("Haga doble click sobre un evento para más información"); 
+        jCheckBoxTitulo.setToolTipText("Dejar vacío para ignorar este filtro");
+        jCheckBoxCiudad.setToolTipText("Dejar vacío para ignorar este filtro");
+        jCheckBoxTipoEvento.setToolTipText("Seleccione un tipo de evento");
+        jCheckBoxFechaEvento.setToolTipText("Formato: dd/mm/aaaa hh:mm");
         
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
     }
     
+    private void bloquearCampos() {
+        // Campos de texto
+        jTextFieldTitulo.setEnabled(false);
+        jTextFieldCiudad.setEnabled(false);
+
+        // Comboboxes
+        jComboBoxTipoEvento.setEnabled(false);
+        jComboBoxRangoPrecioEntrada.setEnabled(false);
+        jComboBoxRangoPrecioEntrada1.setEnabled(false);
+
+        // Campo de fecha
+        jFormattedTextFieldFechaEvento.setEnabled(false);
+
+        // Opcional: Desmarcar checkboxes (si quieres que estén desactivados inicialmente)
+        jCheckBoxTitulo.setSelected(false);
+        jCheckBoxCiudad.setSelected(false);
+        jCheckBoxTipoEvento.setSelected(false);
+        jCheckBoxPrecioEntrada.setSelected(false);
+        jCheckBox1.setSelected(false); // Calificación
+        jCheckBoxFechaEvento.setSelected(false);
+    }
+    
+    private void resetearFiltros() {
+        // Limpia campos
+        jTextFieldTitulo.setText("");
+        jTextFieldCiudad.setText("");
+        jFormattedTextFieldFechaEvento.setText("00/00/0000 00:00");
+
+        // Comboboxes a valores por defecto
+        jComboBoxTipoEvento.setSelectedIndex(0);
+        jComboBoxRangoPrecioEntrada.setSelectedIndex(0);
+        jComboBoxRangoPrecioEntrada1.setSelectedIndex(0);
+
+        // Bloquea campos nuevamente
+        bloquearCampos();
+
+        // Recarga todos los eventos
+        cargarTodosEventos();
+    }
+    
     private void inicializarTabla() {
-        TableModel tableModel = new DefaultTableModel(
-                new Object[][]{},
-                new String[]{"Título", "Calificación", "Ciudad", "Precio", "Fecha", "Tipo"}
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hace que la tabla no sea editable
-            }
-        };
-        jTableEventos.setModel(tableModel);
+    // Obtener el modelo que NetBeans ya creó
+    tableModel = (DefaultTableModel) jTableEventos.getModel();
+    
+    // Limpiar las filas de ejemplo que puso NetBeans
+    tableModel.setRowCount(0);
+    
+    // Configurar las propiedades que necesites
+    tableModel.setColumnIdentifiers(new String[]{"Titulo", "Calificación", "Ciudad", "Precio", "Fecha", "Tipo"});
     }
     
     
@@ -377,8 +423,21 @@ public class BuscarEvento extends javax.swing.JFrame {
     }
     
     private void toggleFiltro(JComponent componente, JCheckBox checkBox) {
-        componente.setEnabled(checkBox.isSelected());
-        aplicarFiltros();
+        boolean estaActivo = checkBox.isSelected();
+        componente.setEnabled(estaActivo);
+
+        // Limpiar campo si se desactiva el filtro
+        if (!estaActivo) {
+            if (componente instanceof JTextField) {
+                ((JTextField) componente).setText("");
+            } else if (componente instanceof JFormattedTextField) {
+                ((JFormattedTextField) componente).setText("");
+            } else if (componente instanceof JComboBox) {
+                ((JComboBox<?>) componente).setSelectedIndex(0); // Vuelve al primer item
+            }
+        }
+
+        aplicarFiltros(); // Actualizar resultados
     }
     
     private void aplicarFiltros() {
@@ -386,15 +445,24 @@ public class BuscarEvento extends javax.swing.JFrame {
         eventosMostrados = new ArrayList<>(db.getEventos());
         
         // Filtro por título
-        if (jCheckBoxTitulo.isSelected() && !jTextFieldTitulo.getText().isEmpty()) {
-            String busqueda = jTextFieldTitulo.getText().toLowerCase();
-            eventosMostrados.removeIf(e -> !e.getTitulo().toLowerCase().contains(busqueda));
+        if (jCheckBoxTitulo.isSelected()) {
+            String busqueda = jTextFieldTitulo.getText().trim();
+            if (!busqueda.isEmpty()) {
+                eventosMostrados.removeIf(e -> 
+                    !e.getTitulo().toLowerCase().contains(busqueda.toLowerCase())
+                );
+            }
+            // Si está vacío: no filtra (muestra todos los que cumplan otros filtros)
         }
         
         // Filtro por ciudad
-        if (jCheckBoxCiudad.isSelected() && !jTextFieldCiudad.getText().isEmpty()) {
-            String busqueda = jTextFieldCiudad.getText().toLowerCase();
-            eventosMostrados.removeIf(e -> !e.getDireccion().getCiudad().toLowerCase().contains(busqueda));
+        if (jCheckBoxCiudad.isSelected()) {
+            String busqueda = jTextFieldCiudad.getText().trim();
+            if (!busqueda.isEmpty()) {
+                eventosMostrados.removeIf(e -> 
+                    !e.getDireccion().getCiudad().toLowerCase().contains(busqueda.toLowerCase())
+                );
+            }
         }
         
         // Filtro por tipo de evento
