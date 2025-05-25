@@ -360,7 +360,7 @@ public class BuscarEvento extends javax.swing.JFrame {
     tableModel.setRowCount(0);
 
     // Configurar las propiedades que necesites
-    tableModel.setColumnIdentifiers(new String[]{"Titulo", "Calificación", "Ciudad", "Precio", "Fecha", "Tipo"});
+    tableModel.setColumnIdentifiers(new String[]{"Titulo", "Tipo", "Ciudad", "Precio", "Fecha", "Calificación"});
     
     jTableEventos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
     
