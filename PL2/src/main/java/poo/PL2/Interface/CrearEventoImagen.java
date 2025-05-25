@@ -47,22 +47,33 @@ public class CrearEventoImagen extends javax.swing.JFrame {
         }
     }
     
-    // --- Método 2: Guardar imagen en disco ---
+    // --- Método 2 Modificado: Guardar imagen en ruta fija ---
     private void guardarFoto() {
-        if (imagen == null) return;
+        if (imagen == null) {
+            JOptionPane.showMessageDialog(this, "No hay imagen para guardar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setDialogTitle("Guardar imagen como...");
-        fileChooser.setSelectedFile(new File("foto_usuario.png"));
+        // Ruta fija donde se guardará la imagen
+        String rutaBase = "data/imagenesEventos/";  // Para Windows
 
-        if (fileChooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-            try {
-                File archivo = fileChooser.getSelectedFile();
-                ImageIO.write(imagen, "png", archivo);
-                JOptionPane.showMessageDialog(this, "Imagen guardada en:\n" + archivo.getAbsolutePath());
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-            }
+        // Crear directorio si no existe
+        File directorio = new File(rutaBase);
+        if (!directorio.exists()) {
+            directorio.mkdirs();
+        }
+
+        // Nombre del archivo (puedes personalizarlo)
+        String nombreArchivo = "foto_usuario_" + System.currentTimeMillis() + ".png";
+        File archivoDestino = new File(rutaBase + nombreArchivo);
+
+        try {
+            ImageIO.write(imagen, "png", archivoDestino);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al guardar: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -114,7 +125,7 @@ public class CrearEventoImagen extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         jLabelImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabelImagen.setText("Arrastra una imagen aquí o haz clic en 'Seleccionar");
+        jLabelImagen.setText("Arrastra una imagen aquí o haz clic en Seleccionar");
         jLabelImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
         jButtonSeleccionar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
