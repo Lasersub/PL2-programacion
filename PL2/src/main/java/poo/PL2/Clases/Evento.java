@@ -1,9 +1,13 @@
 
 package poo.PL2.Clases;
 
+import java.awt.Image;
+import java.io.File;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.io.Serializable;
 import java.util.ArrayList;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 
@@ -114,5 +118,45 @@ public class Evento implements Serializable {
             return null;
         }
         return new ImageIcon(rutaPortada); // Carga desde ruta del sistema de archivos
+    }
+     
+    /**
+     * Carga y devuelve la imagen de portada como ImageIcon
+     */
+    public ImageIcon cargarImagenPortada() {
+        if (this.rutaPortada == null) {
+            return null;
+        }
+
+        try {
+            String rutaAbsoluta = this.obtenerRutaAbsolutaPortada();
+            File archivoImagen = new File(rutaAbsoluta);
+
+            if (archivoImagen.exists()) {
+                Image imagen = ImageIO.read(archivoImagen);
+                return new ImageIcon(imagen);
+            }
+        } catch (IOException e) {
+            System.err.println("Error al cargar imagen: " + e.getMessage());
+        }
+        return null;
+    }
+
+    /**
+     * Versión con redimensionamiento
+     */
+    public ImageIcon cargarImagenPortada(int ancho, int alto) {
+        ImageIcon icono = this.cargarImagenPortada();
+        if (icono != null) {
+            return new ImageIcon(icono.getImage().getScaledInstance(ancho, alto, Image.SCALE_SMOOTH));
+        }
+        return null;
+    }
+    
+    public String obtenerRutaAbsolutaPortada() {
+        if (this.rutaPortada == null || this.rutaPortada.isEmpty()) {
+            return null;
+        }
+        return System.getProperty("user.dir") + File.separator + this.rutaPortada.replace("/", File.separator);
     }
 }
