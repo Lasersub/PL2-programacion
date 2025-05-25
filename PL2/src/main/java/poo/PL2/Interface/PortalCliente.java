@@ -149,7 +149,7 @@ public class PortalCliente extends javax.swing.JFrame {
     
     private void jButtonBuscarEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBuscarEventoActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new BuscarEvento()); // Buscar Evento
+        Navegacion.cambiarVentana(this, new BuscarEvento(cliente)); // Buscar Evento
     }//GEN-LAST:event_jButtonBuscarEventoActionPerformed
 
     private void jButtonMisEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonMisEventosActionPerformed
