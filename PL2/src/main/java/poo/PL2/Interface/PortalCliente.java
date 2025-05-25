@@ -23,10 +23,10 @@ public class PortalCliente extends javax.swing.JFrame {
         
         JLabel iconLabel = new JLabel();
         
-        ImageIcon icono = new ImageIcon("/imagenes/carrito.png");
+        ImageIcon icono = new ImageIcon(getClass().getResource("/imagenes/carrito.png"));
 
         Image imagenEscalada = icono.getImage()
-        .getScaledInstance(jButtonCarrito.getWidth(), jButtonCarrito.getHeight(), Image.SCALE_SMOOTH);
+        .getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         iconLabel.setIcon(new ImageIcon(imagenEscalada));
 
         jButtonCarrito.add(iconLabel);
@@ -114,8 +114,8 @@ public class PortalCliente extends javax.swing.JFrame {
             .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButtonCarrito, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addComponent(jButtonCarrito)
+                .addGap(54, 54, 54))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
