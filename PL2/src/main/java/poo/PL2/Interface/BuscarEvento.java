@@ -1,6 +1,7 @@
 
 package poo.PL2.Interface;
 
+import java.awt.Dimension;
 import java.awt.Font;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,11 +11,15 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import poo.PL2.Clases.DataBase;
 import poo.PL2.Clases.Evento;
@@ -349,16 +354,19 @@ public class BuscarEvento extends javax.swing.JFrame {
     
     private void inicializarTabla() {
     // Obtener el modelo que NetBeans ya creó
-    tableModel = (DefaultTableModel) jTableEventos.getModel();
-    
+        tableModel = (DefaultTableModel) jTableEventos.getModel();
+
     // Limpiar las filas de ejemplo que puso NetBeans
     tableModel.setRowCount(0);
-    
+
     // Configurar las propiedades que necesites
     tableModel.setColumnIdentifiers(new String[]{"Titulo", "Calificación", "Ciudad", "Precio", "Fecha", "Tipo"});
+    
+    jTableEventos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+    
     }
-    
-    
+
+
     
     private void cargarTodosEventos() {
         DataBase db = DataBase.getInstance();
