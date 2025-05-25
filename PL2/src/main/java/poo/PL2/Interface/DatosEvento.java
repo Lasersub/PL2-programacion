@@ -8,18 +8,21 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.Evento;
 
 
 public class DatosEvento extends javax.swing.JFrame {
 
-    
+    Cliente cliente;
     Evento evento;
-    public DatosEvento(Evento evento) {
+    
+    public DatosEvento(Evento evento, Cliente cliente) {
         initComponents();
         configurarComponentes();
         this.setLocationRelativeTo(null); // Centra la ventana 
         this.evento = evento;
+        this.cliente = cliente;
         
         jListFechasEvento.setModel(model);
         
