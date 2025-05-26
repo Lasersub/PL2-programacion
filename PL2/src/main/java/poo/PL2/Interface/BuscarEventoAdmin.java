@@ -561,7 +561,7 @@ public class BuscarEventoAdmin extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        //Navegacion.cambiarVentana(this, new PortalAdministrador()); // Volver
+        Navegacion.cambiarVentana(this, new PortalAdministrador()); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jComboBoxTipoEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoEventoActionPerformed
