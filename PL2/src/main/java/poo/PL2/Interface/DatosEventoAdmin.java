@@ -493,7 +493,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
     }
     
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-        // TODO add your handling code here:
+        this.dispose();  
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jTextFieldTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTituloActionPerformed
