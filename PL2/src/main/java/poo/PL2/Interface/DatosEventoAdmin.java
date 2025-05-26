@@ -10,39 +10,261 @@ import java.awt.dnd.DropTargetAdapter;
 import java.awt.dnd.DropTargetDropEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-import javax.swing.UIManager;
+import poo.PL2.Clases.Administrador;
+import poo.PL2.Clases.DataBase;
+import poo.PL2.Clases.Direccion;
 import poo.PL2.Clases.Evento;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.SesionErrorHandler;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 
 public class DatosEventoAdmin extends javax.swing.JFrame {
 
     
-    Evento evento;
+    private Evento evento;
+    private BufferedImage imagen;
+    private DefaultListModel<String> model = new DefaultListModel<>();
+    private boolean modificando = false;
+    
     public DatosEventoAdmin(Evento evento) {
         initComponents();
-        configurarArrastrarSoltar();
-        this.setLocationRelativeTo(null); // Centra la ventana 
+        this.setLocationRelativeTo(null);
         this.evento = evento;
+      
         
+        // Configuración inicial
         jListFechasEvento.setModel(model);
-        
         jListFechasEvento.setEnabled(false);
-        jListFechasEvento.setFont(new Font("Arial", Font.BOLD, 12));
+        jListFechasEvento.setFont(new java.awt.Font("Arial", Font.BOLD, 12));
         
-        jButtonSeleccionar.setEnabled(false); // Solo se activa cuando se pulsa modificar
-        jButtonAnadirFecha.setEnabled(false); // Solo se activa cuando se pulsa modificar
-        jButtonBorrarFecha.setEnabled(false); // Solo se activa cuando se pulsa modificar
-        jButtonGuardarImagen.setEnabled(false); // Solo se activa cuando hay imagen
+        // Deshabilitar botones inicialmente
+        jButtonSeleccionar.setEnabled(false);
+        jButtonAnadirFecha.setEnabled(false);
+        jButtonBorrarFecha.setEnabled(false);
+        jButtonGuardarImagen.setEnabled(false);
         
+        // Cargar datos del evento
+        cargarDatosEvento();
+        
+        // Configurar logo
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
     }
+    
+    private void cargarDatosEvento() {
+        // Cargar datos básicos
+        jTextFieldTitulo.setText(evento.getTitulo());
+        jComboBoxTipoEvento.setSelectedItem(evento.getTipo());
+        jFormattedTextFieldPrecioEntrada.setValue(evento.getPrecio());
+        
+        // Cargar dirección
+        Direccion direccion = evento.getDireccion();
+        jTextFieldCalle.setText(direccion.getCalle());
+        jTextFieldNumero.setText(direccion.getNumero());
+        jTextFieldCiudad.setText(direccion.getCiudad());
+        jFormattedTextFieldCodigoPostal.setText(direccion.getCodigoPostal());
+        
+        // Cargar fechas
+        model.clear();
+        for (LocalDateTime fecha : evento.getFechas()) {
+            model.addElement(ValidadorUtilidades.localDateTimeToString(fecha));
+        }
+        
+        // Cargar imagen
+        cargarImagenEvento();
+        
+        // Cargar calificación
+        jTextFieldCalificacion.setText(String.format("%.1f", evento.getCalificacion()));
+    }
+    
+    private void cargarImagenEvento() {
+        if (evento.getRutaPortada() != null && !evento.getRutaPortada().isEmpty()) {
+            try {
+                File archivoImagen = new File(evento.obtenerRutaAbsolutaPortada());
+                if (archivoImagen.exists()) {
+                    imagen = ImageIO.read(archivoImagen);
+                    ImageIcon icono = new ImageIcon(imagen.getScaledInstance(
+                        jLabelImagen.getWidth(), -1, Image.SCALE_SMOOTH));
+                    jLabelImagen.setIcon(icono);
+                    jLabelImagen.setText("");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar la imagen del evento", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void seleccionarFoto() {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
+            "Imágenes", "jpg", "jpeg", "png", "gif"));
+
+        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+            cargarImagen(fileChooser.getSelectedFile());
+        }
+    }
+    
+    private void cargarImagen(File archivo) {
+        try {
+            imagen = ImageIO.read(archivo);
+            ImageIcon iconoPrincipal = new ImageIcon(imagen.getScaledInstance(
+                jLabelImagen.getWidth(), -1, Image.SCALE_SMOOTH));
+            jLabelImagen.setIcon(iconoPrincipal);
+            jLabelImagen.setText("");
+            jButtonGuardarImagen.setEnabled(true);
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void guardarImagen() {
+        if (imagen == null) {
+            JOptionPane.showMessageDialog(this, "No hay imagen para guardar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        try {
+            // Ruta donde se guardarán las imágenes
+            String rutaBase = "data/imagenesEventos/";
+            File directorio = new File(rutaBase);
+            if (!directorio.exists()) {
+                directorio.mkdirs();
+            }
+
+            // Nombre único para la imagen
+            String nombreArchivo = "evento_" + evento.getTitulo().toLowerCase()
+                    .replaceAll("[^a-z0-9]", "_") + "_" + System.currentTimeMillis() + ".png";
+            File archivoDestino = new File(rutaBase + nombreArchivo);
+            
+            ImageIO.write(imagen, "png", archivoDestino);
+            
+            // Actualizar ruta en el evento
+            evento.setRutaPortada("data/imagenesEventos/" + nombreArchivo);
+            
+            JOptionPane.showMessageDialog(this, "Imagen guardada correctamente");
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void guardarCambios() {
+        // Validar campos obligatorios
+        if (jTextFieldTitulo.getText().isBlank() || jTextFieldCalle.getText().isBlank() || 
+            jTextFieldNumero.getText().isBlank() || jTextFieldCiudad.getText().isBlank() || 
+            jFormattedTextFieldCodigoPostal.getText().isBlank() || model.getSize() == 0) {
+            
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CAMPO_OBLIGATORIO_VACIO);
+            return;
+        }
+        
+        // Validar código postal
+        if (!ValidadorUtilidades.esCodigoPostalValido(jFormattedTextFieldCodigoPostal.getText())) {
+            SesionErrorHandler.mostrarError(SesionErrorHandler.ErrorTipo.CODIGO_POSTAL_NO_VALIDO);
+            return;
+        }
+        
+        try {
+            // Actualizar datos del evento
+            evento.setTitulo(jTextFieldTitulo.getText());
+            evento.setTipo((String) jComboBoxTipoEvento.getSelectedItem());
+            evento.setPrecio(Double.parseDouble(jFormattedTextFieldPrecioEntrada.getText()));
+            
+            // Actualizar dirección
+            Direccion nuevaDireccion = new Direccion(
+                jTextFieldCalle.getText(),
+                jTextFieldNumero.getText(),
+                jTextFieldCiudad.getText(),
+                jFormattedTextFieldCodigoPostal.getText()
+            );
+            evento.setDireccion(nuevaDireccion);
+            
+            // Actualizar fechas
+            ArrayList<LocalDateTime> nuevasFechas = new ArrayList<>();
+            for (int i = 0; i < model.getSize(); i++) {
+                nuevasFechas.add(ValidadorUtilidades.stringToLocalDateTime(model.getElementAt(i)));
+            }
+            evento.setFechas(nuevasFechas);
+            
+            // Guardar en la base de datos
+            DataBase.getInstance().guardarEvento(evento);
+            
+            JOptionPane.showMessageDialog(this, "Cambios guardados correctamente");
+            bloquearCampos();
+            modificando = false;
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    
+    
+    private void eliminarEvento() {
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            "¿Estás seguro de que quieres eliminar este evento?", 
+            "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                DataBase.getInstance().getEventos().remove(evento);
+                JOptionPane.showMessageDialog(this, "Evento eliminado correctamente");
+                this.dispose();
+                Navegacion.cambiarVentana(this, new PortalAdministrador());
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al eliminar el evento: " + e.getMessage(), 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void habilitarCampos() {
+        jTextFieldTitulo.setEditable(true);
+        jTextFieldCalle.setEditable(true);
+        jTextFieldNumero.setEditable(true);
+        jTextFieldCiudad.setEditable(true);
+        jFormattedTextFieldCodigoPostal.setEditable(true);
+        jComboBoxTipoEvento.setEnabled(true);
+        jFormattedTextFieldPrecioEntrada.setEditable(true);
+        jFormattedTextFieldFechaEvento.setEditable(true);
+        
+        jButtonSeleccionar.setEnabled(true);
+        jButtonAnadirFecha.setEnabled(true);
+        jButtonBorrarFecha.setEnabled(true);
+        
+        modificando = true;
+    }
+    
+    private void bloquearCampos() {
+        jTextFieldTitulo.setEditable(false);
+        jTextFieldCalle.setEditable(false);
+        jTextFieldNumero.setEditable(false);
+        jTextFieldCiudad.setEditable(false);
+        jFormattedTextFieldCodigoPostal.setEditable(false);
+        jComboBoxTipoEvento.setEnabled(false);
+        jFormattedTextFieldPrecioEntrada.setEditable(false);
+        jFormattedTextFieldFechaEvento.setEditable(false);
+        
+        jButtonSeleccionar.setEnabled(false);
+        jButtonAnadirFecha.setEnabled(false);
+        jButtonBorrarFecha.setEnabled(false);
+        jButtonGuardarImagen.setEnabled(false);
+        
+        modificando = false;
+    }
+    
+    
+    
+    
+    
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -212,6 +434,11 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jButtonEliminar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonEliminar.setForeground(new java.awt.Color(153, 0, 51));
         jButtonEliminar.setText("ELIMINAR");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
 
         jButtonModificarDatos.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
         jButtonModificarDatos.setText("MODIFICAR DATOS");
@@ -424,83 +651,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    // --- Método 1: Seleccionar imagen con JFileChooser ---
-    private void seleccionarFoto() {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter(
-            "Imágenes", "jpg", "jpeg", "png", "gif"));
-
-        if (fileChooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-            cargarImagen(fileChooser.getSelectedFile());
-        }
-    }
-    
-    // --- Método 2 Modificado: Guardar imagen en ruta fija ---
-    private void guardarFoto() {
-        if (imagen == null) {
-            JOptionPane.showMessageDialog(this, "No hay imagen para guardar", "Advertencia", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        // Ruta fija donde se guardará la imagen
-        String rutaBase = "data/imagenesEventos/";  // Para Windows
-
-        // Crear directorio si no existe
-        File directorio = new File(rutaBase);
-        if (!directorio.exists()) {
-            directorio.mkdirs();
-        }
-
-        // Nombre del archivo (puedes personalizarlo)
-        String nombreArchivo = "foto_usuario_" + System.currentTimeMillis() + ".png";
-        File archivoDestino = new File(rutaBase + nombreArchivo);
-
-        try {
-            ImageIO.write(imagen, "png", archivoDestino);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, 
-                "Error al guardar: " + e.getMessage(), 
-                "Error", 
-                JOptionPane.ERROR_MESSAGE);
-        }
-    }
-    
-    // --- Método 3: Cargar y mostrar imagen (compartido por FileChooser y Drag & Drop) ---
-    private void cargarImagen(File archivo) {
-        try {
-            imagen = ImageIO.read(archivo);
-            // Mostrar imagen principal (redimensionada)
-            ImageIcon iconoPrincipal = new ImageIcon(imagen.getScaledInstance(
-                jLabelImagen.getWidth(), -1, Image.SCALE_SMOOTH));
-            jLabelImagen.setIcon(iconoPrincipal);
-            jLabelImagen.setText("");
-
-            jButtonGuardarImagen.setEnabled(true); // Activar botón de guardado
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(this, "Error al cargar la imagen", "Error", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    // --- Método 4: Configurar Drag & Drop ---
-    private void configurarArrastrarSoltar() {
-        DropTarget dropTarget = new DropTarget(jLabelImagen, new DropTargetAdapter() {
-            @Override
-            public void drop(DropTargetDropEvent dtde) {
-                try {
-                    dtde.acceptDrop(DnDConstants.ACTION_COPY);
-                    java.util.List<File> archivos = (java.util.List<File>) 
-                        dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
-                    if (!archivos.isEmpty()) {
-                        cargarImagen(archivos.get(0)); // Cargar el primer archivo
-                    }
-                } catch (Exception e) {
-                    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        });
-    }
-    
+  
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         this.dispose();  
     }//GEN-LAST:event_jButtonVolverActionPerformed
@@ -529,58 +680,32 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
         // TODO add your handling code here:
         String fecha = jFormattedTextFieldFechaEvento.getText();
-        if (!fecha.isBlank()) {
-            if (fecha.contains("  ")){
-                
-            } else {
-            model.addElement(fecha); // Añade la fecha al modelo
-            jFormattedTextFieldFechaEvento.setText(""); // Opcional: Limpiar el campo después de añadir
-            }
+        if (!fecha.isBlank() && !fecha.contains("  ")) {
+            model.addElement(fecha);
+            jFormattedTextFieldFechaEvento.setText("");
         }
     }//GEN-LAST:event_jButtonAnadirFechaActionPerformed
 
     private void jButtonBorrarFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonBorrarFechaActionPerformed
         // TODO add your handling code here:
-        DefaultListModel<String> model = (DefaultListModel<String>) jListFechasEvento.getModel();
-        if (model.getSize() > 0) {                          // Verificar que la lista no esté vacía
-            model.removeElementAt(model.getSize() - 1);     // Eliminar el último elemento
+        if (model.getSize() > 0) {
+            model.removeElementAt(model.getSize() - 1);
         }
     }//GEN-LAST:event_jButtonBorrarFechaActionPerformed
 
     private void jButtonModificarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonModificarDatosActionPerformed
         // TODO add your handling code here:
-        habilitarCampos();
-        jButtonSeleccionar.setEnabled(true);
-        jButtonAnadirFecha.setEnabled(true); 
-        jButtonBorrarFecha.setEnabled(true);
+        if (!modificando) {
+            habilitarCampos();
+        }
     }//GEN-LAST:event_jButtonModificarDatosActionPerformed
 
     private void jButtonGuardarDatosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarDatosActionPerformed
         // TODO add your handling code here:
-        bloquearCampos();
-        jButtonSeleccionar.setEnabled(false);
+        if (modificando) {
+            guardarCambios();
+        }   
         
-        // AQUÍ VA TODA LA LÓGICA PARA GUARDAR LOS DATOS
-        /*
-        String rutaImagen = obtenerRutaImagen();
-        
-        eventoTemporal.setRutaPortada(rutaImagen);
-        
-        Evento eventoFinal = eventoTemporal.crearEvento();
-        admin.registrarEvento(
-            eventoFinal.getTitulo(),
-            eventoFinal.getTipo(),                  LO HE COPIADO DE CrearEventoImagen
-            eventoFinal.getFechas(),                (POR SI TE SIRVE)
-            eventoFinal.getDireccion().getCalle(),
-            eventoFinal.getDireccion().getNumero(),
-            eventoFinal.getDireccion().getCiudad(),
-            eventoFinal.getDireccion().getCodigoPostal(),
-            eventoFinal.getPrecio(),
-            eventoFinal.getRutaPortada()
-        );
-        */   
-        
-        Navegacion.cambiarVentana(this, new PortalAdministrador()); // Crear
     }//GEN-LAST:event_jButtonGuardarDatosActionPerformed
 
     private void jButtonSeleccionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSeleccionarActionPerformed
@@ -591,7 +716,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
 
     private void jButtonGuardarImagenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGuardarImagenActionPerformed
         // TODO add your handling code here:
-        guardarFoto();
+        guardarImagen();
         
         // AQUÍ VA TODA LA LÓGICA PARA GUARDAR LOS DATOS
         /*
@@ -623,28 +748,11 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jComboBoxTipoEventoActionPerformed
 
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        eliminarEvento();
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
+
     
-    private void habilitarCampos(){
-        jTextFieldTitulo.setEditable(true);
-        jTextFieldCalle.setEditable(true);
-        jTextFieldNumero.setEditable(true);
-        jTextFieldCiudad.setEditable(true);
-        jFormattedTextFieldCodigoPostal.setEditable(true);
-        jComboBoxTipoEvento.setEditable(true);
-        jFormattedTextFieldPrecioEntrada.setEditable(true);
-        jFormattedTextFieldFechaEvento.setEditable(true);
-    }
-    
-    private void bloquearCampos(){
-        jTextFieldTitulo.setEditable(false);
-        jTextFieldCalle.setEditable(false);
-        jTextFieldNumero.setEditable(false);
-        jTextFieldCiudad.setEditable(false);
-        jFormattedTextFieldCodigoPostal.setEditable(false);
-        jComboBoxTipoEvento.setEditable(false);
-        jFormattedTextFieldPrecioEntrada.setEditable(false);
-        jFormattedTextFieldFechaEvento.setEditable(false);
-    }
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -686,6 +794,5 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldNumero;
     private javax.swing.JTextField jTextFieldTitulo;
     // End of variables declaration//GEN-END:variables
-    DefaultListModel<String> model = new DefaultListModel<>();
-    private BufferedImage imagen;    // Almacena la imagen cargada
+
 }
