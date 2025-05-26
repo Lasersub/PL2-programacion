@@ -1,6 +1,10 @@
 
 package poo.PL2.Clases;
 
+import java.awt.Image;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+
 
 public class Navegacion {
     
@@ -9,4 +13,18 @@ public class Navegacion {
         destino.setVisible(true);
         actual.dispose();
     }
+
+    public static void ponerLogo(JLabel jLabel1, JLabel jLabel2) {
+    // Usar Navegacion.class para obtener el recurso en contexto estático
+    ImageIcon icono = new ImageIcon(Navegacion.class.getResource("/imagenes/javaEventsLogo.png"));
+    
+    if (icono.getImage() == null) {
+        System.err.println("¡Error: No se pudo cargar la imagen!");
+        return;
+    }
+    
+    Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+    jLabel1.setIcon(new ImageIcon(imagenEscalada));
+    jLabel2.setIcon(new ImageIcon(imagenEscalada));
+}
 }
