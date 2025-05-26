@@ -27,6 +27,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
     Evento evento;
     public DatosEventoAdmin(Evento evento) {
         initComponents();
+        configurarArrastrarSoltar();
         this.setLocationRelativeTo(null); // Centra la ventana 
         this.evento = evento;
         
@@ -68,7 +69,6 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jListFechasEvento = new javax.swing.JList<>();
         jTextFieldTitulo = new javax.swing.JTextField();
         jTextFieldCalle = new javax.swing.JTextField();
-        jTextFieldTipo = new javax.swing.JTextField();
         jTextFieldNumero = new javax.swing.JTextField();
         jTextFieldCiudad = new javax.swing.JTextField();
         jFormattedTextFieldCodigoPostal = new javax.swing.JFormattedTextField();
@@ -89,6 +89,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jTextFieldCalificacion = new javax.swing.JTextField();
         jLabelJavaEvents = new javax.swing.JLabel();
         jLabelJavaEvents1 = new javax.swing.JLabel();
+        jComboBoxTipoEvento = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -144,13 +145,6 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jTextFieldCalle.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jTextFieldCalleActionPerformed(evt);
-            }
-        });
-
-        jTextFieldTipo.setEditable(false);
-        jTextFieldTipo.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldTipoActionPerformed(evt);
             }
         });
 
@@ -267,6 +261,14 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxTipoEvento.setEditable(true);
+        jComboBoxTipoEvento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "CONCIERTO", "DEPORTE", "MUSICAL", "TEATRO", "FESTIVAL CULTURAL", "CINE", "TALLER" }));
+        jComboBoxTipoEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoEventoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -313,15 +315,14 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
                                     .addComponent(jButtonEliminar)))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextFieldTipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jTextFieldCiudad, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 145, Short.MAX_VALUE)
                                     .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addComponent(jFormattedTextFieldFechaEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(layout.createSequentialGroup()
                                         .addComponent(jFormattedTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                    .addComponent(jComboBoxTipoEvento, javax.swing.GroupLayout.Alignment.TRAILING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
@@ -354,7 +355,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
                         .addComponent(jLabelJavaEvents1, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addComponent(jLabelJavaEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 20, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 19, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
                     .addComponent(jTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -381,8 +382,8 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
                         .addGap(18, 18, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
-                            .addComponent(jTextFieldTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jComboBoxTipoEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 7, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel8)
                             .addComponent(jLabel10)
@@ -397,15 +398,11 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonAnadirFecha)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jButtonGuardarImagen)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)))
+                            .addComponent(jButtonAnadirFecha)
+                            .addComponent(jButtonGuardarImagen))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jButtonBorrarFecha)))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jLabel11)
@@ -528,10 +525,6 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jFormattedTextFieldCodigoPostalActionPerformed
 
-    private void jTextFieldTipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTipoActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldTipoActionPerformed
-
     private void jButtonAnadirFechaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirFechaActionPerformed
         // TODO add your handling code here:
         // TODO add your handling code here:
@@ -626,6 +619,10 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCalificacionActionPerformed
 
+    private void jComboBoxTipoEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoEventoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxTipoEventoActionPerformed
+
     
     private void habilitarCampos(){
         jTextFieldTitulo.setEditable(true);
@@ -633,7 +630,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jTextFieldNumero.setEditable(true);
         jTextFieldCiudad.setEditable(true);
         jFormattedTextFieldCodigoPostal.setEditable(true);
-        jTextFieldTipo.setEditable(true);
+        jComboBoxTipoEvento.setEditable(true);
         jFormattedTextFieldPrecioEntrada.setEditable(true);
         jFormattedTextFieldFechaEvento.setEditable(true);
     }
@@ -644,7 +641,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jTextFieldNumero.setEditable(false);
         jTextFieldCiudad.setEditable(false);
         jFormattedTextFieldCodigoPostal.setEditable(false);
-        jTextFieldTipo.setEditable(false);
+        jComboBoxTipoEvento.setEditable(false);
         jFormattedTextFieldPrecioEntrada.setEditable(false);
         jFormattedTextFieldFechaEvento.setEditable(false);
     }
@@ -659,6 +656,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
     private javax.swing.JButton jButtonModificarDatos;
     private javax.swing.JButton jButtonSeleccionar;
     private javax.swing.JButton jButtonVolver;
+    private javax.swing.JComboBox<String> jComboBoxTipoEvento;
     private javax.swing.JFormattedTextField jFormattedTextFieldCodigoPostal;
     private javax.swing.JFormattedTextField jFormattedTextFieldFechaEvento;
     private javax.swing.JFormattedTextField jFormattedTextFieldPrecioEntrada;
@@ -686,7 +684,6 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldCalle;
     private javax.swing.JTextField jTextFieldCiudad;
     private javax.swing.JTextField jTextFieldNumero;
-    private javax.swing.JTextField jTextFieldTipo;
     private javax.swing.JTextField jTextFieldTitulo;
     // End of variables declaration//GEN-END:variables
     DefaultListModel<String> model = new DefaultListModel<>();
