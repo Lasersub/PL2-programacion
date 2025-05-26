@@ -1,13 +1,9 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
- */
+
 package poo.PL2.Interface;
 
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
 import javax.swing.event.DocumentEvent;
@@ -45,14 +41,15 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         jTableUsuarios.setToolTipText("Haga doble click sobre un cliente para más información");
         jCheckBoxNombre.setToolTipText("Dejar vacío para ignorar este filtro");
         jCheckBoxCorreo.setToolTipText("Dejar vacío para ignorar este filtro");
-        
+        jComboBoxTipoUsuario.setToolTipText("Seleccione el tipo de usuarios a mostrar");
+
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));
     }
     
     private void bloquearCampos() {
         jTextFieldNombre.setEnabled(false);
         jTextFieldCorreo.setEnabled(false);
-        jCheckBoxUsuarios.setEnabled(false);
+        jComboBoxTipoUsuario.setEnabled(false);
         
         jCheckBoxNombre.setSelected(false);
         jCheckBoxCorreo.setSelected(false);
@@ -62,7 +59,8 @@ public class ConsultarUsuario extends javax.swing.JFrame {
     private void resetearFiltros() {
         jTextFieldNombre.setText("");
         jTextFieldCorreo.setText("");
-        jCheckBoxUsuarios.setSelected(false);
+        
+        jComboBoxTipoUsuario.setSelectedIndex(0);
         
         bloquearCampos();
         cargarTodosClientes();
@@ -108,10 +106,8 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         // Listeners para checkboxes
         jCheckBoxNombre.addActionListener(e -> toggleFiltro(jTextFieldNombre, jCheckBoxNombre));
         jCheckBoxCorreo.addActionListener(e -> toggleFiltro(jTextFieldCorreo, jCheckBoxCorreo));
-        jCheckBoxUsuarios.addActionListener(e -> {
-            jCheckBoxUsuarios.setEnabled(jCheckBoxUsuarios.isSelected());
-            aplicarFiltros();
-        });
+        jCheckBoxUsuarios.addActionListener(e -> {toggleFiltro(jComboBoxTipoUsuario, jCheckBoxUsuarios);
+});
     }
     
     private void configurarDobleClickTabla() {
@@ -150,6 +146,12 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         aplicarFiltros();
     }
     
+    private void toggleFiltro(javax.swing.JComboBox<String> componente, javax.swing.JCheckBox checkBox) {
+        boolean estaActivo = checkBox.isSelected();
+        componente.setEnabled(estaActivo);
+        aplicarFiltros();
+    }
+    
     private void aplicarFiltros() {
         DataBase db = DataBase.getInstance();
         clientesMostrados = new ArrayList<>(db.getClientes().values());
@@ -175,9 +177,19 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         }
         
         // Filtro por VIP
+        
         if (jCheckBoxUsuarios.isSelected()) {
-            clientesMostrados.removeIf(c -> !c.isVip());
+        String opcionSeleccionada = (String) jComboBoxTipoUsuario.getSelectedItem();
+        switch(opcionSeleccionada) {
+            case "Solo VIP":
+                clientesMostrados.removeIf(c -> !c.isVip()); // Solo VIP (vip = true)
+                break;
+            case "Solo no VIP":
+                clientesMostrados.removeIf(c -> c.isVip()); // Solo no VIP (vip = false)
+                break;
+            // "Todos" no aplica filtro
         }
+    }
         
         actualizarTabla();
     }
@@ -235,7 +247,7 @@ public class ConsultarUsuario extends javax.swing.JFrame {
             }
         });
 
-        jCheckBoxUsuarios.setText("Usuarios");
+        jCheckBoxUsuarios.setText("Filtrar por tipo");
         jCheckBoxUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jCheckBoxUsuariosActionPerformed(evt);
@@ -299,6 +311,11 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         });
 
         jComboBoxTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Solo VIP", "Solo no VIP" }));
+        jComboBoxTipoUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxTipoUsuarioActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -316,7 +333,7 @@ public class ConsultarUsuario extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jCheckBoxCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCheckBoxUsuarios))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
@@ -387,6 +404,11 @@ public class ConsultarUsuario extends javax.swing.JFrame {
     private void jCheckBoxUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxUsuariosActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxUsuariosActionPerformed
+
+    private void jComboBoxTipoUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoUsuarioActionPerformed
+        // TODO add your handling code here:
+        aplicarFiltros();
+    }//GEN-LAST:event_jComboBoxTipoUsuarioActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
