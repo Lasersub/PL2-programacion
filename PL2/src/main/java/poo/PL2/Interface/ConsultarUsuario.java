@@ -52,17 +52,17 @@ public class ConsultarUsuario extends javax.swing.JFrame {
     private void bloquearCampos() {
         jTextFieldNombre.setEnabled(false);
         jTextFieldCorreo.setEnabled(false);
-        jCheckBoxVip.setEnabled(false);
+        jCheckBoxUsuarios.setEnabled(false);
         
         jCheckBoxNombre.setSelected(false);
         jCheckBoxCorreo.setSelected(false);
-        jCheckBoxVip.setSelected(false);
+        jCheckBoxUsuarios.setSelected(false);
     }
     
     private void resetearFiltros() {
         jTextFieldNombre.setText("");
         jTextFieldCorreo.setText("");
-        jCheckBoxVip.setSelected(false);
+        jCheckBoxUsuarios.setSelected(false);
         
         bloquearCampos();
         cargarTodosClientes();
@@ -108,8 +108,8 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         // Listeners para checkboxes
         jCheckBoxNombre.addActionListener(e -> toggleFiltro(jTextFieldNombre, jCheckBoxNombre));
         jCheckBoxCorreo.addActionListener(e -> toggleFiltro(jTextFieldCorreo, jCheckBoxCorreo));
-        jCheckBoxVip.addActionListener(e -> {
-            jCheckBoxVip.setEnabled(jCheckBoxVip.isSelected());
+        jCheckBoxUsuarios.addActionListener(e -> {
+            jCheckBoxUsuarios.setEnabled(jCheckBoxUsuarios.isSelected());
             aplicarFiltros();
         });
     }
@@ -175,7 +175,7 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         }
         
         // Filtro por VIP
-        if (jCheckBoxVip.isSelected()) {
+        if (jCheckBoxUsuarios.isSelected()) {
             clientesMostrados.removeIf(c -> !c.isVip());
         }
         
@@ -196,11 +196,12 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         jTextFieldCorreo = new javax.swing.JTextField();
         jCheckBoxCorreo = new javax.swing.JCheckBox();
         jCheckBoxNombre = new javax.swing.JCheckBox();
-        jCheckBoxVip = new javax.swing.JCheckBox();
+        jCheckBoxUsuarios = new javax.swing.JCheckBox();
         jButtonVolver = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableUsuarios = new javax.swing.JTable();
         jButtonReiniciarFiltros = new javax.swing.JButton();
+        jComboBoxTipoUsuario = new javax.swing.JComboBox<>();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -234,10 +235,10 @@ public class ConsultarUsuario extends javax.swing.JFrame {
             }
         });
 
-        jCheckBoxVip.setText("VIP");
-        jCheckBoxVip.addActionListener(new java.awt.event.ActionListener() {
+        jCheckBoxUsuarios.setText("Usuarios");
+        jCheckBoxUsuarios.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jCheckBoxVipActionPerformed(evt);
+                jCheckBoxUsuariosActionPerformed(evt);
             }
         });
 
@@ -297,6 +298,8 @@ public class ConsultarUsuario extends javax.swing.JFrame {
             }
         });
 
+        jComboBoxTipoUsuario.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Solo VIP", "Solo no VIP" }));
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -309,15 +312,16 @@ public class ConsultarUsuario extends javax.swing.JFrame {
                         .addComponent(jButtonVolver)
                         .addGap(204, 204, 204)
                         .addComponent(jButtonReiniciarFiltros))
-                    .addComponent(jCheckBoxVip, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jCheckBoxNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 139, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBoxCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jCheckBoxCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jCheckBoxUsuarios, javax.swing.GroupLayout.PREFERRED_SIZE, 73, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(jTextFieldNombre, javax.swing.GroupLayout.DEFAULT_SIZE, 290, Short.MAX_VALUE)
-                            .addComponent(jTextFieldCorreo))))
+                            .addComponent(jTextFieldCorreo)
+                            .addComponent(jComboBoxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -338,14 +342,16 @@ public class ConsultarUsuario extends javax.swing.JFrame {
                     .addComponent(jCheckBoxNombre)
                     .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jCheckBoxVip)
-                .addGap(24, 24, 24)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jCheckBoxUsuarios)
+                    .addComponent(jComboBoxTipoUsuario, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(23, 23, 23)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonVolver)
                     .addComponent(jButtonReiniciarFiltros))
-                .addContainerGap(10, Short.MAX_VALUE))
+                .addContainerGap(9, Short.MAX_VALUE))
         );
 
         pack();
@@ -354,10 +360,6 @@ public class ConsultarUsuario extends javax.swing.JFrame {
     private void jCheckBoxCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxCorreoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jCheckBoxCorreoActionPerformed
-
-    private void jCheckBoxVipActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxVipActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jCheckBoxVipActionPerformed
 
     private void jCheckBoxNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxNombreActionPerformed
         // TODO add your handling code here:
@@ -382,13 +384,18 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         JOptionPane.showMessageDialog(this, "Todos los filtros han sido restablecidos");
     }//GEN-LAST:event_jButtonReiniciarFiltrosActionPerformed
 
+    private void jCheckBoxUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jCheckBoxUsuariosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jCheckBoxUsuariosActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonReiniciarFiltros;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JCheckBox jCheckBoxCorreo;
     private javax.swing.JCheckBox jCheckBoxNombre;
-    private javax.swing.JCheckBox jCheckBoxVip;
+    private javax.swing.JCheckBox jCheckBoxUsuarios;
+    private javax.swing.JComboBox<String> jComboBoxTipoUsuario;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTable jTableUsuarios;
