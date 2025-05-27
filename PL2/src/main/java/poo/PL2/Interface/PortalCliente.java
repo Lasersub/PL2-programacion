@@ -177,11 +177,11 @@ public class PortalCliente extends javax.swing.JFrame {
         
         // Añadir acciones a las opciones
         itemReservados.addActionListener(e -> {
-            Navegacion.cambiarVentana(this, new ConsultarReserva(cliente));
+            Navegacion.cambiarVentana(this, new ConsultarEventosReservados(cliente));
         });
 
         itemAtendidos.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Mostrando eventos atendidos...");
+            Navegacion.cambiarVentana(this, new ConsultarEventosAtendidos(cliente));
         });
         
         // Agregar ítems al menú
