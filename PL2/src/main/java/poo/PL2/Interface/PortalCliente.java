@@ -177,7 +177,7 @@ public class PortalCliente extends javax.swing.JFrame {
         
         // Añadir acciones a las opciones
         itemReservados.addActionListener(e -> {
-            Navegacion.cambiarVentana(this, new ConsultarReserva(cliente));
+            Navegacion.cambiarVentana(this, new ConsultarEventosReservados(cliente));
         });
 
         itemAtendidos.addActionListener(e -> {
