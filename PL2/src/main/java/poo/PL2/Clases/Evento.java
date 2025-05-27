@@ -22,7 +22,7 @@ public class Evento implements Serializable {
     private String rutaPortada;
     private ArrayList<Resena> resenas;
     
-    // la ruta tiene que tener la estructura: "/poo/PL2/Clases/imagenes/nombreImagen.jpg" 
+    
     public Evento(String titulo, String tipo, ArrayList<LocalDateTime> fechas, Direccion direccion, double calificacion, 
                         double precio, String rutaPortada, ArrayList<Resena> resenas) {
         this.titulo = titulo;

@@ -43,168 +43,174 @@ public class MainCode {
         }
 
         dataBase = DataBase.getInstance();
-        
-        /*
-        Direccion direccion1 = new Direccion("Calle txapote","12","Guadalajara","19005");
-        TarjetaCredito tarjeta1 = new TarjetaCredito("Hitler","1234 5678 1234 5678",YearMonth.of(2024, 10));
-        Cliente cliente1 = new Cliente("Lasersub","666699669",direccion1,tarjeta1,true,"matajudios@gmail.com","mainEdgar");
-        
-        
-        
-        Direccion direccion2 = new Direccion("Calle PerroSanchez","69","Madrid","91110");
-        TarjetaCredito tarjeta2 = new TarjetaCredito("Benito Mussolini","1234 5678 1234 5678",YearMonth.of(2025, 10));
-        Cliente cliente2 = new Cliente("HappyMerchant","666699669",direccion2,tarjeta2,false,"genocida@gmail.com","AdamVieneAPorTi");
-        
+         
+        // Cliente 1 - VIP
+        Direccion direccion1 = new Direccion("Avenida de la Constitución", "45", "Barcelona", "08010");
+        TarjetaCredito tarjeta1 = new TarjetaCredito("María García López", "4539 4512 0398 7356", YearMonth.of(2025, 8));
+        Cliente cliente1 = new Cliente("María García", "934567812", direccion1, tarjeta1, true, "mgarcia@gmail.com", "Pass123word");
+
+        // Cliente 2 - No VIP
+        Direccion direccion2 = new Direccion("Calle Mayor", "13", "Valencia", "46001");
+        TarjetaCredito tarjeta2 = new TarjetaCredito("Juan Martínez Sánchez", "5168 5479 3265 8124", YearMonth.of(2024, 5));
+        Cliente cliente2 = new Cliente("Juan Martínez", "963452781", direccion2, tarjeta2, false, "jmartinez@hotmail.com", "Secure99Pass");
+
+        // Cliente 3 - VIP
+        Direccion direccion3 = new Direccion("Gran Vía", "28", "Madrid", "28013");
+        TarjetaCredito tarjeta3 = new TarjetaCredito("Laura Fernández Castro", "4024 0071 0902 8503", YearMonth.of(2026, 3));
+        Cliente cliente3 = new Cliente("Laura Fernández", "917654321", direccion3, tarjeta3, true, "lfernandez@yahoo.com", "LauFer2023!");
+
+        // Cliente 4 - No VIP
+        Direccion direccion4 = new Direccion("Calle Real", "7", "Sevilla", "41001");
+        TarjetaCredito tarjeta4 = new TarjetaCredito("Carlos Rodríguez Pérez", "3782 8224 6310 005", YearMonth.of(2025, 12));
+        Cliente cliente4 = new Cliente("Carlos Rodríguez", "955678432", direccion4, tarjeta4, false, "crodriguez@gmail.com", "Sevilla78Carlos");
+
+        // Cliente 5 - VIP
+        Direccion direccion5 = new Direccion("Paseo de la Castellana", "120", "Madrid", "28046");
+        TarjetaCredito tarjeta5 = new TarjetaCredito("Ana López Martín", "5579 0765 4321 9876", YearMonth.of(2027, 7));
+        Cliente cliente5 = new Cliente("Ana López", "916543287", direccion5, tarjeta5, true, "alopez@outlook.com", "AnaPass2024*");
+
+        // Añadir a la base de datos
         dataBase.addCliente(cliente1);
         dataBase.addCliente(cliente2);
+        dataBase.addCliente(cliente3);
+        dataBase.addCliente(cliente4);
+        dataBase.addCliente(cliente5);
         
-        
-        
-        
-        // 1. Concierto en Madrid (precio medio)
+        // 1. Concierto en Madrid (pasado, con reseñas)
+        ArrayList<Resena> resenasRock = new ArrayList<>();
+        resenasRock.add(new Resena(4, "Gran energía pero el sonido podía mejorar", cliente2));
+        resenasRock.add(new Resena(5, "¡Espectacular! La mejor noche de mi vida", cliente5));
+
         dataBase.guardarEvento(new Evento(
             "Concierto Rock 2023",
             "CONCIERTO",
-            ValidadorUtilidades.crearFechas("15/11/2023 20:00", "16/11/2023 20:00"),
+            ValidadorUtilidades.crearFechas("15/11/2022 20:00", "16/11/2022 20:00"), // Pasado
             new Direccion("Calle Gran Vía", "1", "Madrid", "28013"),
+            4.5, // Calificación media
             25.50,
-            "data/imagenesEventos/rock.png"
+            "data/imagenesEventos/rock.png",
+            resenasRock
         ));
 
-        // 2. Teatro clásico en Barcelona (precio alto)
+        // 2. Teatro clásico en Barcelona (futuro, sin reseñas)
         dataBase.guardarEvento(new Evento(
             "Don Juan Tenorio",
             "TEATRO",
-            ValidadorUtilidades.crearFechas("20/10/2023 19:30", "21/10/2023 19:30", "22/10/2023 18:00"),
+            ValidadorUtilidades.crearFechas("20/10/2024 19:30", "21/10/2024 19:30", "22/10/2024 18:00"), // Futuro
             new Direccion("Plaza Catalunya", "5", "Barcelona", "08002"),
             45.00,
             "data/imagenesEventos/teatro.png"
         ));
 
-        // 3. Festival gastronómico en Sevilla (precio bajo)
+        // 3. Festival gastronómico en Sevilla (pasado, con reseñas)
+        ArrayList<Resena> resenasFeria = new ArrayList<>();
+        resenasFeria.add(new Resena(5, "Comida increíble y ambiente fantástico", cliente1));
+        resenasFeria.add(new Resena(3, "Demasiada gente, difícil moverse", cliente3));
+        resenasFeria.add(new Resena(4, "Muy bien organizado, volveré el próximo año", cliente4));
+
         dataBase.guardarEvento(new Evento(
             "Feria de Abril",
             "FESTIVAL CULTURAL",
-            ValidadorUtilidades.crearFechas("01/04/2024 12:00", "07/04/2024 12:00"),
+            ValidadorUtilidades.crearFechas("01/04/2023 12:00", "07/04/2023 12:00"), // Pasado
             new Direccion("Calle del Infierno", "s/n", "Sevilla", "41001"),
+            4.0, // Calificación media
             10.00,
-            "data/imagenesEventos/feria.png"
+            "data/imagenesEventos/feria.png",
+            resenasFeria
         ));
 
-        // 4. Taller tecnológico en Valencia (gratis)
+        // 4. Taller tecnológico en Valencia (pasado, con reseñas)
+        ArrayList<Resena> resenasTaller = new ArrayList<>();
+        resenasTaller.add(new Resena(5, "Contenido muy actualizado y profesores expertos", cliente5));
+
         dataBase.guardarEvento(new Evento(
             "Taller de Inteligencia Artificial",
             "TALLER",
-            ValidadorUtilidades.crearFechas("05/12/2023 16:00"),
+            ValidadorUtilidades.crearFechas("05/12/2022 16:00"), // Pasado
             new Direccion("Avenida Blasco Ibáñez", "13", "Valencia", "46010"),
+            5.0, // Calificación media
             0.00,
-            "data/imagenesEventos/taller.png"
+            "data/imagenesEventos/taller.png",
+            resenasTaller
         ));
 
-        // 5. Partido de fútbol en Madrid (precio alto)
+        // 5. Partido de fútbol en Madrid (futuro, sin reseñas)
         dataBase.guardarEvento(new Evento(
             "Real Madrid vs Barcelona",
             "DEPORTE",
-            ValidadorUtilidades.crearFechas("12/11/2023 21:00"),
+            ValidadorUtilidades.crearFechas("12/11/2024 21:00"), // Futuro
             new Direccion("Avda. Concha Espina", "1", "Madrid", "28036"),
             120.00,
             "data/imagenesEventos/futbol.png"
         ));
 
-        // 6. Concierto jazz en Bilbao (precio medio)
+        // 6. Concierto jazz en Bilbao (pasado, con reseñas)
+        ArrayList<Resena> resenasJazz = new ArrayList<>();
+        resenasJazz.add(new Resena(4, "Buen ambiente pero corta duración", cliente2));
+        resenasJazz.add(new Resena(5, "Músicos increíbles, jazz de primera calidad", cliente4));
+
         dataBase.guardarEvento(new Evento(
             "Jazz en la Ría",
             "CONCIERTO",
-            ValidadorUtilidades.crearFechas("30/09/2023 22:00"),
+            ValidadorUtilidades.crearFechas("30/09/2022 22:00"), // Pasado
             new Direccion("Plaza Arriaga", "1", "Bilbao", "48005"),
+            4.5, // Calificación media
             35.00,
-            "data/imagenesEventos/jazz.png"
+            "data/imagenesEventos/jazz.png",
+            resenasJazz
         ));
 
-        // 7. Cine al aire libre en Málaga (precio simbólico)
+        // 7. Cine al aire libre en Málaga (pasado, sin reseñas)
         dataBase.guardarEvento(new Evento(
             "Cine de Verano",
             "CINE",
-            ValidadorUtilidades.crearFechas("15/07/2023 22:30", "16/07/2023 22:30"),
+            ValidadorUtilidades.crearFechas("15/07/2022 22:30", "16/07/2022 22:30"), // Pasado
             new Direccion("Paseo Marítimo", "s/n", "Málaga", "29016"),
             5.50,
             "data/imagenesEventos/cine.png"
         ));
 
-        // 8. Musical en Madrid (precio alto)
+        // 8. Musical en Madrid (futuro, sin reseñas)
         dataBase.guardarEvento(new Evento(
             "El Rey León",
             "MUSICAL",
-            ValidadorUtilidades.crearFechas("01/12/2023 18:00", "02/12/2023 18:00", "03/12/2023 12:00"),
+            ValidadorUtilidades.crearFechas("01/12/2024 18:00", "02/12/2024 18:00", "03/12/2024 12:00"), // Futuro
             new Direccion("Calle Jorge Juan", "5", "Madrid", "28009"),
             65.00,
             "data/imagenesEventos/musical.png"
         ));
 
-        // 9. Evento con nombre compuesto y ciudad con acento
+        // 9. Feria del Libro (pasado, con reseñas)
+        ArrayList<Resena> resenasLibros = new ArrayList<>();
+        resenasLibros.add(new Resena(5, "Encontré ediciones únicas a buen precio", cliente1));
+        resenasLibros.add(new Resena(4, "Interesante pero algunos precios eran altos", cliente3));
+
         dataBase.guardarEvento(new Evento(
             "Feria del Libro Antiguo",
             "FESTIVAL CULTURAL",
-            ValidadorUtilidades.crearFechas("10/11/2023 10:00", "11/11/2023 10:00"),
+            ValidadorUtilidades.crearFechas("10/11/2022 10:00", "11/11/2022 10:00"), // Pasado
             new Direccion("Plaza Mayor", "s/n", "Valladolid", "47001"),
+            4.5, // Calificación media
             8.00,
-            "data/imagenesEventos/libros.png"
+            "data/imagenesEventos/libros.png",
+            resenasLibros
         ));
 
-        // 10. Evento con múltiples palabras en título
+        // 10. Exposición de Arte (futuro, sin reseñas)
         dataBase.guardarEvento(new Evento(
             "Exposición de Arte Contemporáneo Internacional",
             "FESTIVAL CULTURAL",
-            ValidadorUtilidades.crearFechas("05/10/2023 09:00", "30/10/2023 21:00"),
+            ValidadorUtilidades.crearFechas("05/10/2024 09:00", "30/10/2024 21:00"), // Futuro
             new Direccion("Calle Bailén", "12", "Zaragoza", "50001"),
             12.00,
             "data/imagenesEventos/arte.png"
         ));
-        
-        
-        */
-        
 
+        
+        
+        
         // TEST: Verificar si hay eventos (solo para depuración)
         System.out.println("Eventos en la base: " + dataBase.getEventos().size());
-        
-        /*
-        // Prueba de obtener evento (solo si existe)
-        Evento evento = dataBase.getEventoPorTitulo("historia");
-        if (evento != null) {
-            System.out.println("Evento encontrado: " + evento.getTipo());
-
-            // Mostrar imagen del evento
-            ImageIcon icono = evento.cargarImagenPortada(500, 300);
-
-            JFrame frame = new JFrame("Prueba de Imagen");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-            JLabel label = new JLabel();
-            if (icono != null) {
-                label.setIcon(icono);
-            } else {
-                label.setIcon(new ImageIcon("src/main/resources/imagenes/placeholder.png"));
-                label.setText("Imagen no encontrada");
-            }
-
-            frame.add(label);
-            frame.pack();
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
-
-            System.out.println("Ruta completa: " + evento.obtenerRutaAbsolutaPortada());
-        } else {
-            System.out.println("El evento 'historia' no existe en la base de datos.");
-        }
-        
-        */
-        
-        List<Reserva> reservas = dataBase.getReservasPorCliente("genocida@gmail.com");
-        Reserva reserva = reservas.getFirst();
-        System.out.println(reserva.getEvento().getTitulo());
-        System.out.println(reserva.getCodigoFactura());
-        
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
             try {

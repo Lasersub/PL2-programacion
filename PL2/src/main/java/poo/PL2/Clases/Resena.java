@@ -8,15 +8,22 @@ public class Resena {
     private String comentario;
     private Cliente cliente;
 
+    public Resena(int calificacion, String comentario, Cliente cliente) {
+        this.calificacion = calificacion;
+        this.comentario = comentario;
+        this.cliente = cliente;
+    }
+    
+    public Resena(){  
+    }
+ 
     public Cliente getCliente() {
         return cliente;
     }
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-
-    
+    }    
 
     public String getComentario() {
         return comentario;
