@@ -4,6 +4,7 @@ package poo.PL2.Clases;
 import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
 
 public class Navegacion {
@@ -23,8 +24,10 @@ public class Navegacion {
         return;
     }
     
-    Image imagenEscalada = icono.getImage().getScaledInstance(20, 20, Image.SCALE_SMOOTH);
+    Image imagenEscalada = icono.getImage().getScaledInstance(60, 60, Image.SCALE_SMOOTH);
     jLabel1.setIcon(new ImageIcon(imagenEscalada));
+    jLabel1.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto dentro del JLabel
     jLabel2.setIcon(new ImageIcon(imagenEscalada));
-}
+    jLabel2.setHorizontalAlignment(SwingConstants.CENTER); // Centra el texto dentro del JLabel
+    }
 }
