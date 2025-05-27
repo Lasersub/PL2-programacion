@@ -2,6 +2,7 @@
 package poo.PL2.Interface;
 
 import java.util.List;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import poo.PL2.Clases.Carrito;
@@ -365,6 +366,9 @@ public class CarritoCliente extends javax.swing.JFrame {
                     "Éxito", JOptionPane.INFORMATION_MESSAGE);
                 
                 // Volver al portal
+                FacturaClientes dialogoFacturas = new FacturaClientes((JFrame) this.getParent(), true, cliente);
+                dialogoFacturas.setVisible(true);
+                
                 Navegacion.cambiarVentana(this, new PortalCliente(cliente));
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, 

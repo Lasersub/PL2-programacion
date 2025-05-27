@@ -1,15 +1,30 @@
 package poo.PL2.Interface;
 
 import java.awt.Font;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.UIManager;
+import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.DataBase;
 import poo.PL2.Clases.Navegacion;
-
+import poo.PL2.Clases.Reserva;
 public class ConsultarReserva extends javax.swing.JFrame {
-
+    
+    private Cliente cliente;
+    private DefaultTableModel tableModel;
+    
     /**
      * Creates new form ConsultarReserva
      */
-    public ConsultarReserva() {
+    public ConsultarReserva(Cliente cliente) {
+        this.cliente = cliente;
+        
         initComponents();
         configurarComponentes();
         
@@ -18,6 +33,127 @@ public class ConsultarReserva extends javax.swing.JFrame {
         jTableReservas.setEnabled(false);
         
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
+        
+        // Configurar el modelo de la tabla
+        configurarTabla();
+        
+        // Configurar DocumentListener para el campo de fecha
+        configurarDocumentListener();
+        
+        // Cargar todas las reservas inicialmente
+        cargarReservas(null);
+    
+    }
+    
+    /**
+     * Configura el DocumentListener para el campo de fecha
+     */
+    private void configurarDocumentListener() {
+        jFormattedTextFieldFechaReserva.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                procesarCambioFecha();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                procesarCambioFecha();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                procesarCambioFecha();
+            }
+            
+            private void procesarCambioFecha() {
+                LocalDate fecha = parsearFecha();
+                // Solo filtrar si la fecha es válida o es null (campo vacío)
+                if (fecha != null || jFormattedTextFieldFechaReserva.getText().trim().isEmpty() || 
+                    jFormattedTextFieldFechaReserva.getText().equals("00/00/0000")) {
+                    cargarReservas(fecha);
+                }
+            }
+        });
+    }
+    
+        
+    /**
+     * Configura el modelo de la tabla
+     */
+    private void configurarTabla() {
+        tableModel = new DefaultTableModel(
+            new Object[][]{},
+            new String[]{"Título del evento", "Fecha", "Precio", "Código de la factura"}
+        ) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // Hace que todas las celdas no sean editables
+            }
+        };
+        
+        jTableReservas.setModel(tableModel);
+    }  
+    
+    /**
+     * Carga las reservas del cliente, opcionalmente filtrando por fecha mínima
+     * @param fechaMinima Fecha mínima para filtrar (null para no filtrar)
+     */
+    private void cargarReservas(LocalDate fechaMinima) {
+        // Limpiar la tabla
+        tableModel.setRowCount(0);
+        
+        // Obtener las reservas del cliente desde la base de datos
+        List<Reserva> reservas = DataBase.getInstance().getReservasPorCliente(cliente.getCorreo());
+        
+        if (reservas.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No tienes reservas realizadas.", "Información", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        
+        // Formateador de fechas
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+        
+        // Filtrar y agregar reservas a la tabla
+        for (Reserva reserva : reservas) {
+            // Si se especificó fecha mínima y la reserva es anterior, saltarla
+            if (fechaMinima != null && reserva.getFechaEvento().toLocalDate().isBefore(fechaMinima)) {
+                continue;
+            }
+            
+            // Agregar fila a la tabla
+            tableModel.addRow(new Object[]{
+                reserva.getEvento().getTitulo(),
+                reserva.getFechaEvento().format(dateTimeFormatter),
+                String.format("%.2f €", reserva.getPrecioFinal()),
+                reserva.getCodigoFactura()
+            });
+        }
+    }
+    
+    /**
+     * Intenta parsear la fecha del campo de texto
+     * @return LocalDate o null si no es válida
+     */
+    private LocalDate parsearFecha() {
+        String fechaStr = jFormattedTextFieldFechaReserva.getText().trim();
+        
+        // Verificar si el campo está vacío o con el valor por defecto
+        if (fechaStr.isEmpty() || fechaStr.equals("00/00/0000")) {
+            return null;
+        }
+        
+        try {
+            return LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        } catch (DateTimeParseException e) {
+            return null; // No mostrar mensaje de error, simplemente no filtrar
+        }
+    }
+    
+    private void configurarComponentes() {
+        jFormattedTextFieldFechaReserva.setToolTipText("Escriba la fecha mínima a buscar y presione actualizar (DD/MM/AAAA)"); 
+        
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
     }
 
     /**
@@ -32,7 +168,6 @@ public class ConsultarReserva extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         jFormattedTextFieldFechaReserva = new javax.swing.JFormattedTextField();
-        jButtonActualizar = new javax.swing.JButton();
         jButtonVolver = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
         jTableReservas = new javax.swing.JTable();
@@ -46,7 +181,7 @@ public class ConsultarReserva extends javax.swing.JFrame {
         jLabel1.setText("CONSULTA DE RESERVAS");
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
-        jLabel2.setText("Fecha de la reserva");
+        jLabel2.setText("A partir del ...");
 
         try {
             jFormattedTextFieldFechaReserva.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.MaskFormatter("##/##/####")));
@@ -60,14 +195,6 @@ public class ConsultarReserva extends javax.swing.JFrame {
             }
         });
 
-        jButtonActualizar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonActualizar.setText("ACTUALIZAR");
-        jButtonActualizar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonActualizarActionPerformed(evt);
-            }
-        });
-
         jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonVolver.setText("VOLVER");
         jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
@@ -78,23 +205,23 @@ public class ConsultarReserva extends javax.swing.JFrame {
 
         jTableReservas.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null},
-                {null, null, null}
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
             },
             new String [] {
-                "Título del evento", "Fecha", "Precio"
+                "Título del evento", "Fecha", "Precio", "Codigo de la factura"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false
+                false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -108,115 +235,71 @@ public class ConsultarReserva extends javax.swing.JFrame {
             jTableReservas.getColumnModel().getColumn(0).setResizable(false);
             jTableReservas.getColumnModel().getColumn(1).setResizable(false);
             jTableReservas.getColumnModel().getColumn(2).setResizable(false);
+            jTableReservas.getColumnModel().getColumn(3).setResizable(false);
         }
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addContainerGap(29, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jButtonVolver)
-                    .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 434, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(12, 12, 12)
-                        .addComponent(jFormattedTextFieldFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(68, 68, 68)
-                        .addComponent(jButtonActualizar)))
-                .addContainerGap(30, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addComponent(jLabelJavaEvents, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 329, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jLabelJavaEvents1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap(19, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jButtonVolver)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 643, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jFormattedTextFieldFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(19, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(16, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                         .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jLabelJavaEvents1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(jLabelJavaEvents, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 29, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
-                    .addComponent(jFormattedTextFieldFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonActualizar))
+                    .addComponent(jFormattedTextFieldFechaReserva, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addGap(18, 26, Short.MAX_VALUE)
                 .addComponent(jButtonVolver)
-                .addContainerGap(15, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void configurarComponentes() {
-        jFormattedTextFieldFechaReserva.setToolTipText("Escriba la fecha mínima a buscar y presione actualizar"); 
-        
-        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
-    }
+    
     
     
     private void jFormattedTextFieldFechaReservaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jFormattedTextFieldFechaReservaActionPerformed
         // TODO add your handling code here:
+        LocalDate fecha = parsearFecha();
+        cargarReservas(fecha);
     }//GEN-LAST:event_jFormattedTextFieldFechaReservaActionPerformed
-
-    private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonActualizarActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jButtonActualizarActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new PortalAdministrador()); // Volver
+        Navegacion.cambiarVentana(this, new PortalCliente(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String args[]) {
-        /* Set the Nimbus look and feel */
-        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
-         * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-         */
-        try {
-            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-                if ("Nimbus".equals(info.getName())) {
-                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                    break;
-                }
-            }
-        } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ConsultarReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ConsultarReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ConsultarReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ConsultarReserva.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
-        }
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-        //</editor-fold>
-
-        /* Create and display the form */
-        java.awt.EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                new ConsultarReserva().setVisible(true);
-            }
-        });
-    }
+    
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButtonActualizar;
     private javax.swing.JButton jButtonVolver;
     private javax.swing.JFormattedTextField jFormattedTextFieldFechaReserva;
     private javax.swing.JLabel jLabel1;
