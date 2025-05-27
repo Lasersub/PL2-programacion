@@ -43,7 +43,8 @@ public class MainCode {
         }
 
         dataBase = DataBase.getInstance();
-         
+        
+        
         // Cliente 1 - VIP
         Direccion direccion1 = new Direccion("Avenida de la Constitución", "45", "Barcelona", "08010");
         TarjetaCredito tarjeta1 = new TarjetaCredito("María García López", "4539 4512 0398 7356", YearMonth.of(2025, 8));
@@ -205,6 +206,105 @@ public class MainCode {
             12.00,
             "data/imagenesEventos/arte.png"
         ));
+        
+        // Primero creamos las reservas para los eventos con reseñas
+
+        // 1. Reservas para el Concierto Rock (evento con 2 reseñas)
+        Reserva reservaRock1 = new Reserva(
+            cliente2, // Juan Martínez
+            dataBase.getEventoPorTitulo("Concierto Rock 2023"),
+            LocalDateTime.of(2022, 11, 15, 20, 0), // Primera fecha del evento
+            2, // 2 entradas
+            51.00 // 25.50 x 2
+        );
+
+        Reserva reservaRock2 = new Reserva(
+            cliente5, // Ana López
+            dataBase.getEventoPorTitulo("Concierto Rock 2023"),
+            LocalDateTime.of(2022, 11, 16, 20, 0), // Segunda fecha del evento
+            4, // 4 entradas
+            102.00 // 25.50 x 4
+        );
+
+        // 2. Reservas para la Feria de Abril (evento con 3 reseñas)
+        Reserva reservaFeria1 = new Reserva(
+            cliente1, // María García
+            dataBase.getEventoPorTitulo("Feria de Abril"),
+            LocalDateTime.of(2023, 4, 3, 12, 0), // Día intermedio del evento
+            1, // 1 entrada
+            10.00
+        );
+
+        Reserva reservaFeria2 = new Reserva(
+            cliente3, // Laura Fernández
+            dataBase.getEventoPorTitulo("Feria de Abril"),
+            LocalDateTime.of(2023, 4, 5, 12, 0),
+            2, // 2 entradas
+            20.00
+        );
+
+        Reserva reservaFeria3 = new Reserva(
+            cliente4, // Carlos Rodríguez
+            dataBase.getEventoPorTitulo("Feria de Abril"),
+            LocalDateTime.of(2023, 4, 7, 12, 0), // Último día
+            3, // 3 entradas
+            30.00
+        );
+
+        // 3. Reserva para el Taller de IA (1 reseña)
+        Reserva reservaTaller = new Reserva(
+            cliente5, // Ana López
+            dataBase.getEventoPorTitulo("Taller de Inteligencia Artificial"),
+            LocalDateTime.of(2022, 12, 5, 16, 0),
+            1, // Taller individual
+            0.00 // Gratuito
+        );
+
+        // 4. Reservas para Jazz en la Ría (2 reseñas)
+        Reserva reservaJazz1 = new Reserva(
+            cliente2, // Juan Martínez
+            dataBase.getEventoPorTitulo("Jazz en la Ría"),
+            LocalDateTime.of(2022, 9, 30, 22, 0),
+            2, // 2 entradas
+            70.00 // 35.00 x 2
+        );
+
+        Reserva reservaJazz2 = new Reserva(
+            cliente4, // Carlos Rodríguez
+            dataBase.getEventoPorTitulo("Jazz en la Ría"),
+            LocalDateTime.of(2022, 9, 30, 22, 0),
+            1, // 1 entrada
+            35.00
+        );
+
+        // 5. Reservas para Feria del Libro (2 reseñas)
+        Reserva reservaLibro1 = new Reserva(
+            cliente1, // María García
+            dataBase.getEventoPorTitulo("Feria del Libro Antiguo"),
+            LocalDateTime.of(2022, 11, 10, 10, 0), // Primer día
+            1, // 1 entrada
+            8.00
+        );
+
+        Reserva reservaLibro2 = new Reserva(
+            cliente3, // Laura Fernández
+            dataBase.getEventoPorTitulo("Feria del Libro Antiguo"),
+            LocalDateTime.of(2022, 11, 11, 10, 0), // Segundo día
+            2, // 2 entradas
+            16.00
+        );
+
+        // Añadir todas las reservas a la base de datos
+        dataBase.addReserva(reservaRock1);
+        dataBase.addReserva(reservaRock2);
+        dataBase.addReserva(reservaFeria1);
+        dataBase.addReserva(reservaFeria2);
+        dataBase.addReserva(reservaFeria3);
+        dataBase.addReserva(reservaTaller);
+        dataBase.addReserva(reservaJazz1);
+        dataBase.addReserva(reservaJazz2);
+        dataBase.addReserva(reservaLibro1);
+        dataBase.addReserva(reservaLibro2);
 
         
         
