@@ -10,6 +10,10 @@ public class HacerResena extends javax.swing.JFrame {
     public HacerResena() {
         initComponents();
         
+        this.setLocationRelativeTo(null); // Centra la ventana
+        
+        Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
+        
         jButtonPublicar.setEnabled(false); // Solo se activa cuando hay calificación
     }
 
