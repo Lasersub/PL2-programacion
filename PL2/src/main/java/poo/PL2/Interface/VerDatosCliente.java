@@ -234,7 +234,7 @@ public class VerDatosCliente extends javax.swing.JFrame {
                     .addComponent(jTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addComponent(jCheckBoxVip)
-                .addGap(18, 18, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 18, Short.MAX_VALUE)
                 .addComponent(jButtonVolver)
                 .addContainerGap(8, Short.MAX_VALUE))
         );
@@ -272,7 +272,7 @@ public class VerDatosCliente extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new ConsultarUsuario());       
+        this.dispose();      
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
 

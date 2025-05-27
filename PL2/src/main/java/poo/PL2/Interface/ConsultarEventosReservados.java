@@ -24,25 +24,27 @@ public class ConsultarEventosReservados extends javax.swing.JFrame {
      */
     public ConsultarEventosReservados(Cliente cliente) {
         this.cliente = cliente;
-        
+
         initComponents();
         configurarComponentes();
-        
+
         this.setLocationRelativeTo(null); // Centra la ventana
-        
-        jTableReservas.setEnabled(false);
-        
+
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
-        
+
         // Configurar el modelo de la tabla
         configurarTabla();
-        
+
         // Configurar DocumentListener para el campo de fecha
         configurarDocumentListener();
-        
+
+        // Configurar el doble click en la tabla
+        configurarDobleClickTabla();
+
         // Cargar todas las reservas inicialmente
         cargarReservas(null);
-    
+        
+        jTableReservas.setEnabled(true);
     }
     
     /**
@@ -76,22 +78,100 @@ public class ConsultarEventosReservados extends javax.swing.JFrame {
         });
     }
     
+    private void configurarDobleClickTabla() {
+        jTableReservas.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int filaSeleccionada = jTableReservas.getSelectedRow();
+                    if (filaSeleccionada != -1) {  // -1 significa que no hay fila seleccionada
+                        abrirInformacionReserva(filaSeleccionada);
+                    }
+                }
+            }
+        });
+    }
+    
+    private void abrirInformacionReserva(int fila) {
+        try {
+            System.out.println("Fila seleccionada: " + fila); // Debug
+
+            // Verificar que el modelo existe
+            if (tableModel == null) {
+                System.out.println("Error: tableModel es null"); // Debug
+                JOptionPane.showMessageDialog(this, 
+                    "Error interno: modelo de tabla no disponible", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Verificar que la fila existe
+            if (fila < 0 || fila >= tableModel.getRowCount()) {
+                System.out.println("Error: fila fuera de rango"); // Debug
+                return;
+            }
+
+            // Debug: imprimir todos los valores de la fila
+            System.out.println("Contenido de la fila:");
+            for (int i = 0; i < tableModel.getColumnCount(); i++) {
+                System.out.println(i + ": " + tableModel.getValueAt(fila, i));
+            }
+
+            // Obtener código de factura
+            Object codigoObj = tableModel.getValueAt(fila, 3);
+            if (codigoObj == null) {
+                System.out.println("Error: código de factura es null"); // Debug
+                JOptionPane.showMessageDialog(this, 
+                    "La reserva seleccionada no tiene código de factura", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            String codigoFactura = codigoObj.toString();
+            System.out.println("Buscando reserva con código: " + codigoFactura); // Debug
+
+            Reserva reserva = DataBase.getInstance().buscarReservaPorCodigo(codigoFactura);
+
+            if (reserva == null) {
+                System.out.println("Error: reserva no encontrada"); // Debug
+                JOptionPane.showMessageDialog(this, 
+                    "No se encontró la reserva con código: " + codigoFactura, 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            System.out.println("Reserva encontrada: " + reserva); // Debug
+            new InformacionReserva(reserva).setVisible(true);
+
+        } catch (Exception e) {
+            System.out.println("Excepción: " + e.getMessage()); // Debug
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, 
+                "Error al mostrar los detalles: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
         
     /**
      * Configura el modelo de la tabla
      */
     private void configurarTabla() {
-        tableModel = new DefaultTableModel(
-            new Object[][]{},
-            new String[]{"Título del evento", "Fecha", "Precio", "Código de la factura"}
-        ) {
-            @Override
-            public boolean isCellEditable(int row, int column) {
-                return false; // Hace que todas las celdas no sean editables
-            }
-        };
-        
-        jTableReservas.setModel(tableModel);
+        // Usa el modelo que ya tiene la tabla (creado por NetBeans)
+        tableModel = (DefaultTableModel) jTableReservas.getModel();
+
+        // Limpia los datos de ejemplo
+        tableModel.setRowCount(0);
+
+        // Configura las columnas (asegúrate que coinciden con las del diseño)
+        tableModel.setColumnIdentifiers(new String[]{"Título del evento", "Fecha", "Precio", "Código de la factura"});
+
+        // Configura propiedades de selección
+        jTableReservas.setSelectionMode(javax.swing.ListSelectionModel.SINGLE_SELECTION);
+        jTableReservas.setRowSelectionAllowed(true);
+        jTableReservas.setColumnSelectionAllowed(false);
+
+        // Habilita la tabla
+        jTableReservas.setEnabled(true);
     }  
     
     /**
@@ -173,6 +253,8 @@ public class ConsultarEventosReservados extends javax.swing.JFrame {
     
     private void configurarComponentes() {
         jFormattedTextFieldFechaReserva.setToolTipText("Escriba la fecha mínima a buscar y presione actualizar (DD/MM/AAAA)"); 
+        
+        jTableReservas.setEnabled(true);
         
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
     }

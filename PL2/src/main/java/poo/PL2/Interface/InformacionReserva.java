@@ -2,12 +2,15 @@
 package poo.PL2.Interface;
 
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.Reserva;
 
 
 public class InformacionReserva extends javax.swing.JFrame {
 
-
-    public InformacionReserva() {
+    private Reserva reserva;
+    
+    public InformacionReserva(Reserva reserva) {
+        this.reserva = reserva;
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana
         
@@ -57,6 +60,11 @@ public class InformacionReserva extends javax.swing.JFrame {
 
         jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonVolver.setText("VOLVER");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVolverActionPerformed(evt);
+            }
+        });
 
         jTextFieldCorreo.setEditable(false);
         jTextFieldCorreo.addActionListener(new java.awt.event.ActionListener() {
@@ -176,6 +184,10 @@ public class InformacionReserva extends javax.swing.JFrame {
     private void jTextFieldNombreEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreEventoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNombreEventoActionPerformed
+
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonVolverActionPerformed
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
