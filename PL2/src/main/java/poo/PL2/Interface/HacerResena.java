@@ -1,20 +1,160 @@
 
 package poo.PL2.Interface;
 
+import java.awt.Font;
+import javax.swing.JOptionPane;
+import javax.swing.UIManager;
+import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.DataBase;
+import poo.PL2.Clases.Evento;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.Resena;
+import poo.PL2.Clases.Reserva;
 
 
 public class HacerResena extends javax.swing.JFrame {
 
-
-    public HacerResena() {
+    private Cliente cliente;
+    private Reserva reserva;
+    private Evento evento;
+    private Resena resenaExistente;
+    
+    public HacerResena(Cliente cliente, Reserva reserva) {
+        this.cliente = cliente;
+        this.reserva = reserva;
+        this.evento = reserva.getEvento();
+        
         initComponents();
         
         this.setLocationRelativeTo(null); // Centra la ventana
-        
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
         
-        jButtonPublicar.setEnabled(false); // Solo se activa cuando hay calificación
+        configurarComponentes();
+        cargarResenaExistente();
+    }
+    
+    private void configurarComponentes() {
+        // Configurar tooltips y fuente
+        jTextFieldComentario.setToolTipText("Escriba su comentario sobre el evento");
+        jComboBoxCalificacion.setToolTipText("Seleccione una calificación de 0 a 5 estrellas");
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));
+        
+        // Configurar el combo de calificación
+        jComboBoxCalificacion.setSelectedIndex(0); // Por defecto 0 estrellas
+        jComboBoxCalificacion.setEnabled(false);
+        
+        // Habilitar/deshabilitar botones según estado
+        actualizarEstadoBotones();
+    }
+    
+    private void cargarResenaExistente() {
+        // Buscar si ya existe una reseña de este cliente para este evento
+        for (Resena resena : evento.getResenas()) {
+            if (resena.getCliente().getCorreo().equals(cliente.getCorreo())) {
+                this.resenaExistente = resena;
+                break;
+            }
+        }
+        
+        if (resenaExistente != null) {
+            // Cargar datos de la reseña existente
+            jComboBoxCalificacion.setSelectedIndex(resenaExistente.getCalificacion());
+            jTextFieldComentario.setText(resenaExistente.getComentario());
+            jTextFieldComentario.setEditable(false);
+            jButtonPublicar.setText("ACTUALIZAR");
+        }
+        
+        if (resenaExistente != null) {
+            // Cargar datos de la reseña existente
+            jComboBoxCalificacion.setSelectedIndex(resenaExistente.getCalificacion());
+            jTextFieldComentario.setText(resenaExistente.getComentario());
+
+            jTextFieldComentario.setEditable(false);
+            jComboBoxCalificacion.setEnabled(false); //  Desactivar comboBox
+            jButtonPublicar.setText("PUBLICAR");
+        }
+    }
+    
+    private void actualizarEstadoBotones() {
+        boolean tieneCalificacion = jComboBoxCalificacion.getSelectedIndex() > 0;
+        boolean estaEditando = jTextFieldComentario.isEditable();
+        
+        jButtonPublicar.setEnabled(tieneCalificacion);
+        jButtonEditar.setEnabled(!estaEditando);
+    }
+    
+    private void publicarResena() {
+        try {
+            int calificacion = jComboBoxCalificacion.getSelectedIndex();
+            String comentario = jTextFieldComentario.getText().trim();
+
+            // Validaciones
+            if (calificacion < 1) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor seleccione una calificación de al menos 1 estrella", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (comentario.isEmpty()) {
+                JOptionPane.showMessageDialog(this, 
+                    "Por favor escriba un comentario", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // Crear o actualizar la reseña
+            Resena resena;
+            if (resenaExistente == null) {
+                resena = new Resena();
+                resena.setCliente(cliente);
+                evento.getResenas().add(resena);
+            } else {
+                resena = resenaExistente;
+            }
+            
+
+            resena.setCalificacion(calificacion);
+            resena.setComentario(comentario);
+
+            // Actualizar calificación promedio del evento
+            actualizarCalificacionEvento();
+
+            // Eliminar el evento anterior de la base de datos
+            DataBase db = DataBase.getInstance();
+            db.getEventos().remove(evento); // Evita duplicados
+
+            // Guardar el evento actualizado
+            db.guardarEvento(evento);
+
+            JOptionPane.showMessageDialog(this, 
+                "¡Reseña publicada con éxito!", 
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            jTextFieldComentario.setEditable(false);
+            jComboBoxCalificacion.setEnabled(false);
+            actualizarEstadoBotones();
+
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al publicar la reseña: " + e.getMessage(), 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    private void actualizarCalificacionEvento() {
+        if (evento.getResenas().isEmpty()) {
+            evento.setCalificacion(0);
+            return;
+        }
+        
+        double suma = 0;
+        for (Resena resena : evento.getResenas()) {
+            suma += resena.getCalificacion();
+        }
+        
+        double promedio = suma / evento.getResenas().size();
+        evento.setCalificacion(Math.round(promedio * 10.0) / 10.0); // Redondear a 1 decimal
     }
 
 
@@ -145,6 +285,7 @@ public class HacerResena extends javax.swing.JFrame {
 
     private void jComboBoxCalificacionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxCalificacionActionPerformed
         // TODO add your handling code here:
+        actualizarEstadoBotones();
     }//GEN-LAST:event_jComboBoxCalificacionActionPerformed
 
     private void jTextFieldComentarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldComentarioActionPerformed
@@ -153,19 +294,19 @@ public class HacerResena extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        // Navegacion.cambiarVentana(this, new PortalCliente(cliente)); // Volver
+        Navegacion.cambiarVentana(this, new ConsultarEventosAtendidos(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jButtonEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEditarActionPerformed
         // TODO add your handling code here:
         jTextFieldComentario.setEditable(true);
+        jComboBoxCalificacion.setEnabled(true); // ✅ Activar comboBox al editar
+        actualizarEstadoBotones();
     }//GEN-LAST:event_jButtonEditarActionPerformed
 
     private void jButtonPublicarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonPublicarActionPerformed
         // TODO add your handling code here:
-        jTextFieldComentario.setEditable(false);
-        
-        
+        publicarResena();      
     }//GEN-LAST:event_jButtonPublicarActionPerformed
 
 

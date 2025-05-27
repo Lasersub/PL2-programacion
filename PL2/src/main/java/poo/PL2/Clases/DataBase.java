@@ -76,6 +76,7 @@ public class DataBase implements Serializable {
         }
         eventos.add(evento);
     }
+
     
     private boolean existeEvento(String titulo) {
         return eventos.stream().anyMatch(e -> e.getTitulo().equalsIgnoreCase(titulo));
@@ -121,6 +122,13 @@ public class DataBase implements Serializable {
         return reservas.stream()
                       .filter(r -> r.getEvento().getTitulo().equalsIgnoreCase(tituloEvento))
                       .collect(Collectors.toList());
+    }
+    
+    public Reserva buscarReservaPorCodigo(String codigoFactura) {
+        return reservas.stream()
+                       .filter(r -> r.getCodigoFactura().equals(codigoFactura))
+                       .findFirst()
+                       .orElse(null);
     }
 
 

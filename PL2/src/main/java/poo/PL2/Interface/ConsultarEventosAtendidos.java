@@ -6,6 +6,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import javax.swing.JOptionPane;
+import javax.swing.ListSelectionModel;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
@@ -24,29 +25,18 @@ public class ConsultarEventosAtendidos extends javax.swing.JFrame {
      */
     public ConsultarEventosAtendidos(Cliente cliente) {
         this.cliente = cliente;
-        
+    
         initComponents();
         configurarComponentes();
-        
-        this.setLocationRelativeTo(null); // Centra la ventana
-        
-        Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
-        
-        this.setLocationRelativeTo(null); // Centra la ventana
-        
-        jTableEventosAtendidos.setEnabled(false);
+        this.setLocationRelativeTo(null);
+
         
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
-        
-        // Configurar el modelo de la tabla
-        configurarTabla();
-        
-        // Configurar DocumentListener para el campo de fecha
+
+        configurarTabla(); // Primero configurar la tabla
         configurarDocumentListener();
-        
-        // Cargar todas las reservas inicialmente
-        cargarReservas(null);
-    
+
+        cargarReservas(null); // Luego cargar los datos   
     }
     
     /**
@@ -91,11 +81,17 @@ public class ConsultarEventosAtendidos extends javax.swing.JFrame {
         ) {
             @Override
             public boolean isCellEditable(int row, int column) {
-                return false; // Hace que todas las celdas no sean editables
+                return false;
+            }
+
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                return String.class; // Todos los valores se tratarán como String
             }
         };
-        
+
         jTableEventosAtendidos.setModel(tableModel);
+        jTableEventosAtendidos.setSelectionMode(ListSelectionModel.SINGLE_SELECTION); // Configura selección única
     }  
     
     /**
@@ -172,9 +168,53 @@ public class ConsultarEventosAtendidos extends javax.swing.JFrame {
     }
     
     private void configurarComponentes() {
-        jFormattedTextFieldFechaReserva.setToolTipText("Escriba la fecha mínima a buscar y presione actualizar (DD/MM/AAAA)"); 
-        
-        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
+        jFormattedTextFieldFechaReserva.setToolTipText("Escriba la fecha mínima a buscar (DD/MM/AAAA)"); 
+        UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));
+
+        // Configurar el doble clic
+        jTableEventosAtendidos.addMouseListener(new java.awt.event.MouseAdapter() {
+            @Override
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                if (evt.getClickCount() == 2) {
+                    int filaSeleccionada = jTableEventosAtendidos.getSelectedRow();
+                    if (filaSeleccionada >= 0) {
+                        abrirVentanaResena(filaSeleccionada);
+                    }
+                }
+            }
+        });
+    }
+    
+    private void abrirVentanaResena(int filaSeleccionada) {
+        try {
+            // Obtener los datos directamente del modelo
+            String codigoFactura = (String) tableModel.getValueAt(filaSeleccionada, 3);
+            String tituloEvento = (String) tableModel.getValueAt(filaSeleccionada, 0);
+
+            // Buscar la reserva completa
+            Reserva reserva = DataBase.getInstance().buscarReservaPorCodigo(codigoFactura);
+
+            if (reserva != null) {
+                // Verificar que el evento ya pasó
+                if (reserva.getFechaEvento().toLocalDate().isAfter(LocalDate.now())) {
+                    JOptionPane.showMessageDialog(this, 
+                        "No puede dejar reseña de eventos futuros", 
+                        "Error", 
+                        JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+
+                // Abrir ventana de reseña
+                Navegacion.cambiarVentana(this, new HacerResena(cliente, reserva));
+            } else {
+                throw new Exception("No se encontró la reserva seleccionada");
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al abrir reseña: " + e.getMessage(), 
+                "Error", 
+                JOptionPane.ERROR_MESSAGE);
+        }
     }
 
 
