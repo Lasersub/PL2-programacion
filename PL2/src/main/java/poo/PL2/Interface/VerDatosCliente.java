@@ -1,17 +1,52 @@
 
 package poo.PL2.Interface;
 
+import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.Direccion;
 import poo.PL2.Clases.Navegacion;
 
 
 public class VerDatosCliente extends javax.swing.JFrame {
 
-    
-    public VerDatosCliente() {
+    private Cliente cliente;
+            
+    public VerDatosCliente(Cliente cliente) {
+        this.cliente = cliente;
+        
         initComponents();
         this.setLocationRelativeTo(null); // Centra la ventana
         
+        bloquearCampos();
+        cargarDatosCliente();
+        
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
+    }
+    
+    private void bloquearCampos(){
+        jTextFieldCorreo.setEditable(false);
+        jTextFieldNombre.setEditable(false);
+        jTextFieldTelefono.setEditable(false);
+        jTextFieldCalle.setEditable(false);
+        jTextFieldNumero.setEditable(false);
+        jTextFieldCiudad.setEditable(false);
+        jTextFieldCodigoPostal.setEditable(false);
+        jCheckBoxVip.setEnabled(false);
+       
+    }
+    
+    private void cargarDatosCliente() {
+        
+        Direccion direccion = cliente.getDireccion();
+        
+        jTextFieldCorreo.setText(cliente.getCorreo());
+        jTextFieldNombre.setText(cliente.getNombre());
+        jTextFieldTelefono.setText(cliente.getTelefono());
+        jTextFieldCalle.setText(direccion.getCalle());
+        jTextFieldNumero.setText(direccion.getNumero());
+        jTextFieldCiudad.setText(direccion.getCiudad());
+        jTextFieldCodigoPostal.setText(direccion.getCodigoPostal());
+        jCheckBoxVip.setSelected(cliente.isVip());
+        
     }
 
     
@@ -28,7 +63,7 @@ public class VerDatosCliente extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jCheckBoxVip = new javax.swing.JCheckBox();
-        jTextFieldTitulo = new javax.swing.JTextField();
+        jTextFieldCorreo = new javax.swing.JTextField();
         jTextFieldNombre = new javax.swing.JTextField();
         jTextFieldCiudad = new javax.swing.JTextField();
         jTextFieldTelefono = new javax.swing.JTextField();
@@ -68,10 +103,10 @@ public class VerDatosCliente extends javax.swing.JFrame {
 
         jCheckBoxVip.setText("VIP");
 
-        jTextFieldTitulo.setEditable(false);
-        jTextFieldTitulo.addActionListener(new java.awt.event.ActionListener() {
+        jTextFieldCorreo.setEditable(false);
+        jTextFieldCorreo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextFieldTituloActionPerformed(evt);
+                jTextFieldCorreoActionPerformed(evt);
             }
         });
 
@@ -119,6 +154,11 @@ public class VerDatosCliente extends javax.swing.JFrame {
 
         jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
         jButtonVolver.setText("VOLVER");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVolverActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -139,7 +179,7 @@ public class VerDatosCliente extends javax.swing.JFrame {
                             .addComponent(jLabel5, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jTextFieldTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -167,7 +207,7 @@ public class VerDatosCliente extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 10, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(jTextFieldTitulo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jTextFieldCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -206,9 +246,9 @@ public class VerDatosCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCiudadActionPerformed
 
-    private void jTextFieldTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTituloActionPerformed
+    private void jTextFieldCorreoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldCorreoActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextFieldTituloActionPerformed
+    }//GEN-LAST:event_jTextFieldCorreoActionPerformed
 
     private void jTextFieldNombreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldNombreActionPerformed
         // TODO add your handling code here:
@@ -230,6 +270,11 @@ public class VerDatosCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldNumeroActionPerformed
 
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
+        // TODO add your handling code here:
+        Navegacion.cambiarVentana(this, new ConsultarUsuario());       
+    }//GEN-LAST:event_jButtonVolverActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonVolver;
@@ -247,9 +292,9 @@ public class VerDatosCliente extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldCalle;
     private javax.swing.JTextField jTextFieldCiudad;
     private javax.swing.JTextField jTextFieldCodigoPostal;
+    private javax.swing.JTextField jTextFieldCorreo;
     private javax.swing.JTextField jTextFieldNombre;
     private javax.swing.JTextField jTextFieldNumero;
     private javax.swing.JTextField jTextFieldTelefono;
-    private javax.swing.JTextField jTextFieldTitulo;
     // End of variables declaration//GEN-END:variables
 }

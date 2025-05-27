@@ -39,7 +39,7 @@
                       </Group>
                       <EmptySpace pref="46" max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jTextFieldTitulo" min="-2" pref="260" max="-2" attributes="0"/>
+                          <Component id="jTextFieldCorreo" min="-2" pref="260" max="-2" attributes="0"/>
                           <Component id="jTextFieldNombre" min="-2" pref="260" max="-2" attributes="0"/>
                           <Component id="jTextFieldCiudad" min="-2" pref="260" max="-2" attributes="0"/>
                           <Component id="jTextFieldTelefono" min="-2" pref="260" max="-2" attributes="0"/>
@@ -75,7 +75,7 @@
               <EmptySpace pref="10" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jLabel3" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="jTextFieldTitulo" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="jTextFieldCorreo" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="32767" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -187,12 +187,12 @@
         <Property name="text" type="java.lang.String" value="VIP"/>
       </Properties>
     </Component>
-    <Component class="javax.swing.JTextField" name="jTextFieldTitulo">
+    <Component class="javax.swing.JTextField" name="jTextFieldCorreo">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldTituloActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jTextFieldCorreoActionPerformed"/>
       </Events>
     </Component>
     <Component class="javax.swing.JTextField" name="jTextFieldNombre">
@@ -250,6 +250,9 @@
         </Property>
         <Property name="text" type="java.lang.String" value="VOLVER"/>
       </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonVolverActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JLabel" name="jLabelJavaEvents">
     </Component>

@@ -131,10 +131,11 @@ public class ConsultarUsuario extends javax.swing.JFrame {
         Cliente cliente = DataBase.getInstance().getCliente(correoCliente);
 
         if (cliente != null) {
-            // Aquí abres tu ventana de detalle del cliente
-            // COMENTADO DE MOMENTO new MasDatosCliente(cliente).setVisible(true); 
-            // O si prefieres mantener esta ventana:
-            // this.dispose();
+            new VerDatosCliente(cliente).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Error al cargar los detalles del cliente", 
+                "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
