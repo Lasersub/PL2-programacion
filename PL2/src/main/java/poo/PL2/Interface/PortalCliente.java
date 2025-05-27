@@ -31,7 +31,7 @@ public class PortalCliente extends javax.swing.JFrame {
         ImageIcon icono = new ImageIcon(getClass().getResource("/imagenes/carrito.png"));
 
         Image imagenEscalada = icono.getImage()
-        .getScaledInstance(50, 50, Image.SCALE_SMOOTH);
+        .getScaledInstance(20, 20, Image.SCALE_SMOOTH);
         iconLabel.setIcon(new ImageIcon(imagenEscalada));
 
         jButtonCarrito.add(iconLabel);
@@ -181,7 +181,7 @@ public class PortalCliente extends javax.swing.JFrame {
         });
 
         itemAtendidos.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Mostrando eventos atendidos...");
+            Navegacion.cambiarVentana(this, new ConsultarEventosAtendidos(cliente));
         });
         
         // Agregar ítems al menú

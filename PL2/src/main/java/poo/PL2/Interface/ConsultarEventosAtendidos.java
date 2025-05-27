@@ -101,26 +101,33 @@ public class ConsultarEventosAtendidos extends javax.swing.JFrame {
     private void cargarReservas(LocalDate fechaMinima) {
         // Limpiar la tabla
         tableModel.setRowCount(0);
-        
+
         // Obtener las reservas del cliente desde la base de datos
         List<Reserva> reservas = DataBase.getInstance().getReservasPorCliente(cliente.getCorreo());
-        
+
         if (reservas.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No tienes reservas realizadas.", "Información", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        
+
         // Formateador de fechas
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        
+
+        // Fecha actual para comparar
+        LocalDate fechaActual = LocalDate.now();
+
         // Filtrar y agregar reservas a la tabla
         for (Reserva reserva : reservas) {
-            // Si se especificó fecha mínima y la reserva es anterior, saltarla
+            // Solo mostrar eventos PASADOS (fecha anterior a actual)
+            if (reserva.getFechaEvento().toLocalDate().isAfter(fechaActual)) {
+                continue;
+            }
+
+            // Si se especificó fecha mínima y la reserva es anterior a ella, saltarla
             if (fechaMinima != null && reserva.getFechaEvento().toLocalDate().isBefore(fechaMinima)) {
                 continue;
             }
-            
+
             // Agregar fila a la tabla
             tableModel.addRow(new Object[]{
                 reserva.getEvento().getTitulo(),
@@ -137,16 +144,26 @@ public class ConsultarEventosAtendidos extends javax.swing.JFrame {
      */
     private LocalDate parsearFecha() {
         String fechaStr = jFormattedTextFieldFechaReserva.getText().trim();
-        
-        // Verificar si el campo está vacío o con el valor por defecto
+    
         if (fechaStr.isEmpty() || fechaStr.equals("00/00/0000")) {
             return null;
         }
-        
+
         try {
-            return LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            LocalDate fecha = LocalDate.parse(fechaStr, DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            LocalDate fechaActual = LocalDate.now();
+
+            // Validar que la fecha no sea futura
+            if (fecha.isAfter(fechaActual)) {
+                JOptionPane.showMessageDialog(this, 
+                    "No puede filtrar por fechas futuras. Introduzca una fecha pasada.", 
+                    "Error", 
+                    JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+            return fecha;
         } catch (DateTimeParseException e) {
-            return null; // No mostrar mensaje de error, simplemente no filtrar
+            return null; // No mostrar mensaje mientras se escribe
         }
     }
     
