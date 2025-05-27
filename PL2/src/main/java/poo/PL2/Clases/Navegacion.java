@@ -5,6 +5,8 @@ import java.awt.Image;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
+import poo.PL2.Interface.InicioSesion;
+import poo.PL2.Interface.NuevaCuentaTarjetaCredito;
 
 
 public class Navegacion {
@@ -13,6 +15,10 @@ public class Navegacion {
     public static void cambiarVentana(javax.swing.JFrame actual, javax.swing.JFrame destino) {
         destino.setVisible(true);
         actual.dispose();
+        
+        if (actual instanceof InicioSesion || actual instanceof NuevaCuentaTarjetaCredito) {
+        CarritoManager.resetCarrito();
+        }
     }
 
     public static void ponerLogo(JLabel jLabel1, JLabel jLabel2) {

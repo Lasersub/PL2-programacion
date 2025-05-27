@@ -51,6 +51,8 @@ public class BuscarEvento extends javax.swing.JFrame {
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
    
     }
+    
+    
 
     
     @SuppressWarnings("unchecked")
@@ -455,8 +457,11 @@ public class BuscarEvento extends javax.swing.JFrame {
         Evento evento = DataBase.getInstance().getEventoPorTitulo(tituloEvento);
 
         if (evento != null) {
-            // Aquí abres tu ventana de detalle
             new DatosEvento(evento, cliente).setVisible(true);
+        } else {
+            JOptionPane.showMessageDialog(this, 
+                "Error al cargar los detalles del evento", 
+                "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
     
@@ -584,7 +589,7 @@ public class BuscarEvento extends javax.swing.JFrame {
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
-        //Navegacion.cambiarVentana(this, new PortalCliente()); // Volver
+        Navegacion.cambiarVentana(this, new PortalCliente(cliente)); // Volver
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jComboBoxTipoEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxTipoEventoActionPerformed

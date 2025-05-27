@@ -1,10 +1,16 @@
 
 package poo.PL2.Interface;
 
-import java.awt.Image;
-import javax.swing.ImageIcon;
+import java.util.List;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import poo.PL2.Clases.Carrito;
+import poo.PL2.Clases.CarritoManager;
 import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.ItemCarrito;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.ProcesadorReservas;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 /**
  *
@@ -16,15 +22,57 @@ public class CarritoCliente extends javax.swing.JFrame {
      * Creates new form Carrito
      */
     private final Cliente cliente;
+    private DefaultTableModel tableModel;
     
     public CarritoCliente(Cliente cliente) {
-        initComponents();
-        this.setLocationRelativeTo(null); // Centra la ventana
         this.cliente = cliente;
-        
+        initComponents();
+        inicializarTabla();
+        cargarCarrito();
+        this.setLocationRelativeTo(null);
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
         
     }
+    
+    private void inicializarTabla() {
+        tableModel = new DefaultTableModel(
+            new Object[]{"Evento", "Fecha", "Cantidad", "Precio Unitario", "Subtotal"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        jTableCarrito.setModel(tableModel);
+    }
+    
+    private void cargarCarrito() {
+        tableModel.setRowCount(0);
+        Carrito carrito = CarritoManager.getCarrito(cliente);
+        double total = 0;
+        
+        for (ItemCarrito item : carrito.getItems()) {
+            double subtotal = item.getEvento().getPrecio() * item.getEntradas();
+            if (cliente.isVip()) {
+                subtotal *= 0.9; // Aplicar descuento VIP
+            }
+            total += subtotal;
+            
+            tableModel.addRow(new Object[]{
+                item.getEvento().getTitulo(),
+                ValidadorUtilidades.localDateTimeToString(item.getFechaEvento()),
+                item.getEntradas(),
+                String.format("%.2f€", item.getEvento().getPrecio()),
+                String.format("%.2f€", subtotal)
+            });
+        }
+        
+        // Mostrar total (opcional: puedes añadir una fila especial o un JLabel)
+        jLabelTotal.setText(String.format("Total: %.2f€", total));
+        
+    }
+    
+        
+        
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -35,37 +83,48 @@ public class CarritoCliente extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jFrame1 = new javax.swing.JFrame();
+        jLabel2 = new javax.swing.JLabel();
+        jButtonVolver1 = new javax.swing.JButton();
+        jButtonConfirmarYPagar1 = new javax.swing.JButton();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        jTableCarrito1 = new javax.swing.JTable();
+        jLabelJavaEvents2 = new javax.swing.JLabel();
+        jLabelJavaEvents3 = new javax.swing.JLabel();
+        jLabelTotal1 = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         jButtonVolver = new javax.swing.JButton();
         jButtonConfirmarYPagar = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        jTableCarrito = new javax.swing.JTable();
         jLabelJavaEvents = new javax.swing.JLabel();
         jLabelJavaEvents1 = new javax.swing.JLabel();
+        jLabelTotal = new javax.swing.JLabel();
+        jButtonEliminar = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        jFrame1.setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
-        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("MI CARRITO");
+        jLabel2.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel2.setText("MI CARRITO");
 
-        jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonVolver.setText("VOLVER");
-        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+        jButtonVolver1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonVolver1.setText("VOLVER");
+        jButtonVolver1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonVolverActionPerformed(evt);
+                jButtonVolver1ActionPerformed(evt);
             }
         });
 
-        jButtonConfirmarYPagar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
-        jButtonConfirmarYPagar.setText("CONFIRMAR Y PAGAR");
-        jButtonConfirmarYPagar.addActionListener(new java.awt.event.ActionListener() {
+        jButtonConfirmarYPagar1.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonConfirmarYPagar1.setText("CONFIRMAR Y PAGAR");
+        jButtonConfirmarYPagar1.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButtonConfirmarYPagarActionPerformed(evt);
+                jButtonConfirmarYPagar1ActionPerformed(evt);
             }
         });
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        jTableCarrito1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null, null},
                 {null, null, null, null, null, null},
@@ -100,37 +159,155 @@ public class CarritoCliente extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jScrollPane2.setViewportView(jTable1);
-        if (jTable1.getColumnModel().getColumnCount() > 0) {
-            jTable1.getColumnModel().getColumn(0).setResizable(false);
-            jTable1.getColumnModel().getColumn(1).setResizable(false);
-            jTable1.getColumnModel().getColumn(2).setResizable(false);
-            jTable1.getColumnModel().getColumn(3).setResizable(false);
-            jTable1.getColumnModel().getColumn(4).setResizable(false);
-            jTable1.getColumnModel().getColumn(5).setResizable(false);
+        jScrollPane3.setViewportView(jTableCarrito1);
+        if (jTableCarrito1.getColumnModel().getColumnCount() > 0) {
+            jTableCarrito1.getColumnModel().getColumn(0).setResizable(false);
+            jTableCarrito1.getColumnModel().getColumn(1).setResizable(false);
+            jTableCarrito1.getColumnModel().getColumn(2).setResizable(false);
+            jTableCarrito1.getColumnModel().getColumn(3).setResizable(false);
+            jTableCarrito1.getColumnModel().getColumn(4).setResizable(false);
+            jTableCarrito1.getColumnModel().getColumn(5).setResizable(false);
         }
+
+        jLabelTotal1.setText("Total : ");
+
+        javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
+        jFrame1.getContentPane().setLayout(jFrame1Layout);
+        jFrame1Layout.setHorizontalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame1Layout.createSequentialGroup()
+                .addComponent(jLabelJavaEvents2, javax.swing.GroupLayout.DEFAULT_SIZE, 3, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addComponent(jLabelTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(jFrame1Layout.createSequentialGroup()
+                            .addComponent(jButtonVolver1)
+                            .addGap(711, 711, 711)
+                            .addComponent(jButtonConfirmarYPagar1)))
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.DEFAULT_SIZE, 990, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jLabelJavaEvents3, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
+        );
+        jFrame1Layout.setVerticalGroup(
+            jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jFrame1Layout.createSequentialGroup()
+                .addGap(15, 15, 15)
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel2)
+                    .addComponent(jLabelJavaEvents2, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabelJavaEvents3, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabelTotal1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jFrame1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonVolver1)
+                    .addComponent(jButtonConfirmarYPagar1))
+                .addGap(17, 17, 17))
+        );
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
+        jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel1.setText("MI CARRITO");
+
+        jButtonVolver.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonVolver.setText("VOLVER");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVolverActionPerformed(evt);
+            }
+        });
+
+        jButtonConfirmarYPagar.setFont(new java.awt.Font("Segoe UI", 1, 14)); // NOI18N
+        jButtonConfirmarYPagar.setText("CONFIRMAR Y PAGAR");
+        jButtonConfirmarYPagar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonConfirmarYPagarActionPerformed(evt);
+            }
+        });
+
+        jTableCarrito.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "Titulo", "Calificación", "Ciudad", "Precio", "Fecha", "Tipo"
+            }
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(jTableCarrito);
+        if (jTableCarrito.getColumnModel().getColumnCount() > 0) {
+            jTableCarrito.getColumnModel().getColumn(0).setResizable(false);
+            jTableCarrito.getColumnModel().getColumn(1).setResizable(false);
+            jTableCarrito.getColumnModel().getColumn(2).setResizable(false);
+            jTableCarrito.getColumnModel().getColumn(3).setResizable(false);
+            jTableCarrito.getColumnModel().getColumn(4).setResizable(false);
+            jTableCarrito.getColumnModel().getColumn(5).setResizable(false);
+        }
+
+        jLabelTotal.setText("Total : ");
+
+        jButtonEliminar.setText("Eliminar Item");
+        jButtonEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonEliminarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButtonVolver)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jButtonConfirmarYPagar))
+                        .addComponent(jLabelJavaEvents, javax.swing.GroupLayout.DEFAULT_SIZE, 3, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addComponent(jButtonVolver)
+                                .addGap(711, 711, 711)
+                                .addComponent(jButtonConfirmarYPagar))
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 990, Short.MAX_VALUE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 882, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(14, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addComponent(jLabelJavaEvents, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 736, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jLabelJavaEvents1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButtonEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(282, 282, 282)
+                        .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 54, Short.MAX_VALUE)
+                .addComponent(jLabelJavaEvents1, javax.swing.GroupLayout.DEFAULT_SIZE, 32, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -140,13 +317,17 @@ public class CarritoCliente extends javax.swing.JFrame {
                     .addComponent(jLabel1)
                     .addComponent(jLabelJavaEvents, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabelJavaEvents1, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 23, Short.MAX_VALUE)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 262, Short.MAX_VALUE)
-                .addGap(18, 18, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonConfirmarYPagar)
-                    .addComponent(jButtonVolver))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 232, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 12, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabelTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonEliminar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jButtonVolver)
+                    .addComponent(jButtonConfirmarYPagar))
+                .addGap(17, 17, 17))
         );
 
         pack();
@@ -161,15 +342,90 @@ public class CarritoCliente extends javax.swing.JFrame {
 
     private void jButtonConfirmarYPagarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarYPagarActionPerformed
         // TODO add your handling code here:
+        Carrito carrito = CarritoManager.getCarrito(cliente);
+        
+        if (carrito.getItems().isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "El carrito está vacío", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        
+        int confirmacion = JOptionPane.showConfirmDialog(this, 
+            "¿Confirmar compra de " + carrito.getItems().size() + " item(s)?",
+            "Confirmar compra", JOptionPane.YES_NO_OPTION);
+        
+        if (confirmacion == JOptionPane.YES_OPTION) {
+            try {
+                // Procesar reservas
+                ProcesadorReservas.procesar(carrito);
+                
+                JOptionPane.showMessageDialog(this, 
+                    "Compra realizada con éxito. Las facturas se han generado.",
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                
+                // Volver al portal
+                Navegacion.cambiarVentana(this, new PortalCliente(cliente));
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, 
+                    "Error al procesar la compra: " + e.getMessage(),
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
     }//GEN-LAST:event_jButtonConfirmarYPagarActionPerformed
+
+    private void jButtonVolver1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolver1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonVolver1ActionPerformed
+
+    private void jButtonConfirmarYPagar1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConfirmarYPagar1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jButtonConfirmarYPagar1ActionPerformed
+
+    private void jButtonEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonEliminarActionPerformed
+        // TODO add your handling code here:
+        int fila = jTableCarrito.getSelectedRow();
+        if (fila == -1) {
+            JOptionPane.showMessageDialog(this, 
+                "Por favor, seleccione un item para eliminar", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        try {
+            Carrito carrito = CarritoManager.getCarrito(cliente);
+            if (fila >= 0 && fila < carrito.getItems().size()) {
+                carrito.eliminarItem(carrito.getItems().get(fila));
+                cargarCarrito();
+                JOptionPane.showMessageDialog(this, 
+                    "Item eliminado correctamente", 
+                    "Éxito", JOptionPane.INFORMATION_MESSAGE);
+            }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(this, 
+                "Error al eliminar el item: " + e.getMessage(),
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_jButtonEliminarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonConfirmarYPagar;
+    private javax.swing.JButton jButtonConfirmarYPagar1;
+    private javax.swing.JButton jButtonEliminar;
     private javax.swing.JButton jButtonVolver;
+    private javax.swing.JButton jButtonVolver1;
+    private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabelJavaEvents;
     private javax.swing.JLabel jLabelJavaEvents1;
+    private javax.swing.JLabel jLabelJavaEvents2;
+    private javax.swing.JLabel jLabelJavaEvents3;
+    private javax.swing.JLabel jLabelTotal;
+    private javax.swing.JLabel jLabelTotal1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JTable jTableCarrito;
+    private javax.swing.JTable jTableCarrito1;
     // End of variables declaration//GEN-END:variables
 }

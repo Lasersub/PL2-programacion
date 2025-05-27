@@ -10,7 +10,9 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 
 public class DataBase implements Serializable {
@@ -108,6 +110,19 @@ public class DataBase implements Serializable {
     public ArrayList<Reserva> getReservas() {
         return reservas;
     }
+    
+    public List<Reserva> getReservasPorCliente(String correoCliente) {
+        return reservas.stream()
+                      .filter(r -> r.getCliente().getCorreo().equalsIgnoreCase(correoCliente))
+                      .collect(Collectors.toList());
+    }
+    
+    public List<Reserva> getReservasPorEvento(String tituloEvento) {
+        return reservas.stream()
+                      .filter(r -> r.getEvento().getTitulo().equalsIgnoreCase(tituloEvento))
+                      .collect(Collectors.toList());
+    }
+
 
     
     public static void guardar(String archivo) throws IOException {

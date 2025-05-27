@@ -51,11 +51,20 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         jButtonBorrarFecha.setEnabled(false);
         jButtonGuardarImagen.setEnabled(false);
         
+        configurarArrastrarSoltar();
+        
+        configurarComponentes();
         // Cargar datos del evento
         cargarDatosEvento();
         
         // Configurar logo
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
+    }
+    
+    private void configurarComponentes(){
+        jLabelImagen.setText("Arrastra una imagen aquí o haz clic en Seleccionar");
+        jLabelImagen.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabelImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
     }
     
     private void cargarDatosEvento() {
@@ -126,8 +135,9 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
     }
     
     private void guardarImagen() {
-        if (imagen == null) {
-            JOptionPane.showMessageDialog(this, "No hay imagen para guardar", "Advertencia", JOptionPane.WARNING_MESSAGE);
+         if (imagen == null) {
+            JOptionPane.showMessageDialog(this, "No hay imagen para guardar", 
+                "Advertencia", JOptionPane.WARNING_MESSAGE);
             return;
         }
 
@@ -143,17 +153,36 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
             String nombreArchivo = "evento_" + evento.getTitulo().toLowerCase()
                     .replaceAll("[^a-z0-9]", "_") + "_" + System.currentTimeMillis() + ".png";
             File archivoDestino = new File(rutaBase + nombreArchivo);
-            
+
             ImageIO.write(imagen, "png", archivoDestino);
-            
+
             // Actualizar ruta en el evento
             evento.setRutaPortada("data/imagenesEventos/" + nombreArchivo);
-            
+
             JOptionPane.showMessageDialog(this, "Imagen guardada correctamente");
         } catch (Exception e) {
             JOptionPane.showMessageDialog(this, "Error al guardar: " + e.getMessage(), 
                 "Error", JOptionPane.ERROR_MESSAGE);
         }
+    }
+    
+    private void configurarArrastrarSoltar() {
+        DropTarget dropTarget = new DropTarget(jLabelImagen, new DropTargetAdapter() {
+            @Override
+            public void drop(DropTargetDropEvent dtde) {
+                try {
+                    dtde.acceptDrop(DnDConstants.ACTION_COPY);
+                    java.util.List<File> archivos = (java.util.List<File>) 
+                        dtde.getTransferable().getTransferData(DataFlavor.javaFileListFlavor);
+                    if (!archivos.isEmpty()) {
+                        cargarImagen(archivos.get(0)); // Cargar el primer archivo
+                    }
+                } catch (Exception e) {
+                    JOptionPane.showMessageDialog(null, "Error: " + e.getMessage(), 
+                        "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            }
+        });
     }
     
     private void guardarCambios() {
@@ -173,6 +202,10 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
         }
         
         try {
+            
+            DataBase db = DataBase.getInstance();
+            db.getEventos().remove(evento);
+            
             // Actualizar datos del evento
             evento.setTitulo(jTextFieldTitulo.getText());
             evento.setTipo((String) jComboBoxTipoEvento.getSelectedItem());
@@ -218,7 +251,7 @@ public class DatosEventoAdmin extends javax.swing.JFrame {
                 DataBase.getInstance().getEventos().remove(evento);
                 JOptionPane.showMessageDialog(this, "Evento eliminado correctamente");
                 this.dispose();
-                Navegacion.cambiarVentana(this, new PortalAdministrador());
+               
             } catch (Exception e) {
                 JOptionPane.showMessageDialog(this, "Error al eliminar el evento: " + e.getMessage(), 
                     "Error", JOptionPane.ERROR_MESSAGE);

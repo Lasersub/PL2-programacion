@@ -5,6 +5,8 @@ import java.awt.Font;
 import java.awt.Image;
 import javax.swing.*;
 import java.awt.event.*;
+import poo.PL2.Clases.Carrito;
+import poo.PL2.Clases.CarritoManager;
 import poo.PL2.Clases.Cliente;
 import poo.PL2.Clases.Navegacion;
 
@@ -203,7 +205,14 @@ public class PortalCliente extends javax.swing.JFrame {
 
     private void jButtonCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonCarritoActionPerformed
         // TODO add your handling code here:
-        Navegacion.cambiarVentana(this, new CarritoCliente(cliente)); // Carrito
+        Carrito carrito = CarritoManager.getCarrito(cliente);
+        if (carrito.getItems().isEmpty()) {
+            JOptionPane.showMessageDialog(this, 
+                "El carrito está vacío", 
+                "Carrito", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            Navegacion.cambiarVentana(this, new CarritoCliente(cliente));
+        }
     }//GEN-LAST:event_jButtonCarritoActionPerformed
 
 

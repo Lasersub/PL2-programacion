@@ -3,36 +3,106 @@ package poo.PL2.Interface;
 
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.time.LocalDateTime;
+import javax.imageio.ImageIO;
 import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.UIManager;
+import poo.PL2.Clases.Carrito;
+import poo.PL2.Clases.CarritoManager;
 import poo.PL2.Clases.Cliente;
+import poo.PL2.Clases.Direccion;
 import poo.PL2.Clases.Evento;
 import poo.PL2.Clases.Navegacion;
+import poo.PL2.Clases.ValidadorUtilidades;
 
 
 public class DatosEvento extends javax.swing.JFrame {
 
-    Cliente cliente;
-    Evento evento;
+    private Cliente cliente;
+    private Evento evento;
+    private BufferedImage imagen;
+    private DefaultListModel<String> model = new DefaultListModel<>();
     
     public DatosEvento(Evento evento, Cliente cliente) {
-        initComponents();
-        configurarComponentes();
-        this.setLocationRelativeTo(null); // Centra la ventana 
         this.evento = evento;
         this.cliente = cliente;
         
-        jListFechasEvento.setModel(model);
+        initComponents();
+        configurarComponentes();
+        cargarDatosEvento();
+        bloquearCampos();
+        cargarCarritoYLogo();
         
-        jListFechasEvento.setEnabled(false);
-        jListFechasEvento.setFont(new Font("Arial", Font.BOLD, 12));
+        this.setLocationRelativeTo(null); // Centra la ventana 
         
+       
+    }
+    
+    private void cargarDatosEvento() {
+        // Cargar datos básicos
+        jTextFieldTitulo.setText(evento.getTitulo());
+        jTextFieldTipo.setText(evento.getTipo());
+        jTextFieldPrecioEntrada.setText(String.valueOf(evento.getPrecio()));
+        
+        // Cargar dirección
+        Direccion direccion = evento.getDireccion();
+        jTextFieldCalle.setText(direccion.getCalle());
+        jTextFieldNumero.setText(direccion.getNumero());
+        jTextFieldCiudad.setText(direccion.getCiudad());
+        jFormattedTextFieldCodigoPostal.setText(direccion.getCodigoPostal());
+        
+        // Cargar fechas
+        jComboBoxFechaEvento.removeAllItems();
+        for (LocalDateTime fecha : evento.getFechas()) {
+            jComboBoxFechaEvento.addItem(ValidadorUtilidades.localDateTimeToString(fecha));
+        }
+        
+        // Cargar imagen
+        cargarImagenEvento();
+        
+        // Cargar calificación
+        jTextFieldCalificacion.setText(String.format("%.1f", evento.getCalificacion()));
+    }
+    
+    private void cargarImagenEvento() {
+        if (evento.getRutaPortada() != null && !evento.getRutaPortada().isEmpty()) {
+            try {
+                File archivoImagen = new File(evento.obtenerRutaAbsolutaPortada());
+                if (archivoImagen.exists()) {
+                    imagen = ImageIO.read(archivoImagen);
+                    ImageIcon icono = new ImageIcon(imagen.getScaledInstance(
+                        jLabelImagen.getWidth(), -1, Image.SCALE_SMOOTH));
+                    jLabelImagen.setIcon(icono);
+                    jLabelImagen.setText("");
+                }
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(this, "Error al cargar la imagen del evento", 
+                    "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }
+    
+    private void bloquearCampos() {
+        jTextFieldTitulo.setEditable(false);
+        jTextFieldCalle.setEditable(false);
+        jTextFieldNumero.setEditable(false);
+        jTextFieldCiudad.setEditable(false);
+        jFormattedTextFieldCodigoPostal.setEditable(false);
+        jTextFieldTipo.setEditable(false);
+        jTextFieldPrecioEntrada.setEditable(false);
+        jListResenas.setEnabled(false);
+        
+    }
+    
+    private void cargarCarritoYLogo(){
         JLabel iconLabel = new JLabel();
         
-        ImageIcon icono = new ImageIcon(getClass().getResource("/imagenes/anadirCarrito.png"));
+        ImageIcon icono = new ImageIcon(getClass().getResource("/imagenes/carrito.png"));
 
         Image imagenEscalada = icono.getImage()
         .getScaledInstance(30, 30, Image.SCALE_SMOOTH);
@@ -45,10 +115,9 @@ public class DatosEvento extends javax.swing.JFrame {
         jButtonAnadirCarrito.setContentAreaFilled(false);
         jButtonAnadirCarrito.setFocusPainted(false);
         
-        jListResenas.setEnabled(false);
+        
         
         Navegacion.ponerLogo(jLabelJavaEvents, jLabelJavaEvents1);
-        
     }
 
     /**
@@ -60,6 +129,7 @@ public class DatosEvento extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jComboBox1 = new javax.swing.JComboBox<>();
         jLabel1 = new javax.swing.JLabel();
         jButtonAnadirCarrito = new javax.swing.JButton();
         jLabelImagen = new javax.swing.JLabel();
@@ -72,8 +142,6 @@ public class DatosEvento extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        jListFechasEvento = new javax.swing.JList<>();
         jTextFieldTitulo = new javax.swing.JTextField();
         jTextFieldCalle = new javax.swing.JTextField();
         jTextFieldTipo = new javax.swing.JTextField();
@@ -89,6 +157,10 @@ public class DatosEvento extends javax.swing.JFrame {
         jLabel12 = new javax.swing.JLabel();
         jLabelJavaEvents = new javax.swing.JLabel();
         jLabelJavaEvents1 = new javax.swing.JLabel();
+        jComboBox2 = new javax.swing.JComboBox<>();
+        jComboBoxFechaEvento = new javax.swing.JComboBox<>();
+
+        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -136,8 +208,6 @@ public class DatosEvento extends javax.swing.JFrame {
 
         jLabel9.setFont(new java.awt.Font("Segoe UI", 0, 14)); // NOI18N
         jLabel9.setText("Fechas del evento");
-
-        jScrollPane1.setViewportView(jListFechasEvento);
 
         jTextFieldTitulo.setEditable(false);
         jTextFieldTitulo.addActionListener(new java.awt.event.ActionListener() {
@@ -212,6 +282,15 @@ public class DatosEvento extends javax.swing.JFrame {
         jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel12.setText("Reseñas");
 
+        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+
+        jComboBoxFechaEvento.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxFechaEvento.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jComboBoxFechaEventoActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -239,24 +318,25 @@ public class DatosEvento extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(jButtonAnadirCarrito))
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jTextFieldTipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addComponent(jTextFieldCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                        .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                    .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                    .addComponent(jTextFieldCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                        .addComponent(jButtonVolver))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(18, 18, Short.MAX_VALUE)
-                                        .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jTextFieldTipo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addComponent(jTextFieldCiudad, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                            .addComponent(jLabel10, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                        .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addComponent(jTextFieldCalificacion, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addComponent(jComboBoxFechaEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 101, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(jButtonVolver, javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jLabelImagen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGap(31, 31, 31))))
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(jTextFieldNumero, javax.swing.GroupLayout.PREFERRED_SIZE, 74, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addGap(0, 0, Short.MAX_VALUE)))
@@ -307,7 +387,7 @@ public class DatosEvento extends javax.swing.JFrame {
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel6)
                             .addComponent(jFormattedTextFieldCodigoPostal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 16, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 14, Short.MAX_VALUE)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel7)
                             .addComponent(jTextFieldTipo, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -316,14 +396,18 @@ public class DatosEvento extends javax.swing.JFrame {
                             .addComponent(jLabel8)
                             .addComponent(jTextFieldPrecioEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel10))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 24, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel9)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 21, Short.MAX_VALUE)
+                            .addComponent(jComboBoxFechaEvento, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(29, 29, 29))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jLabelImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 17, Short.MAX_VALUE)
                 .addComponent(jLabel12)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 8, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
@@ -337,6 +421,8 @@ public class DatosEvento extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void configurarComponentes() {
+        jComboBoxFechaEvento.setEnabled(true);;
+        
         jButtonAnadirCarrito.setToolTipText("Click para añadir al carrito"); 
         
         UIManager.put("ToolTip.font", new Font("Arial", Font.BOLD, 12));  // Fuente personalizada
@@ -345,11 +431,51 @@ public class DatosEvento extends javax.swing.JFrame {
     
     private void jButtonAnadirCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAnadirCarritoActionPerformed
         // TODO add your handling code here:
-        JOptionPane.showMessageDialog(this, "Evento añadido al carrito");
+        // Obtener el carrito del cliente
+        Carrito carrito = CarritoManager.getCarrito(cliente);
+
+        // Obtener la fecha seleccionada (primera fecha si no hay selección)
+        String fechaSeleccionada = (String) jComboBoxFechaEvento.getSelectedItem();
+        LocalDateTime fechaEvento;
+
+        if (fechaSeleccionada != null) {
+            fechaEvento = ValidadorUtilidades.stringToLocalDateTime(fechaSeleccionada);
+        } else {
+            JOptionPane.showMessageDialog(this, "No hay fechas disponibles para este evento", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // Pedir cantidad de entradas
+        String cantidadStr = JOptionPane.showInputDialog(this, 
+            "¿Cuántas entradas deseas?", "Cantidad", JOptionPane.QUESTION_MESSAGE);
+
+        try {
+            int cantidad = Integer.parseInt(cantidadStr);
+            if (cantidad <= 0) {
+                throw new NumberFormatException();
+            }
+
+            // Añadir al carrito
+            carrito.agregarItem(evento, fechaEvento, cantidad);
+
+            JOptionPane.showMessageDialog(this, 
+                cantidad + " entrada(s) añadida(s) al carrito", 
+                "Éxito", JOptionPane.INFORMATION_MESSAGE);
+
+            this.dispose();
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, 
+                "Por favor ingrese un número válido de entradas", 
+                "Error", JOptionPane.ERROR_MESSAGE);
+        }
+        
+        
     }//GEN-LAST:event_jButtonAnadirCarritoActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
         // TODO add your handling code here:
+        this.dispose();  
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     private void jTextFieldTituloActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextFieldTituloActionPerformed
@@ -384,11 +510,18 @@ public class DatosEvento extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextFieldCalificacionActionPerformed
 
+    private void jComboBoxFechaEventoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jComboBoxFechaEventoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jComboBoxFechaEventoActionPerformed
+
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButtonAnadirCarrito;
     private javax.swing.JButton jButtonVolver;
+    private javax.swing.JComboBox<String> jComboBox1;
+    private javax.swing.JComboBox<String> jComboBox2;
+    private javax.swing.JComboBox<String> jComboBoxFechaEvento;
     private javax.swing.JFormattedTextField jFormattedTextFieldCodigoPostal;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
@@ -405,9 +538,7 @@ public class DatosEvento extends javax.swing.JFrame {
     private javax.swing.JLabel jLabelImagen;
     private javax.swing.JLabel jLabelJavaEvents;
     private javax.swing.JLabel jLabelJavaEvents1;
-    private javax.swing.JList<String> jListFechasEvento;
     private javax.swing.JList<String> jListResenas;
-    private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JTextField jTextFieldCalificacion;
     private javax.swing.JTextField jTextFieldCalle;
@@ -417,5 +548,5 @@ public class DatosEvento extends javax.swing.JFrame {
     private javax.swing.JTextField jTextFieldTipo;
     private javax.swing.JTextField jTextFieldTitulo;
     // End of variables declaration//GEN-END:variables
-    DefaultListModel<String> model = new DefaultListModel<>();
+
 }

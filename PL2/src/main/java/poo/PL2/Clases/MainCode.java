@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -56,9 +57,9 @@ public class MainCode {
         
         dataBase.addCliente(cliente1);
         dataBase.addCliente(cliente2);
-        */
         
-        /*
+        
+        
         
         // 1. Concierto en Madrid (precio medio)
         dataBase.guardarEvento(new Evento(
@@ -160,6 +161,7 @@ public class MainCode {
             "data/imagenesEventos/arte.png"
         ));
         
+        
         */
         
 
@@ -197,6 +199,11 @@ public class MainCode {
         }
         
         */
+        
+        List<Reserva> reservas = dataBase.getReservasPorCliente("genocida@gmail.com");
+        Reserva reserva = reservas.getFirst();
+        System.out.println(reserva.getEvento().getTitulo());
+        System.out.println(reserva.getCodigoFactura());
         
         
          Runtime.getRuntime().addShutdownHook(new Thread(() -> {
